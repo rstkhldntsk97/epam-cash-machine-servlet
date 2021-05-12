@@ -1,4 +1,4 @@
-package ua.rstkhldntsk.Servlet.model.entity;
+package ua.rstkhldntsk.servlet.model.entity;
 
 public enum ERole {
 

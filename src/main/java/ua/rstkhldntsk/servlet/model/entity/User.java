@@ -1,4 +1,4 @@
-package ua.rstkhldntsk.Servlet.model.entity;
+package ua.rstkhldntsk.servlet.model.entity;
 
 public class User {
 
@@ -12,6 +12,9 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    public User() {
     }
 
     public Integer getId() {
