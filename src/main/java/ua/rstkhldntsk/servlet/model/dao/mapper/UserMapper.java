@@ -1,13 +1,12 @@
 package ua.rstkhldntsk.servlet.model.dao.mapper;
 
-import ua.rstkhldntsk.servlet.model.dao.impl.JDBCUserDAO;
 import ua.rstkhldntsk.servlet.model.entity.ERole;
 import ua.rstkhldntsk.servlet.model.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserMapper extends JDBCUserDAO {
+public class UserMapper implements ObjectMapper<User> {
 
     public User extractFromResultSet(ResultSet resultSet) throws SQLException {
 

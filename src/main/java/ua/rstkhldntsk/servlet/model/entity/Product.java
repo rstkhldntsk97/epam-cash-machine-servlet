@@ -8,14 +8,15 @@ public class Product {
     private String name;
     private Integer code;
     private BigDecimal price;
-    private int quantity;
 
-    public Product(Integer id, String name, Integer code, BigDecimal price, int quantity) {
+    public Product(Integer id, String name, Integer code, BigDecimal price) {
         this.id = id;
         this.name = name;
         this.code = code;
         this.price = price;
-        this.quantity = quantity;
+    }
+
+    public Product() {
     }
 
     // getters and setters
@@ -51,11 +52,4 @@ public class Product {
         this.price = price;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }

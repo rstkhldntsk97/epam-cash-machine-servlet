@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface GenericDAO<T> {
 
-    Optional<T> findById(String id);
+    Optional<T> findById(Integer id);
 
     void save(T model);
 

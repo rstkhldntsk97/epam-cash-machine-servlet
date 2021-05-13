@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class JDBCRoleDAO implements RoleDAO {
     @Override
-    public Optional<ERole> findById(String id) {
+    public Optional<ERole> findById(Integer id) {
         return Optional.empty();
     }
 
