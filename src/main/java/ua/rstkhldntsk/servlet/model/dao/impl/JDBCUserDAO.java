@@ -12,6 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class JDBCUserDAO implements UserDAO {
+
+    private Connection connection;
+
+//    public JDBCUserDAO(Connection connection) {
+//        this.connection = connection;
+//    }
+
     @Override
     public Optional<User> findById(String id) {
         return Optional.empty();
@@ -39,7 +46,7 @@ public class JDBCUserDAO implements UserDAO {
 
     @Override
     public Optional<User> findByUsername(String name) {
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = connection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_BY_USERNAME)) {
             preparedStatement.setString(1, name);
 

@@ -9,7 +9,6 @@ import java.sql.SQLException;
 
 public class UserMapper extends JDBCUserDAO {
 
-
     public User extractFromResultSet(ResultSet resultSet) throws SQLException {
 
         if (resultSet.next()) {
