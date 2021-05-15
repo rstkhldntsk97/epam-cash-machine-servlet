@@ -1,24 +1,24 @@
-package ua.rstkhldntsk.servlet.model.dao.impl;
+package ua.rstkhldntsk.servlet.dao.impl;
 
-import ua.rstkhldntsk.servlet.model.dao.RoleDAO;
-import ua.rstkhldntsk.servlet.model.entity.ERole;
+import ua.rstkhldntsk.servlet.dao.RoleDAO;
+import ua.rstkhldntsk.servlet.model.Role;
 
 import java.util.List;
 import java.util.Optional;
 
 public class JDBCRoleDAO implements RoleDAO {
     @Override
-    public Optional<ERole> findById(Integer id) {
+    public Optional<Role> findById(Integer id) {
         return Optional.empty();
     }
 
     @Override
-    public void save(ERole model) {
+    public void save(Role model) {
 
     }
 
     @Override
-    public void update(ERole model) {
+    public void update(Role model) {
 
     }
 
@@ -28,7 +28,7 @@ public class JDBCRoleDAO implements RoleDAO {
     }
 
     @Override
-    public List<ERole> findAll() {
+    public List<Role> findAll() {
         return null;
     }
 

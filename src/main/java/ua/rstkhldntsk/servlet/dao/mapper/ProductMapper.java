@@ -1,6 +1,6 @@
-package ua.rstkhldntsk.servlet.model.dao.mapper;
+package ua.rstkhldntsk.servlet.dao.mapper;
 
-import ua.rstkhldntsk.servlet.model.entity.Product;
+import ua.rstkhldntsk.servlet.model.Product;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;

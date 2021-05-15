@@ -1,9 +1,6 @@
-package ua.rstkhldntsk.servlet.model.dao.impl;
-
-import ua.rstkhldntsk.servlet.model.dao.*;
+package ua.rstkhldntsk.servlet.dao.impl;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 
 public class JDBCDaoFactory extends DaoFactory {
 

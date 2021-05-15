@@ -1,4 +1,4 @@
-package ua.rstkhldntsk.servlet.model.dao.mapper;
+package ua.rstkhldntsk.servlet.dao.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,6 +1,6 @@
-package ua.rstkhldntsk.servlet.model.dao;
+package ua.rstkhldntsk.servlet.dao;
 
-import ua.rstkhldntsk.servlet.model.dao.impl.JDBCDaoFactory;
+import ua.rstkhldntsk.servlet.dao.impl.JDBCDaoFactory;
 
 public abstract class DaoFactory {
 

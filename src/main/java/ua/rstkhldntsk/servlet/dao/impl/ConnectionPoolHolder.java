@@ -1,4 +1,4 @@
-package ua.rstkhldntsk.servlet.model.dao.impl;
+package ua.rstkhldntsk.servlet.dao.impl;
 
 import org.apache.commons.dbcp.BasicDataSource;
 

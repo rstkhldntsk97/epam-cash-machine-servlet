@@ -1,6 +1,6 @@
-package ua.rstkhldntsk.servlet.model.dao;
+package ua.rstkhldntsk.servlet.dao;
 
-import ua.rstkhldntsk.servlet.model.entity.Product;
+import ua.rstkhldntsk.servlet.model.Product;
 
 import java.util.Optional;
 

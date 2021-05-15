@@ -1,13 +1,13 @@
-package ua.rstkhldntsk.servlet.model.entity;
+package ua.rstkhldntsk.servlet.model;
 
 public class User {
 
     private Integer id;
     private String username;
     private String password;
-    private ERole role;
+    private Role role;
 
-    public User(Integer id, String username, String password, ERole role) {
+    public User(Integer id, String username, String password, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -41,11 +41,11 @@ public class User {
         this.password = password;
     }
 
-    public ERole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(ERole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

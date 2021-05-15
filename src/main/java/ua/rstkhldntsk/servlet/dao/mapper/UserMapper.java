@@ -1,7 +1,7 @@
-package ua.rstkhldntsk.servlet.model.dao.mapper;
+package ua.rstkhldntsk.servlet.dao.mapper;
 
-import ua.rstkhldntsk.servlet.model.entity.ERole;
-import ua.rstkhldntsk.servlet.model.entity.User;
+import ua.rstkhldntsk.servlet.model.Role;
+import ua.rstkhldntsk.servlet.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +16,7 @@ public class UserMapper implements ObjectMapper<User> {
             String password = resultSet.getString("password");
             String role = resultSet.getString("role_name");
 
-            return new User(id , username, password, ERole.valueOf(role));
+            return new User(id , username, password, Role.valueOf(role));
         }
         return new User();
     }

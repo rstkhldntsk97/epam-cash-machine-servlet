@@ -1,8 +1,8 @@
-package ua.rstkhldntsk.servlet.model.dao.impl;
+package ua.rstkhldntsk.servlet.dao.impl;
 
-import ua.rstkhldntsk.servlet.model.dao.ProductDAO;
-import ua.rstkhldntsk.servlet.model.dao.mapper.ProductMapper;
-import ua.rstkhldntsk.servlet.model.entity.Product;
+import ua.rstkhldntsk.servlet.dao.ProductDAO;
+import ua.rstkhldntsk.servlet.dao.mapper.ProductMapper;
+import ua.rstkhldntsk.servlet.model.Product;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;

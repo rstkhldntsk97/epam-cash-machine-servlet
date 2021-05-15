@@ -1,9 +1,9 @@
-package ua.rstkhldntsk.servlet.model.dao.impl;
+package ua.rstkhldntsk.servlet.dao.impl;
 
-import ua.rstkhldntsk.servlet.model.dao.UserDAO;
-import ua.rstkhldntsk.servlet.model.dao.mapper.UserMapper;
-import ua.rstkhldntsk.servlet.model.entity.ERole;
-import ua.rstkhldntsk.servlet.model.entity.User;
+import ua.rstkhldntsk.servlet.dao.UserDAO;
+import ua.rstkhldntsk.servlet.dao.mapper.UserMapper;
+import ua.rstkhldntsk.servlet.model.Role;
+import ua.rstkhldntsk.servlet.model.User;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -71,7 +71,7 @@ public class JDBCUserDAO implements UserDAO {
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
                 String role = resultSet.getString("role_name");
-                User user = new User(id, username, password, ERole.valueOf(role));
+                User user = new User(id, username, password, Role.valueOf(role));
                 users.add(user);
             }
         } catch (SQLException e) {

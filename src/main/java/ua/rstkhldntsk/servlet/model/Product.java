@@ -1,4 +1,4 @@
-package ua.rstkhldntsk.servlet.model.entity;
+package ua.rstkhldntsk.servlet.model;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package ua.rstkhldntsk.servlet.model.dao;
+package ua.rstkhldntsk.servlet.dao;
 
 import java.util.List;
 import java.util.Optional;

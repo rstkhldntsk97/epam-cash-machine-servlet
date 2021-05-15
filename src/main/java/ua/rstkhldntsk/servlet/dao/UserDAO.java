@@ -1,6 +1,6 @@
-package ua.rstkhldntsk.servlet.model.dao;
+package ua.rstkhldntsk.servlet.dao;
 
-import ua.rstkhldntsk.servlet.model.entity.User;
+import ua.rstkhldntsk.servlet.model.User;
 
 import java.util.Optional;
 
