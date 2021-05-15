@@ -10,8 +10,6 @@ public abstract class DaoFactory {
 
     public abstract ProductDAO createProductDao();
 
-    public abstract StockDAO createStockDao();
-
     public abstract RoleDAO createRoleDao();
 
     public abstract ReceiptDAO createReceiptDao();

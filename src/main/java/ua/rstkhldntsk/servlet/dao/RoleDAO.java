@@ -6,6 +6,4 @@ public interface RoleDAO extends GenericDAO<Role>{
 
     void setUserRole();
 
-    void deleteUserRole();
-
 }

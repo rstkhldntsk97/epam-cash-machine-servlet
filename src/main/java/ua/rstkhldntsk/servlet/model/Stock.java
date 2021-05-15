@@ -1,5 +1,6 @@
 package ua.rstkhldntsk.servlet.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Stock {
@@ -11,6 +12,7 @@ public class Stock {
     }
 
     public Stock() {
+        this.stock = new ArrayList<>();
     }
 
     public List<Product> getStock() {
