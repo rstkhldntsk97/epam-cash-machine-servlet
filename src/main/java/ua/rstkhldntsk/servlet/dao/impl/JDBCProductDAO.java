@@ -5,10 +5,12 @@ import ua.rstkhldntsk.servlet.dao.mapper.ProductMapper;
 import ua.rstkhldntsk.servlet.model.Product;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,12 +38,13 @@ public class JDBCProductDAO implements ProductDAO {
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                product.setId(generatedKeys.getInt(1));
+                product.setId(generatedKeys.getLong(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void update(Product model) {
@@ -55,7 +58,20 @@ public class JDBCProductDAO implements ProductDAO {
 
     @Override
     public List<Product> findAll() {
-        return null;
+       List<Product> products = new ArrayList<>();
+        try (PreparedStatement ps = dataSource.getConnection().prepareStatement(FIND_ALL_PRODUCTS)) {
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                Integer code = resultSet.getInt("code");
+                String name = resultSet.getString("product_name");
+                BigDecimal price = resultSet.getBigDecimal("price");
+                products.add(new Product(id, name, code, price));
+            }
+            return products;
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     @Override

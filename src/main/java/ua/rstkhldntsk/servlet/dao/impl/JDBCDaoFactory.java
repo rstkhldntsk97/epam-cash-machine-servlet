@@ -1,5 +1,7 @@
 package ua.rstkhldntsk.servlet.dao.impl;
 
+import ua.rstkhldntsk.servlet.dao.*;
+
 import javax.sql.DataSource;
 
 public class JDBCDaoFactory extends DaoFactory {
@@ -12,13 +14,13 @@ public class JDBCDaoFactory extends DaoFactory {
 
     @Override
     public ProductDAO createProductDao() {
-        return null;
+        return new JDBCProductDAO(dataSource);
     }
 
-    @Override
-    public StockDAO createStockDao() {
-        return null;
-    }
+//    @Override
+//    public StockDAO createStockDao() {
+//        return null;
+//    }
 
     @Override
     public RoleDAO createRoleDao() {

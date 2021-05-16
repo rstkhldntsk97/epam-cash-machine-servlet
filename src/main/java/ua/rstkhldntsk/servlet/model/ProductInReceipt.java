@@ -1,21 +1,25 @@
 package ua.rstkhldntsk.servlet.model;
 
+
 /**
- * Represents an Stock Entity
+ * Represents an ProductInReceipt Entity
  */
-public class Stock {
+public class ProductInReceipt {
 
     private Long id;
     private Product product;
     private Integer quantity;
+    private Receipt receipt;
 
-    public Stock(Long id, Product product, Integer quantity) {
+    public ProductInReceipt(Long id, Product product, Integer quantity, Receipt receipt) {
         this.id = id;
         this.product = product;
         this.quantity = quantity;
+        this.receipt = receipt;
     }
 
-    public Stock(){}
+    public ProductInReceipt() {
+    }
 
     public Long getId() {
         return id;
@@ -41,4 +45,11 @@ public class Stock {
         this.quantity = quantity;
     }
 
+    public Receipt getReceipt() {
+        return receipt;
+    }
+
+    public void setReceipt(Receipt receipt) {
+        this.receipt = receipt;
+    }
 }

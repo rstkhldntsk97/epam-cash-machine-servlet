@@ -1,20 +1,26 @@
 package ua.rstkhldntsk.servlet.model;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Map;
 
+/**
+ * Represents an Receipt Entity
+ */
 public class Receipt {
 
     private Integer id;
-    private List<Product> productsInReceipt;
+    private Map<Product, Integer> products;
     private boolean isClosed;
     private BigDecimal total;
+    private User user;
 
-    public Receipt(Integer id, List<Product> productsInReceipt, boolean isClosed, BigDecimal total) {
-        this.id = id;
-        this.productsInReceipt = productsInReceipt;
+    public Receipt(Map<Product, Integer> products, boolean isClosed, BigDecimal total) {
+        this.products = products;
         this.isClosed = isClosed;
         this.total = total;
+    }
+
+    public Receipt() {
     }
 
     public Integer getId() {
@@ -25,13 +31,13 @@ public class Receipt {
         this.id = id;
     }
 
-    public List<Product> getProductsInReceipt() {
-        return productsInReceipt;
-    }
-
-    public void setProductsInReceipt(List<Product> productsInReceipt) {
-        this.productsInReceipt = productsInReceipt;
-    }
+//    public List<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<Product> products) {
+//        this.products = products;
+//    }
 
     public boolean isClosed() {
         return isClosed;
@@ -46,10 +52,31 @@ public class Receipt {
     }
 
     public void setTotal(BigDecimal total) {
-        float totalPrice = 0;
-        for (Product p: productsInReceipt) {
-            totalPrice += p.getPrice().floatValue();
-        }
-        this.total = BigDecimal.valueOf(totalPrice);
+        this.total = total;
     }
+
+//    public void calculateTotalPrice() {
+//        double sum = products.stream().mapToDouble(products -> products.getPrice().doubleValue()).sum();
+//        this.total = BigDecimal.valueOf(sum);
+//    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Receipt{" +
+                "id=" + id +
+                ", products=" + products +
+                ", isClosed=" + isClosed +
+                ", total=" + total +
+                '}';
+    }
+
 }

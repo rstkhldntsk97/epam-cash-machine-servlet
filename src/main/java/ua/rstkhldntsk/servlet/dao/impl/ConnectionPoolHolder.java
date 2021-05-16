@@ -22,6 +22,7 @@ public class ConnectionPoolHolder {
                     try (InputStream input = ConnectionPoolHolder.class.getClassLoader().getResourceAsStream(DATABASE_PROPERTIES_PATH)) {
                         Properties prop = new Properties();
                         prop.load(input);
+                        ds.setDriverClassName(DATABASE_DRIVER);
                         ds.setUrl(prop.getProperty(DATABASE_URL));
                         ds.setUsername(prop.getProperty(DATABASE_USERNAME));
                         ds.setPassword(prop.getProperty(DATABASE_PASSWORD));

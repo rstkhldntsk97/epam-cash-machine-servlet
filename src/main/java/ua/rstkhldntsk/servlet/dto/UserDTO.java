@@ -1,31 +1,17 @@
-package ua.rstkhldntsk.servlet.model;
+package ua.rstkhldntsk.servlet.dto;
 
-/**
- * Represents an User Entity
- */
-public class User {
+import ua.rstkhldntsk.servlet.model.Role;
 
-    private Integer id;
+public class UserDTO {
+
     private String username;
     private String password;
     private Role role;
 
-    public User(Integer id, String username, String password, Role role) {
-        this.id = id;
+    public UserDTO(String username, String password, Role role) {
         this.username = username;
         this.password = password;
         this.role = role;
-    }
-
-    public User() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -51,4 +37,5 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
 }
