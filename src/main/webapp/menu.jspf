@@ -1,0 +1,83 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" role="navigation">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsDefault"
+            aria-controls="navbarsDefault" aria-expanded="false" aria-label="Переключить навигацию">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse container" id="navbarsDefault">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item active">
+                <a class="nav-link" href="${pageContext.request.contextPath}/index"><fmt:message
+                        key="menu.button.main"/></a>
+            </li>
+
+            <c:if test="${role eq 'ROLE_CASHIER'}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/request"><fmt:message
+                            key="menu.button.create.request"/><span class="sr-only">(current)</span></a>
+                </li>
+            </c:if>
+
+            <c:if test="${role eq 'ROLE_SENIOR_CASHIER'}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/userlist"><fmt:message
+                            key="menu.button.userlist"/><span class="sr-only">(current)</span></a>
+                </li>
+            </c:if>
+
+            <c:if test="${role eq 'ROLE_MANAGER'}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/managerlist"><fmt:message
+                            key="menu.button.managerlist"/><span class="sr-only">(current)</span></a>
+                </li>
+            </c:if>
+
+            <c:if test="${role eq 'ROLE_MASTER'}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/masterlist"><fmt:message
+                            key="menu.button.masterlist"/><span class="sr-only">(current)</span></a>
+                </li>
+            </c:if>
+
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+
+            <c:if test="${user eq null}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/login"><fmt:message
+                            key="menu.button.login"/><span class="sr-only">(current)</span></a>
+                </li>
+            </c:if>
+
+            <c:if test="${user eq null}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/signUp"><fmt:message
+                            key="menu.button.signup"/><span class="sr-only">(current)</span></a>
+                </li>
+            </c:if>
+
+            <c:if test="${user ne null}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/logout"><fmt:message
+                            key="menu.button.logout"/></a>
+                </li>
+            </c:if>
+
+            <c:if test="${user ne null}">
+                <li class="nav-item active">
+                    <a class="nav-link"><fmt:message key="menu.username"/><u>${user}</u></a>
+                </li>
+            </c:if>
+            <li>
+                <a class="nav-link" href="?lang=en">Eng</a>
+            </li>
+            <li>
+                <a class="nav-link" href="?lang=ua">Ua</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+</br></br>

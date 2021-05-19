@@ -18,7 +18,6 @@ public class ConnectionPoolHolder {
             synchronized (DataSource.class) {
                 if (dataSource == null) {
                     BasicDataSource ds = new BasicDataSource();
-
                     try (InputStream input = ConnectionPoolHolder.class.getClassLoader().getResourceAsStream(DATABASE_PROPERTIES_PATH)) {
                         Properties prop = new Properties();
                         prop.load(input);

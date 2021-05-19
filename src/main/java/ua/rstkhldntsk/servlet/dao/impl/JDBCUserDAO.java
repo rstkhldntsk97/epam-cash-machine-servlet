@@ -35,11 +35,10 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public void save(User user) {
+    public void create(User user) {
         try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3 , user.getRole().toString());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -51,7 +50,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public void update(User model) {
+    public void update(User user) {
 
     }
 
@@ -70,8 +69,7 @@ public class JDBCUserDAO implements UserDAO {
                 Integer id = resultSet.getInt("id");
                 String username = resultSet.getString("username");
                 String password = resultSet.getString("password");
-                String role = resultSet.getString("role_name");
-                User user = new User(id, username, password, Role.valueOf(role));
+                User user = User.createUser(username, password);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -94,4 +92,35 @@ public class JDBCUserDAO implements UserDAO {
         }
     }
 
+    @Override
+    public Role getUserRole(User user) {
+        Connection con = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            con = dataSource.getConnection();
+            statement = con.prepareStatement(FIND_USER_ROLE_BY_ID);
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Role.valueOf(resultSet.getString("name"));
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException();
+        }
+        finally {
+            try {
+                resultSet.close();
+                statement.close();
+                con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void close() throws Exception {
+
+    }
 }

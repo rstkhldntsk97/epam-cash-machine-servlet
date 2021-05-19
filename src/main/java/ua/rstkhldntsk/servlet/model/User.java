@@ -1,5 +1,7 @@
 package ua.rstkhldntsk.servlet.model;
 
+import java.util.Objects;
+
 /**
  * Represents an User Entity
  */
@@ -8,13 +10,12 @@ public class User {
     private Integer id;
     private String username;
     private String password;
-    private Role role;
 
-    public User(Integer id, String username, String password, Role role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.role = role;
+    public static User createUser(String username, String password) {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        return user;
     }
 
     public User() {
@@ -44,11 +45,16 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && username.equals(user.username) && password.equals(user.password);
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password);
     }
 }

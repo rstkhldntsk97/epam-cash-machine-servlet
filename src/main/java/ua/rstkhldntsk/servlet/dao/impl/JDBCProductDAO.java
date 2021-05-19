@@ -6,10 +6,7 @@ import ua.rstkhldntsk.servlet.model.Product;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,11 +27,13 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
     @Override
-    public void save(Product product) {
-        try (PreparedStatement preparedStatement = dataSource.getConnection().prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS)) {
+    public void create(Product product) {
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setInt(2, product.getCode());
             preparedStatement.setBigDecimal(3 , product.getPrice());
+            preparedStatement.setInt(4, product.getQuantity());
             preparedStatement.executeUpdate();
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -66,7 +65,8 @@ public class JDBCProductDAO implements ProductDAO {
                 Integer code = resultSet.getInt("code");
                 String name = resultSet.getString("product_name");
                 BigDecimal price = resultSet.getBigDecimal("price");
-                products.add(new Product(id, name, code, price));
+                Integer quantity = resultSet.getInt("quantity");
+                products.add(new Product(id, name, code, price, quantity));
             }
             return products;
         } catch (SQLException e) {
@@ -104,5 +104,10 @@ public class JDBCProductDAO implements ProductDAO {
 
         }
         return result;
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 }
