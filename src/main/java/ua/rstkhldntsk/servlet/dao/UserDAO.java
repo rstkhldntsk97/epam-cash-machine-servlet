@@ -14,4 +14,6 @@ public interface UserDAO extends GenericDAO<User>{
 
     public List<User> findAll();
 
+    public boolean checkUser(String username, String password);
+
 }

@@ -1,24 +1,27 @@
 package ua.rstkhldntsk.servlet.model;
 
 
+import java.math.BigDecimal;
+
 /**
- * Represents an ProductInReceipt Entity
+ * Represents an InvoiceProduct Entity
  */
-public class ProductInReceipt {
+public class InvoiceProduct {
 
     private Long id;
     private Product product;
     private Integer quantity;
-    private Receipt receipt;
+    private Invoice invoice;
+    private BigDecimal price;
 
-    public ProductInReceipt(Long id, Product product, Integer quantity, Receipt receipt) {
+    public InvoiceProduct(Long id, Product product, Integer quantity, Invoice invoice) {
         this.id = id;
         this.product = product;
         this.quantity = quantity;
-        this.receipt = receipt;
+        this.invoice = invoice;
     }
 
-    public ProductInReceipt() {
+    public InvoiceProduct() {
     }
 
     public Long getId() {
@@ -45,11 +48,19 @@ public class ProductInReceipt {
         this.quantity = quantity;
     }
 
-    public Receipt getReceipt() {
-        return receipt;
+    public Invoice getInvoice() {
+        return invoice;
     }
 
-    public void setReceipt(Receipt receipt) {
-        this.receipt = receipt;
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

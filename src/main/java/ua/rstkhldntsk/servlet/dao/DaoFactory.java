@@ -10,7 +10,9 @@ public abstract class DaoFactory {
 
     public abstract ProductDAO createProductDao();
 
-    public abstract ReceiptDAO createReceiptDao();
+    public abstract InvoiceDAO createInvoiceDao();
+
+    public abstract InvoiceProductDAO createInvoiceProductDao();
 
 
     public static DaoFactory getInstance() {

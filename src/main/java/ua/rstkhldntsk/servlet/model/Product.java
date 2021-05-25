@@ -8,16 +8,20 @@ import java.util.Objects;
  */
 public class Product {
 
-    private Long id;
+    private Long code;
     private String name;
-    private Integer code;
     private BigDecimal price;
     private Integer quantity;
 
-    public Product(Long id, String name, Integer code, BigDecimal price, Integer quantity) {
-        this.id = id;
-        this.name = name;
+    public Product(Long code, String name, BigDecimal price, Integer quantity) {
         this.code = code;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public Product(String name, BigDecimal price, Integer quantity) {
+        this.name = name;
         this.price = price;
         this.quantity = quantity;
     }
@@ -26,12 +30,12 @@ public class Product {
     }
 
     // getters and setters
-    public Long getId() {
-        return id;
+    public Long getCode() {
+        return code;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCode(Long code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -40,14 +44,6 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
     }
 
     public BigDecimal getPrice() {
@@ -71,22 +67,20 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id.equals(product.id) &&
-                code.equals(product.code) &&
+        return code.equals(product.code) &&
                 name.equals(product.name) &&
                 price.equals(product.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, code, name, price);
+        return Objects.hash(code, name, price);
     }
 
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + id +
-                ", code=" + code +
+                "id=" + code +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 '}';

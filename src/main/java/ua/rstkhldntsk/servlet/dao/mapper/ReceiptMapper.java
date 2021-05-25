@@ -1,25 +1,23 @@
 package ua.rstkhldntsk.servlet.dao.mapper;
 
-import ua.rstkhldntsk.servlet.model.Receipt;
+import ua.rstkhldntsk.servlet.model.Invoice;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ReceiptMapper implements ObjectMapper<Receipt> {
+public class ReceiptMapper implements ObjectMapper<Invoice> {
     @Override
-    public Receipt extractFromResultSet(ResultSet resultSet) throws SQLException {
-        Receipt receipt = new Receipt();
+    public Invoice extractFromResultSet(ResultSet resultSet) throws SQLException {
+        Invoice invoice = new Invoice();
         if (resultSet.next()) {
-            Integer id = resultSet.getInt("id");
-            Boolean isClosed = resultSet.getBoolean("is_closed");
+            Long id = resultSet.getLong("id");
             BigDecimal total = resultSet.getBigDecimal("total");
-            receipt.setId(id);
-            receipt.setClosed(isClosed);
-            receipt.setTotal(total);
+            invoice.setId(id);
+            invoice.setTotal(total);
 
-            return receipt;
+            return invoice;
         }
-        return receipt;
+        return invoice;
     }
 }

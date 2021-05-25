@@ -9,6 +9,6 @@ public interface ProductDAO extends GenericDAO<Product>{
     Optional<Product> findByName(String name);
 
 
-    Optional<Product> findByCode(Integer code);
+    Optional<Product> findByCode(Long code);
 
 }

@@ -3,7 +3,6 @@ package ua.rstkhldntsk.servlet.service;
 import ua.rstkhldntsk.servlet.dao.DaoFactory;
 import ua.rstkhldntsk.servlet.dao.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.impl.JDBCDaoFactory;
-import ua.rstkhldntsk.servlet.exceptions.ProductExistException;
 import ua.rstkhldntsk.servlet.model.Product;
 
 import java.util.List;
@@ -12,6 +11,7 @@ public class ProductService {
 
     private static volatile ProductService instance;
     private DaoFactory daoFactory = DaoFactory.getInstance();
+    ProductDAO productDAO = JDBCDaoFactory.getInstance().createProductDao();
 
     private ProductService() {
     }
@@ -30,22 +30,13 @@ public class ProductService {
         return instance;
     }
 
-    ProductDAO productDAO = JDBCDaoFactory.getInstance().createProductDao();
-
     public List<Product> findAll() {
         return productDAO.findAll();
     }
 
 
-    public boolean createProduct(Product product) {
-        try {
-            ProductDAO productDao = daoFactory.createProductDao();
-            productDao.create(product);
-            return true;
-        } catch (ProductExistException e) {
-
-        }
-        return false;
+    public void createProduct(Product product) {
+        productDAO.create(product);
     }
 
 
@@ -67,9 +58,7 @@ public class ProductService {
      * @param code code of product
      * @return product
      */
-    public Product findProductByCode(Integer code) {
-        ProductDAO productDao = daoFactory.createProductDao();
-        return productDao.findByCode(code).orElseThrow(RuntimeException::new);
-        //TODO change on my own exc
+    public Product findProductByCode(Long code) {
+        return productDAO.findByCode(code).orElseThrow(RuntimeException::new);
     }
 }

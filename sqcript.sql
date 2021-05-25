@@ -31,7 +31,7 @@ CREATE TABLE `stock` (
                          FOREIGN KEY(`product_id`) REFERENCES products(id)
 );
 
-CREATE TABLE `receipt` (
+CREATE TABLE `invoice` (
                            `id` BIGINT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
                            `total_price` DECIMAL(8,2) NOT NULL,
                            `user_id` BIGINT NOT NULL,

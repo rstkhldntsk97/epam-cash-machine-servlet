@@ -1,11 +1,11 @@
 package ua.rstkhldntsk.servlet.dao;
 
-import ua.rstkhldntsk.servlet.model.Receipt;
+import ua.rstkhldntsk.servlet.model.Invoice;
 import ua.rstkhldntsk.servlet.model.User;
 
 import java.util.List;
 
-public interface ReceiptDAO extends GenericDAO<Receipt> {
+public interface InvoiceDAO extends GenericDAO<Invoice> {
 
     /**
      * finds all users receipts
@@ -13,6 +13,6 @@ public interface ReceiptDAO extends GenericDAO<Receipt> {
      * @param user user
      * @return list of users receipts
      */
-    List<Receipt> findAllByUser(User user);
+    List<Invoice> findAllByUser(User user);
 
 }

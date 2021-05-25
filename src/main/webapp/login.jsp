@@ -33,7 +33,6 @@
                 <input type="username"  name="username" class="form-control" placeholder="Username" required>
                 <input type="password" name="password" class="form-control" placeholder="Password" required>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message key="login.button.login"/></button>
-                <p class="text-center"><fmt:message key="login.link.to.signUp"/><a href="${pageContext.request.contextPath}/signUp"><u><fmt:message key="login.button.signUp"/></u></a></p>
             </form>
         </article>
     </div>
