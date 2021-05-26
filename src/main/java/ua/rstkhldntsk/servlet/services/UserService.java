@@ -32,9 +32,9 @@ public class UserService {
         userDAO.create(user);
     }
 
-    public String login(String username, String password) {
+    public User login(String username, String password) {
         if (userDAO.checkUser(username, password)) {
-            return userDAO.findByUsername(username).get().getRole().toString();
+            return userDAO.findByUsername(username).get();
         }
         return null;
     }

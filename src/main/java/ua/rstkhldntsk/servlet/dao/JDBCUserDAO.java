@@ -137,7 +137,7 @@ public class JDBCUserDAO implements UserDAO {
             statement = con.prepareStatement(FIND_USER_ROLE_BY_ID);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getString("role_name");
+                return resultSet.getString("role");
             }
         } catch (SQLException e) {
             throw new IllegalStateException();

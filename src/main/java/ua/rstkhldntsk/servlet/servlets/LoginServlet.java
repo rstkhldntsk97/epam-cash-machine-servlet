@@ -1,5 +1,6 @@
 package ua.rstkhldntsk.servlet.servlets;
 
+import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.services.UserService;
 
 import javax.servlet.ServletException;
@@ -22,25 +23,22 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        String role = userService.login(username, password);
+        User user = userService.login(username, password);
+        String role = user.getRole();
         HttpSession session = req.getSession();
         if (role == null) {
             resp.sendRedirect(req.getContextPath() + "/login");
         } else if (role.equals("ADMIN")){
-            session.setAttribute("user", username);
-            session.setAttribute("role", role);
+            session.setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + "/adminPage");
         }else if (role.equals("CASHIER")) {
-            session.setAttribute("user", username);
-            session.setAttribute("role", role);
+            session.setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + "/cashierPage");
         }else if (role.equals("SENIOR_CASHIER")) {
-            session.setAttribute("user", username);
-            session.setAttribute("role", role);
+            session.setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + "/seniorCashierPage");
         }else if (role.equals("COMMODITY_EXPERT")) {
-            session.setAttribute("user", username);
-            session.setAttribute("role", role);
+            session.setAttribute("user", user);
             resp.sendRedirect(req.getContextPath() + "/commodityExpertPage");
         }
     }

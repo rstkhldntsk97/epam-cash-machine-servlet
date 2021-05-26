@@ -1,6 +1,8 @@
 package ua.rstkhldntsk.servlet.servlets;
 
+import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
+import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.services.InvoiceService;
 import ua.rstkhldntsk.servlet.services.ProductService;
 
@@ -20,7 +22,11 @@ public class CreateInvoiceServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession();
+        User user = (User)session.getAttribute("user");
+        Invoice invoice = new Invoice();
+        invoice.setUser(user);
+        invoiceService.createNewInvoice(invoice);
         try {
             String code = req.getParameter("code");
             Product product = productService.findProductByCode(Long.parseLong(code));

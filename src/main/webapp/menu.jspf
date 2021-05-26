@@ -9,32 +9,32 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath}/index"><fmt:message
+                <a class="nav-link" href="${pageContext.request.contextPath}/"><fmt:message
                         key="menu.button.main"/></a>
             </li>
 
-            <c:if test="${role eq 'CASHIER'}">
+            <c:if test="${user.role eq 'CASHIER'}">
 <%--                <li class="nav-item active">--%>
 <%--                    <a class="nav-link" href="${pageContext.request.contextPath}/cashierPage"><fmt:message--%>
 <%--                            key="menu.button.cashier."/><span class="sr-only">(current)</span></a>--%>
 <%--                </li>--%>
             </c:if>
 
-            <c:if test="${role eq 'SENIOR_CASHIER'}">
+            <c:if test="${user.role eq 'SENIOR_CASHIER'}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/seniorCashierPage"><fmt:message
                             key="////////"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 
-            <c:if test="${role eq 'COMMODITY_EXPERT'}">
+            <c:if test="${user.role eq 'COMMODITY_EXPERT'}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/commodityExpertPage"><fmt:message
                             key="menu.button.expert.stock"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 
-            <c:if test="${role eq 'ADMIN'}">
+            <c:if test="${user.role eq 'ADMIN'}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/adminPage"><fmt:message
                             key="menu.button.admin.my.users"/><span class="sr-only">(current)</span></a>
@@ -61,7 +61,7 @@
 
             <c:if test="${user ne null}">
                 <li class="nav-item active">
-                    <a class="nav-link"><fmt:message key="menu.username"/><u>${user}</u></a>
+                    <a class="nav-link"><fmt:message key="menu.username"/><u>${user.username}</u></a>
                 </li>
             </c:if>
             <li>
@@ -73,4 +73,3 @@
         </ul>
     </div>
 </nav>
-</br></br>

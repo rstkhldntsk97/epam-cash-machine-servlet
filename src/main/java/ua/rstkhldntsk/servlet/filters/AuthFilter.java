@@ -1,6 +1,8 @@
 package ua.rstkhldntsk.servlet.filters;
 
 
+import ua.rstkhldntsk.servlet.models.User;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +23,8 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("role") == null) {
+        HttpSession session = request.getSession();
+        if (session == null || session.getAttribute("user") == null) {
             servletRequest.getServletContext().getRequestDispatcher("/login").forward(request, response);
         }
         filterChain.doFilter(request, response);
