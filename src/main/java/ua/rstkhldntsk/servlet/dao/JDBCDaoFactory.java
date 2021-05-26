@@ -17,13 +17,13 @@ public class JDBCDaoFactory extends DaoFactory {
      *
      * @return connection
      */
-    private Connection getConnection() {
-        try {
-            return dataSource.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    private Connection getConnection() {
+//        try {
+//            return dataSource.getConnection();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @Override
     public UserDAO createUserDao() {
