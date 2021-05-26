@@ -45,13 +45,18 @@
             </tr>
         </c:forEach>
     </table>
-    <form class="form-signin" action="${pageContext.request.contextPath}/commodityExpertPage" method="post">
+    <div class="card bg-light">
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h4 class="card-title mt-3 text-center"><fmt:message key="expert.button.create.product"/></h4>
+            <form class="form-signin" action="${pageContext.request.contextPath}/commodityExpertPage" method="post">
 
-        <input type="name" name="name" class="form-control" placeholder="name" required>
-        <input type="price" name="price" class="form-control" placeholder="price" required>
-        <input type="quantity" name="quantity" class="form-control" placeholder="quantity" required>
-        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
-                key="expert.button.create.product"/></button>
-    </form>
+                <input type="name" name="name" class="form-control" placeholder="name" required>
+                <input type="price" name="price" class="form-control" placeholder="price" required>
+                <input type="quantity" name="quantity" class="form-control" placeholder="quantity" required>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
+                        key="button.submit"/></button>
+            </form>
+        </article>
+    </div>
 </div>
 </body>

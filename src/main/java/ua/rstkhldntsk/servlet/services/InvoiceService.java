@@ -26,14 +26,13 @@ public class InvoiceService {
         return instance;
     }
 
-    public void createInvoice(Invoice invoice) {
+    public void createNewInvoice(Invoice invoice) {
         try {
             InvoiceDAO invoiceDao = daoFactory.createInvoiceDao();
             invoiceDao.create(invoice);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public List<Invoice> getAllUserChecks(User user) {
