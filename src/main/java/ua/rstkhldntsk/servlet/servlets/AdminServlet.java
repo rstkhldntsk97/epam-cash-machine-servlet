@@ -1,6 +1,5 @@
 package ua.rstkhldntsk.servlet.servlets;
 
-import ua.rstkhldntsk.servlet.models.Role;
 import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.services.UserService;
 

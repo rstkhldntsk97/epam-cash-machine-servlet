@@ -1,6 +1,5 @@
 package ua.rstkhldntsk.servlet.dao.interfaces;
 
-import ua.rstkhldntsk.servlet.models.Role;
 import ua.rstkhldntsk.servlet.models.User;
 
 import java.util.List;

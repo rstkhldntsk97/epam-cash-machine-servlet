@@ -2,7 +2,6 @@ package ua.rstkhldntsk.servlet.dao;
 
 import ua.rstkhldntsk.servlet.dao.interfaces.UserDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.UserMapper;
-import ua.rstkhldntsk.servlet.models.Role;
 import ua.rstkhldntsk.servlet.models.User;
 
 import javax.sql.DataSource;

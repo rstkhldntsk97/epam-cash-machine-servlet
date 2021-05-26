@@ -1,6 +1,5 @@
 package ua.rstkhldntsk.servlet.dao.mappers;
 
-import ua.rstkhldntsk.servlet.models.Role;
 import ua.rstkhldntsk.servlet.models.User;
 
 import java.sql.ResultSet;
