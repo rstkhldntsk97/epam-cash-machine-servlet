@@ -50,3 +50,14 @@ INSERT INTO user (username, password, role_id) VALUES ('admin', 'admin', 4),
                                                       ('expert1', 'admin',3),
                                                       ('cashier1', 'admin', 1),
                                                       ('cashier2', 'admin',1);
+
+INSERT INTO product (name, price, quantity) VALUES ('macbook', 2250, 1000),
+                                                   ('airpods', 250, 900),
+                                                   ('imac', 5000, 800),
+                                                   ('iphone', 1000, 700),
+                                                   ('iwatch', 550, 600),
+                                                   ('airtag', 50, 500);
+
+INSERT INTO status (status) VALUES ('NEW'), ('CLOSED'), ('DECLINED');
+
+insert into invoice(user_id) VALUES(1), (1), (2);
