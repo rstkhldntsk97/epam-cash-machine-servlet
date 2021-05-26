@@ -1,6 +1,9 @@
 package ua.rstkhldntsk.servlet.dao;
 
-import ua.rstkhldntsk.servlet.dao.impl.JDBCDaoFactory;
+import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
+import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceProductDAO;
+import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
+import ua.rstkhldntsk.servlet.dao.interfaces.UserDAO;
 
 public abstract class DaoFactory {
 

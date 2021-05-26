@@ -14,30 +14,30 @@
             </li>
 
             <c:if test="${role eq 'CASHIER'}">
-                <li class="nav-item active">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/cashierPage"><fmt:message
-                            key="menu.button.create.request"/><span class="sr-only">(current)</span></a>
-                </li>
+<%--                <li class="nav-item active">--%>
+<%--                    <a class="nav-link" href="${pageContext.request.contextPath}/cashierPage"><fmt:message--%>
+<%--                            key="menu.button.cashier."/><span class="sr-only">(current)</span></a>--%>
+<%--                </li>--%>
             </c:if>
 
             <c:if test="${role eq 'SENIOR_CASHIER'}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/seniorCashierPage"><fmt:message
-                            key="menu.button.userlist"/><span class="sr-only">(current)</span></a>
+                            key="////////"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 
             <c:if test="${role eq 'COMMODITY_EXPERT'}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/commodityExpertPage"><fmt:message
-                            key="menu.button.managerlist"/><span class="sr-only">(current)</span></a>
+                            key="menu.button.expert.stock"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 
             <c:if test="${role eq 'ADMIN'}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/adminPage"><fmt:message
-                            key="menu.button.masterlist"/><span class="sr-only">(current)</span></a>
+                            key="menu.button.admin.my.users"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 
@@ -51,13 +51,6 @@
                             key="menu.button.login"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
-<%--    unused signUp button--%>
-<%--            <c:if test="${user eq null}">--%>
-<%--                <li class="nav-item active">--%>
-<%--                    <a class="nav-link" href="${pageContext.request.contextPath}/signUp"><fmt:message--%>
-<%--                            key="menu.button.signup"/><span class="sr-only">(current)</span></a>--%>
-<%--                </li>--%>
-<%--            </c:if>--%>
 
             <c:if test="${user ne null}">
                 <li class="nav-item active">
@@ -72,10 +65,10 @@
                 </li>
             </c:if>
             <li>
-                <a class="nav-link" href="?lang=en">Eng</a>
+                <a class="nav-link" href="?lang=en">EN</a>
             </li>
             <li>
-                <a class="nav-link" href="?lang=ua">Ua</a>
+                <a class="nav-link" href="?lang=ua">UA</a>
             </li>
         </ul>
     </div>

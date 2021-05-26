@@ -50,7 +50,8 @@
         <input type="name" name="name" class="form-control" placeholder="name" required>
         <input type="price" name="price" class="form-control" placeholder="price" required>
         <input type="quantity" name="quantity" class="form-control" placeholder="quantity" required>
-        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">CREATE NEW PRODUCT</button>
+        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
+                key="expert.button.create.product"/></button>
     </form>
 </div>
 </body>

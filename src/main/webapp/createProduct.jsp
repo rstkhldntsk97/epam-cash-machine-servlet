@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
-    <title><fmt:message key="signUp.title"/></title>
+    <title><fmt:message key="create.product.title"/></title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -51,7 +51,7 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block"><fmt:message
-                    key="expert.button.create.product.submit"/></button>
+                    key="button.submit"/></button>
         </div>
     </form>
 
