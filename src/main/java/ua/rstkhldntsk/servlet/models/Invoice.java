@@ -1,9 +1,7 @@
 package ua.rstkhldntsk.servlet.models;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents an Invoice Entity
@@ -11,11 +9,11 @@ import java.util.Set;
 public class Invoice {
 
     private Long id;
-    private Set<InvoiceProduct> products = new HashSet<>();
     private BigDecimal total;
     private User user;
     private String status;
     private Date createdAt;
+    private Map<Product, Integer> products = new HashMap<>();
 
     public Invoice() {
     }
@@ -60,16 +58,11 @@ public class Invoice {
         this.status = status;
     }
 
-    public void calculateTotalPrice() {
-        double sum = products.stream().mapToDouble(products -> products.getPrice().doubleValue()).sum();
-        this.total = BigDecimal.valueOf(sum);
-    }
-
-    public Set<InvoiceProduct> getProducts() {
+    public Map<Product, Integer> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<InvoiceProduct> products) {
+    public void setProducts(Map<Product, Integer> products) {
         this.products = products;
     }
 }

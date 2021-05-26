@@ -1,7 +1,6 @@
 package ua.rstkhldntsk.servlet.dao;
 
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
-import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceProductDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.UserDAO;
 
@@ -14,9 +13,6 @@ public abstract class DaoFactory {
     public abstract ProductDAO createProductDao();
 
     public abstract InvoiceDAO createInvoiceDao();
-
-    public abstract InvoiceProductDAO createInvoiceProductDao();
-
 
     public static DaoFactory getInstance() {
         if (daoFactory == null) {

@@ -1,7 +1,6 @@
 package ua.rstkhldntsk.servlet.dao;
 
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
-import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceProductDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.UserDAO;
 
@@ -41,8 +40,4 @@ public class JDBCDaoFactory extends DaoFactory {
         return new JDBCInvoiceDAO(dataSource);
     }
 
-    @Override
-    public InvoiceProductDAO createInvoiceProductDao() {
-        return new JDBCInvoiceProductDAO(dataSource);
-    }
 }
