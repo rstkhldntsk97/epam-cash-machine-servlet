@@ -3,12 +3,12 @@ package ua.rstkhldntsk.servlet.constants;
 public interface SQLQueries {
 
     //SQL queries for Users
-    String INSERT_USER = "INSERT INTO user (username, password, role_id) VALUES (?,?,?)";
-    String FIND_ALL_USERS = "SELECT * FROM user JOIN role ON user.role_id = role.id";
-    String FIND_BY_ID = "SELECT * FROM user JOIN role ON user.role_id = role.id WHERE user.id = ?";
-    String FIND_BY_USERNAME = "SELECT * FROM user JOIN role ON user.role_id = role.id WHERE username = ?";
-    String FIND_USER_ROLE_BY_ID = "SELECT role_name FROM user JOIN role ON user.role_id = role.id WHERE user.id = ?";
-    String SQL_CHECK_USER = "SELECT * FROM user JOIN role ON user.role_id = role.id WHERE username = ? AND password = ?";
+    String INSERT_USER = "INSERT INTO user (username, password, role) VALUES (?,?,?)";
+    String FIND_ALL_USERS = "SELECT * FROM user";
+    String FIND_BY_ID = "SELECT * FROM user WHERE user.id = ?";
+    String FIND_BY_USERNAME = "SELECT * FROM user WHERE username = ?";
+    String FIND_USER_ROLE_BY_ID = "SELECT role FROM user user.id = ?";
+    String SQL_CHECK_USER = "SELECT * FROM user WHERE username = ? AND password = ?";
 
 
     //SQL queries for Products

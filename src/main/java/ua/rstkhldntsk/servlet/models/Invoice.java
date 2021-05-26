@@ -14,7 +14,7 @@ public class Invoice {
     private Set<InvoiceProduct> products = new HashSet<>();
     private BigDecimal total;
     private User user;
-    private Status status;
+    private String status;
     private Date createdAt;
 
     public Invoice() {
@@ -52,11 +52,11 @@ public class Invoice {
         this.createdAt = createdAt;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

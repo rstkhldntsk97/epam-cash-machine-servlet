@@ -9,7 +9,7 @@ public interface UserDAO extends GenericDAO<User> {
 
     public Optional<User> findByUsername(String name);
 
-    public Role getUserRole(User user);
+    public String getUserRole(User user);
 
     public List<User> findAll();
 

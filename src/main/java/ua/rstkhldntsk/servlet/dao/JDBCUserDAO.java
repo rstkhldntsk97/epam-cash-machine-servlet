@@ -54,7 +54,7 @@ public class JDBCUserDAO implements UserDAO {
             preparedStatement = con.prepareStatement(INSERT_USER, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setInt(3, user.getRole().ordinal()+1);
+            preparedStatement.setString(3, user.getRole());
             preparedStatement.executeUpdate();
             generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -128,7 +128,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public Role getUserRole(User user) {
+    public String getUserRole(User user) {
         Connection con = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -137,7 +137,7 @@ public class JDBCUserDAO implements UserDAO {
             statement = con.prepareStatement(FIND_USER_ROLE_BY_ID);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Role.valueOf(resultSet.getString("role_name"));
+                return resultSet.getString("role_name");
             }
         } catch (SQLException e) {
             throw new IllegalStateException();
