@@ -1,9 +1,13 @@
 package ua.rstkhldntsk.servlet.services;
 
 import ua.rstkhldntsk.servlet.dao.DaoFactory;
+import ua.rstkhldntsk.servlet.dao.JDBCInvoiceDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
 import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
 import ua.rstkhldntsk.servlet.models.Invoice;
+import ua.rstkhldntsk.servlet.models.User;
+
+import java.util.Optional;
 
 public class InvoiceService {
 
@@ -31,17 +35,26 @@ public class InvoiceService {
         }
     }
 
-//    public List<Invoice> getAllUserChecks(User user) {
-//        try {
-//            InvoiceDAO invoiceDao = daoFactory.createInvoiceDao();
-//            InvoiceProductDAO invoiceProductDAO = daoFactory.createInvoiceProductDao();
-//            List<Invoice> userInvoices = invoiceDao.findAllByUser(user);
-//            userInvoices.forEach(invoice -> invoice.setProducts(invoiceProductDAO.findAllByInvoice(invoice)));
-//            return userInvoices;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+    public Invoice getInvoiceById(Long id) {
+        return invoiceDAO.findById(id).get();
+    }
+
+    public void addProductToInvoice(String code, Invoice invoice) {
+        try {
+            InvoiceDAO invoiceDao = daoFactory.createInvoiceDao();
+            invoiceDao.addProduct(Long.parseLong(code), invoice);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeInvoice(Invoice invoice) {
+        try {
+            InvoiceDAO invoiceDao = daoFactory.createInvoiceDao();
+            invoiceDao.updateStatusToClosed(invoice);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

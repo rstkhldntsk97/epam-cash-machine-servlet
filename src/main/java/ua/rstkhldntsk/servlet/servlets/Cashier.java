@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet("/cashierPage")
-public class CashierServlet extends HttpServlet {
+@WebServlet("/cashier")
+public class Cashier extends HttpServlet {
 
 
     ProductService productService = ProductService.getInstance();

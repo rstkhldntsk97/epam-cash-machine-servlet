@@ -3,13 +3,10 @@ package ua.rstkhldntsk.servlet.models;
 import java.math.BigDecimal;
 import java.util.*;
 
-/**
- * Represents an Invoice Entity
- */
 public class Invoice {
 
     private Long id;
-    private BigDecimal total;
+    private Float total;
     private User user;
     private String status;
     private Date createdAt;
@@ -26,11 +23,11 @@ public class Invoice {
         this.id = id;
     }
 
-    public BigDecimal getTotal() {
+    public Float getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(Float total) {
         this.total = total;
     }
 
@@ -64,5 +61,17 @@ public class Invoice {
 
     public void setProducts(Map<Product, Integer> products) {
         this.products = products;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "id=" + id +
+                ", total=" + total +
+                ", user=" + user.getId() + user.getUsername() +
+                ", status='" + status + '\'' +
+                ", createdAt=" + createdAt +
+                ", products=" + products +
+                '}';
     }
 }

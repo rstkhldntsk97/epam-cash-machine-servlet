@@ -3,11 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages"/>
-<%--<html>--%>
-<%--<head>--%>
-<%--    <title>Invoice</title>--%>
-<%--</head>--%>
-<%--<body>--%>
+
 <head>
     <meta charset="UTF-8">
     <title><fmt:message key="cashier.title"/></title>
@@ -28,8 +24,10 @@
         <input type="code" name="code" class="form-control" placeholder="product code">
         <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
                 key="cashier.button.add.product.to.invoice"/></button>
+    </form>
+    <form class="form-signin" action="${pageContext.request.contextPath}/closeInvoice" method="get">
         <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
-                key="cashier.button.close.invoice"/></button>
+            key="cashier.button.close.invoice"/></button>
     </form>
 </table>
 </body>

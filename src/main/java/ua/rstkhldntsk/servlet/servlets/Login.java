@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+public class Login extends HttpServlet {
 
     private UserService userService = new UserService();
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,16 +30,16 @@ public class LoginServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login");
         } else if (role.equals("ADMIN")){
             session.setAttribute("user", user);
-            resp.sendRedirect(req.getContextPath() + "/adminPage");
+            resp.sendRedirect(req.getContextPath() + "/admin");
         }else if (role.equals("CASHIER")) {
             session.setAttribute("user", user);
-            resp.sendRedirect(req.getContextPath() + "/cashierPage");
+            resp.sendRedirect(req.getContextPath() + "/cashier");
         }else if (role.equals("SENIOR_CASHIER")) {
             session.setAttribute("user", user);
-            resp.sendRedirect(req.getContextPath() + "/seniorCashierPage");
+            resp.sendRedirect(req.getContextPath() + "/seniorCashier.jsp");
         }else if (role.equals("COMMODITY_EXPERT")) {
             session.setAttribute("user", user);
-            resp.sendRedirect(req.getContextPath() + "/commodityExpertPage");
+            resp.sendRedirect(req.getContextPath() + "/commodityExpert");
         }
     }
 

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/createInvoice")
-public class CreateInvoiceServlet extends HttpServlet {
+public class CreateInvoice extends HttpServlet {
 
     ProductService productService = ProductService.getInstance();
     InvoiceService invoiceService = InvoiceService.getInstance();
@@ -25,11 +25,13 @@ public class CreateInvoiceServlet extends HttpServlet {
         HttpSession session = req.getSession();
         User user = (User)session.getAttribute("user");
         Invoice invoice = new Invoice();
+        session.setAttribute("invoice", invoice);
         invoice.setUser(user);
         invoiceService.createNewInvoice(invoice);
         try {
             String code = req.getParameter("code");
             Product product = productService.findProductByCode(Long.parseLong(code));
+            invoiceService.addProductToInvoice(code, invoice);
             req.setAttribute("productByCodeFromServer", product);
             req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
         } catch (NumberFormatException e) {
@@ -39,6 +41,7 @@ public class CreateInvoiceServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
         String code = req.getParameter("code");
         Product product = null;
         try {
@@ -46,6 +49,9 @@ public class CreateInvoiceServlet extends HttpServlet {
         } catch (NumberFormatException e) {
 
         }
+        session.getAttribute("user");
+        Invoice invoice = (Invoice)session.getAttribute("invoice");
+        invoiceService.addProductToInvoice(code, invoice);
         req.setAttribute("productByCodeFromServer", product);
         req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
     }

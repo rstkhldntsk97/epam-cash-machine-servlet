@@ -15,4 +15,8 @@ public interface InvoiceDAO extends GenericDAO<Invoice> {
      */
     List<Invoice> findAllByUser(User user);
 
+    void addProduct(Long code, Invoice invoice);
+
+    void updateStatusToClosed(Invoice invoice);
+
 }

@@ -7,12 +7,12 @@
 
     <div class="collapse navbar-collapse container" id="navbarsDefault">
         <ul class="navbar-nav mr-auto">
-
-            <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath}/"><fmt:message
+            <c:if test="${user.role ne null}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/home.jsp"><fmt:message
                         key="menu.button.main"/></a>
-            </li>
-
+                </li>
+            </c:if>
             <c:if test="${user.role eq 'CASHIER'}">
 <%--                <li class="nav-item active">--%>
 <%--                    <a class="nav-link" href="${pageContext.request.contextPath}/cashierPage"><fmt:message--%>
@@ -21,23 +21,37 @@
             </c:if>
 
             <c:if test="${user.role eq 'SENIOR_CASHIER'}">
+<%--                <li class="nav-item active">--%>
+<%--                    <a class="nav-link" href="${pageContext.request.contextPath}/seniorCashierPage"><fmt:message--%>
+<%--                            key="////////"/><span class="sr-only">(current)</span></a>--%>
+<%--                </li>--%>
+            </c:if>
+
+            <c:if test="${user.role eq 'COMMODITY_EXPERT'}">
                 <li class="nav-item active">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/seniorCashierPage"><fmt:message
-                            key="////////"/><span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/stock"><fmt:message
+                            key="menu.button.expert.stock"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 
             <c:if test="${user.role eq 'COMMODITY_EXPERT'}">
                 <li class="nav-item active">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/commodityExpertPage"><fmt:message
-                            key="menu.button.expert.stock"/><span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/createProduct.jsp"><fmt:message
+                            key="menu.button.expert.workshop"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 
             <c:if test="${user.role eq 'ADMIN'}">
                 <li class="nav-item active">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/adminPage"><fmt:message
+                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/users"><fmt:message
                             key="menu.button.admin.my.users"/><span class="sr-only">(current)</span></a>
+                </li>
+            </c:if>
+
+            <c:if test="${user.role eq 'ADMIN'}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/createUser.jsp"><fmt:message
+                            key="menu.button.admin.add.user"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 

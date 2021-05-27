@@ -20,4 +20,16 @@ public class ProductMapper implements ObjectMapper<Product> {
             throw new IllegalStateException(e);
         }
     }
+
+    public Product extractProductFromInvoiceResultSet(ResultSet resultSet) throws SQLException {
+        try {
+            Product product = new Product();
+            product.setCode(resultSet.getLong("product.code"));
+            product.setName(resultSet.getString("product.name"));
+            product.setPrice(resultSet.getBigDecimal("product.price"));
+            return product;
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }

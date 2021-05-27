@@ -13,16 +13,17 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-@WebServlet("/commodityExpertPage")
-public class CommodityExpertServlet extends HttpServlet {
+@WebServlet("/commodityExpert")
+public class CommodityExpert extends HttpServlet {
 
     ProductService productService = ProductService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Product> products = productService.findAll();
-        req.setAttribute("productsFromServer", products);
-        req.getRequestDispatcher("/commodityExpert.jsp").forward(req, resp);
+        resp.sendRedirect("/Servlet_war/home.jsp");
+//        req.getRequestDispatcher("/commodityExpert.jsp").forward(req, resp);
+//        List<Product> products = productService.findAll();
+//        req.setAttribute("productsFromServer", products);
     }
 
     @Override

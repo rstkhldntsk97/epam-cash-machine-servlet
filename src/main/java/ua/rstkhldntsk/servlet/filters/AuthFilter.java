@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/adminPage", "/commodityExpertPage", "/cashierPage", "/createInvoice"})
+@WebFilter(urlPatterns = {"/admin", "/commodityExpert", "/cashier", "/createInvoice", "/seniorCashier.jsp", "/closeInvoice", "/senior", "/admin.jsp",
+"/admin/users", "/users.jsp"})
 public class AuthFilter implements Filter {
 
 

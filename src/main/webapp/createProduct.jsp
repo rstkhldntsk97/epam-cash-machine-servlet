@@ -20,40 +20,46 @@
 
 <div class="container">
 
-    <form action="${pageContext.request.contextPath}/createProduct.jsp" method="post">
-        <div class="form-group input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-            </div>
-            <input name="name of product" class="form-control" placeholder="Product Name" type="text" required>
-        </div>
+<%--    <form action="${pageContext.request.contextPath}/createProduct.jsp" method="post">--%>
+<%--        <div class="form-group input-group">--%>
+<%--            <div class="input-group-prepend">--%>
+<%--                <span class="input-group-text"> <i class="fa fa-user"></i> </span>--%>
+<%--            </div>--%>
+<%--            <input name="name of product" class="form-control" placeholder="Product Name" type="text" required>--%>
+<%--        </div>--%>
 
-        <div class="form-group input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-            </div>
-            <input name="password" class="form-control" placeholder="Product Code" type="password" required>
-        </div>
+<%--        <div class="form-group input-group">--%>
+<%--            <div class="input-group-prepend">--%>
+<%--                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>--%>
+<%--            </div>--%>
+<%--            <input name="password" class="form-control" placeholder="Price" type="password" required>--%>
+<%--        </div>--%>
 
-        <div class="form-group input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-            </div>
-            <input name="password" class="form-control" placeholder="Price" type="password" required>
-        </div>
+<%--        <div class="form-group input-group">--%>
+<%--            <div class="input-group-prepend">--%>
+<%--                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>--%>
+<%--            </div>--%>
+<%--            <input name="password" class="form-control" placeholder="Quantity" type="password" required>--%>
+<%--        </div>--%>
 
-        <div class="form-group input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-            </div>
-            <input name="password" class="form-control" placeholder="Quantity" type="password" required>
-        </div>
+<%--        <div class="form-group">--%>
+<%--            <button type="submit" class="btn btn-primary btn-block"><fmt:message--%>
+<%--                    key="button.submit"/></button>--%>
+<%--        </div>--%>
+<%--    </form>--%>
+    <div class="card bg-light">
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h4 class="card-title mt-3 text-center"><fmt:message key="expert.button.create.product"/></h4>
+            <form class="form-signin" action="${pageContext.request.contextPath}/commodityExpert" method="post">
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block"><fmt:message
-                    key="button.submit"/></button>
-        </div>
-    </form>
+                <input type="name" name="name" class="form-control" placeholder="name" required>
+                <input type="price" name="price" class="form-control" placeholder="price" required>
+                <input type="quantity" name="quantity" class="form-control" placeholder="quantity" required>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
+                        key="button.submit"/></button>
+            </form>
+        </article>
+    </div>
 
 </div>
 

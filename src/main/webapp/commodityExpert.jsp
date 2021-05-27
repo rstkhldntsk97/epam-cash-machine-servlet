@@ -29,34 +29,34 @@
     <c:remove var="message" scope="session"/>
     <c:remove var="type" scope="session"/>
 
-    <table>
-        <tr>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-        </tr>
-        <c:forEach items="${productsFromServer}" var="product">
-            <tr>
-                <td>${product.code}</td>
-                <td>${product.name}</td>
-                <td>${product.price}</td>
-                <td>${product.quantity}</td>
-            </tr>
-        </c:forEach>
-    </table>
-    <div class="card bg-light">
-        <article class="card-body mx-auto" style="max-width: 400px;">
-            <h4 class="card-title mt-3 text-center"><fmt:message key="expert.button.create.product"/></h4>
-            <form class="form-signin" action="${pageContext.request.contextPath}/commodityExpertPage" method="post">
+<%--    <table>--%>
+<%--        <tr>--%>
+<%--            <th>Code</th>--%>
+<%--            <th>Name</th>--%>
+<%--            <th>Price</th>--%>
+<%--            <th>Quantity</th>--%>
+<%--        </tr>--%>
+<%--        <c:forEach items="${productsFromServer}" var="product">--%>
+<%--            <tr>--%>
+<%--                <td>${product.code}</td>--%>
+<%--                <td>${product.name}</td>--%>
+<%--                <td>${product.price}</td>--%>
+<%--                <td>${product.quantity}</td>--%>
+<%--            </tr>--%>
+<%--        </c:forEach>--%>
+<%--    </table>--%>
+<%--    <div class="card bg-light">--%>
+<%--        <article class="card-body mx-auto" style="max-width: 400px;">--%>
+<%--            <h4 class="card-title mt-3 text-center"><fmt:message key="expert.button.create.product"/></h4>--%>
+<%--            <form class="form-signin" action="${pageContext.request.contextPath}/commodityExpert" method="post">--%>
 
-                <input type="name" name="name" class="form-control" placeholder="name" required>
-                <input type="price" name="price" class="form-control" placeholder="price" required>
-                <input type="quantity" name="quantity" class="form-control" placeholder="quantity" required>
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
-                        key="button.submit"/></button>
-            </form>
-        </article>
-    </div>
+<%--                <input type="name" name="name" class="form-control" placeholder="name" required>--%>
+<%--                <input type="price" name="price" class="form-control" placeholder="price" required>--%>
+<%--                <input type="quantity" name="quantity" class="form-control" placeholder="quantity" required>--%>
+<%--                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message--%>
+<%--                        key="button.submit"/></button>--%>
+<%--            </form>--%>
+<%--        </article>--%>
+<%--    </div>--%>
 </div>
 </body>
