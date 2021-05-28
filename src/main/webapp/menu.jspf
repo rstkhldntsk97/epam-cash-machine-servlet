@@ -14,17 +14,31 @@
                 </li>
             </c:if>
             <c:if test="${user.role eq 'CASHIER'}">
-<%--                <li class="nav-item active">--%>
-<%--                    <a class="nav-link" href="${pageContext.request.contextPath}/cashierPage"><fmt:message--%>
-<%--                            key="menu.button.cashier."/><span class="sr-only">(current)</span></a>--%>
-<%--                </li>--%>
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/cashier.jsp"><fmt:message
+                            key="menu.button.cashier.create.invoice"/><span class="sr-only">(current)</span></a>
+                </li>
             </c:if>
 
             <c:if test="${user.role eq 'SENIOR_CASHIER'}">
-<%--                <li class="nav-item active">--%>
-<%--                    <a class="nav-link" href="${pageContext.request.contextPath}/seniorCashierPage"><fmt:message--%>
-<%--                            key="////////"/><span class="sr-only">(current)</span></a>--%>
-<%--                </li>--%>
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/reportX"><fmt:message
+                            key="senior.cashier.button.create.report.X"/><span class="sr-only">(current)</span></a>
+                </li>
+            </c:if>
+
+            <c:if test="${user.role eq 'SENIOR_CASHIER'}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/reportZ"><fmt:message
+                            key="senior.cashier.button.create.report.Z"/><span class="sr-only">(current)</span></a>
+                </li>
+            </c:if>
+
+            <c:if test="${user.role eq 'SENIOR_CASHIER'}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/editInvoice"><fmt:message
+                            key="senior.cashier.button.edit.invoice"/><span class="sr-only">(current)</span></a>
+                </li>
             </c:if>
 
             <c:if test="${user.role eq 'COMMODITY_EXPERT'}">
@@ -37,13 +51,13 @@
             <c:if test="${user.role eq 'COMMODITY_EXPERT'}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/createProduct.jsp"><fmt:message
-                            key="menu.button.expert.workshop"/><span class="sr-only">(current)</span></a>
+                            key="menu.button.expert.create.product"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 
             <c:if test="${user.role eq 'ADMIN'}">
                 <li class="nav-item active">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/users"><fmt:message
+                    <a class="nav-link" href="${pageContext.request.contextPath}/users"><fmt:message
                             key="menu.button.admin.my.users"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
@@ -58,7 +72,12 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
-
+            <c:if test="${user.role eq null}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/"><fmt:message
+                            key="menu.button.main"/></a>
+                </li>
+            </c:if>
             <c:if test="${user eq null}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/login"><fmt:message

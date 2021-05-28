@@ -23,14 +23,14 @@
     <div class="card bg-light">
         <article class="card-body mx-auto" style="max-width: 400px;">
             <h4 class="card-title mt-3 text-center"><fmt:message key="admin.create.new.user"/></h4>
-            <form class="form-signin" action="${pageContext.request.contextPath}/addUser" method="post">
+            <form class="form-signin" action="${pageContext.request.contextPath}/createUser" method="post">
 
-                <input type="username"  name="username" class="form-control" placeholder="Username" required>
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <input type="username" name="username" class="form-control" placeholder="<fmt:message key="form.username"/>" required>
+                <input type="password" name="password" class="form-control" placeholder="<fmt:message key="form.password"/>" required>
                 <select name="role" id="role" multiple>
-                    <option value="CASHIER">Cashier</option>
-                    <option value="SENIOR_CASHIER">Senior cashier</option>
-                    <option value="COMMODITY_EXPERT">Commodity expert</option>
+                    <option value="CASHIER"><fmt:message key="admin.form.cashier"/></option>
+                    <option value="SENIOR_CASHIER"><fmt:message key="admin.form.senior.cashier"/></option>
+                    <option value="COMMODITY_EXPERT"><fmt:message key="admin.form.expert"/></option>
                 </select>
 
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message

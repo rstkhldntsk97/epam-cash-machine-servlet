@@ -30,8 +30,10 @@
             <h4 class="card-title mt-3 text-center"><fmt:message key="login.login"/></h4>
             <form class="form-signin" action="${pageContext.request.contextPath}/login" method="post">
 
-                <input type="username"  name="username" class="form-control" placeholder="Username" required>
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <input type="username" name="username" class="form-control" placeholder="<fmt:message
+                            key="form.username"/>" required>
+                <input type="password" name="password" class="form-control" placeholder="<fmt:message
+                            key="form.password"/>" required>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message key="login.button.login"/></button>
             </form>
         </article>

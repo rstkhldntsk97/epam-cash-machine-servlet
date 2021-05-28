@@ -1,19 +1,25 @@
 package ua.rstkhldntsk.servlet.dao;
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
+import ua.rstkhldntsk.servlet.dao.mappers.InvoiceMapper;
 import ua.rstkhldntsk.servlet.dao.mappers.ProductMapper;
 import ua.rstkhldntsk.servlet.dao.mappers.UserMapper;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
+import ua.rstkhldntsk.servlet.services.InvoiceService;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static ua.rstkhldntsk.servlet.constants.SQLQueries.*;
 
 public class JDBCInvoiceDAO implements InvoiceDAO {
+
+    private static final Logger LOGGER = Logger.getLogger(JDBCInvoiceDAO.class);
 
     private DataSource dataSource;
 
@@ -26,28 +32,39 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        Invoice invoice = new Invoice();
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(FIND_INVOICE_BY_ID);
             resultSet = preparedStatement.executeQuery();
-            ProductMapper productMapper = new ProductMapper();
-            UserMapper userMapper = new UserMapper();
+            InvoiceMapper invoiceMapper = new InvoiceMapper();
+            Invoice invoice = new Invoice();
             while (resultSet.next()) {
-                String status = resultSet.getString("status");
-                Date createdAt = resultSet.getDate("create_at");
-                Float productPrice = resultSet.getFloat("price");
-                Integer quantityInInvoice = resultSet.getInt("quantity_in_invoice");
-                User user = userMapper.extractFromResultSet(resultSet);
-
-                invoice.setId(id);
-                invoice.setUser(user);
-                invoice.setCreatedAt(createdAt);
-                invoice.setStatus(status);
-                invoice.setTotal(productPrice * quantityInInvoice);
-                invoice.getProducts().put(productMapper.extractProductFromInvoiceResultSet(resultSet), resultSet.getInt("quantity_in_invoice"));
+                invoice = invoiceMapper.extractFromResultSet(resultSet);
             }
-            System.out.println(invoice);
+//        Connection connection = null;
+//        PreparedStatement preparedStatement = null;
+//        ResultSet resultSet = null;
+//        Invoice invoice = new Invoice();
+//        try {
+//            connection = dataSource.getConnection();
+//            preparedStatement = connection.prepareStatement(FIND_INVOICE_BY_ID);
+//            resultSet = preparedStatement.executeQuery();
+//            ProductMapper productMapper = new ProductMapper();
+//            UserMapper userMapper = new UserMapper();
+//            while (resultSet.next()) {
+//                String status = resultSet.getString("status");
+//                Date createdAt = resultSet.getDate("create_at");
+//                Float productPrice = resultSet.getFloat("price");
+//                Integer quantityInInvoice = resultSet.getInt("quantity_in_invoice");
+//                User user = userMapper.extractFromResultSet(resultSet);
+//
+//                invoice.setId(id);
+//                invoice.setUser(user);
+//                invoice.setCreatedAt(createdAt);
+//                invoice.setStatus(status);
+//                invoice.setTotal(productPrice * quantityInInvoice);
+//                invoice.getProducts().put(productMapper.extractProductFromInvoiceResultSet(resultSet), resultSet.getInt("quantity_in_invoice"));
+//            }
             return Optional.of(invoice);
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -72,6 +89,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             if (generatedKeys.next()) {
                 invoice.setId(generatedKeys.getLong(1));
             }
+            LOGGER.debug("Invoice " + invoice.getId() + " created successfully");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -110,11 +128,35 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
 
     @Override
     public List<Invoice> findAllByUser(User user) {
-        return null;
+        List<Invoice> invoices = new ArrayList<>();
+        UserMapper userMapper = new UserMapper();
+        Connection con = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            con = dataSource.getConnection();
+            preparedStatement = con.prepareStatement(FIND_ALL_INVOICES);
+//            preparedStatement.setLong(1 , user.getId());
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Invoice invoice = new Invoice();
+                invoice.setTotal(resultSet.getFloat("total_price"));
+                invoice.setUser(userMapper.extractFromResultSet(resultSet));
+                invoice.setStatus(resultSet.getString("status"));
+                invoices.add(invoice);
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException();
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+            close(con);
+        }
+        return invoices;
     }
 
     @Override
-    public void addProduct(Long code, Invoice invoice) {
+    public void addProduct(Long code, Integer quantity, Invoice invoice) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -123,6 +165,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             preparedStatement = connection.prepareStatement(ADD_PRODUCT_TO_INVOICE, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1 , invoice.getId());
             preparedStatement.setLong(2, code);
+            preparedStatement.setInt(3, quantity);
             preparedStatement.executeUpdate();
             generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -144,7 +187,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(UPDATE_INVOICE_STATUS);
-            preparedStatement.setString(1, invoice.getStatus());
+//            preparedStatement.setString(1, invoice.getStatus());
             preparedStatement.setLong(1 , invoice.getId());
         } catch (SQLException e) {
             e.printStackTrace();

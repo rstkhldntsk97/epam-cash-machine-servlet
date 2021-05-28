@@ -26,11 +26,19 @@
         </div>
     </form>
 
-    <form action="${pageContext.request.contextPath}/createReports" method="get">
+    <form action="${pageContext.request.contextPath}/reportX" method="get">
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block"><fmt:message
-                    key="senior.cashier.button.create.report"/></button>
+                    key="senior.cashier.button.create.report.X"/></button>
+        </div>
+    </form>
+
+    <form action="${pageContext.request.contextPath}/reportZ" method="get">
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"><fmt:message
+                    key="senior.cashier.button.create.report.Z"/></button>
         </div>
     </form>
 

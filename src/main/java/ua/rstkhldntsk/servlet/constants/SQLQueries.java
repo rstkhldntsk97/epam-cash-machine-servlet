@@ -26,6 +26,8 @@ public interface SQLQueries {
             "join invoice_has_product on invoice.id = invoice_has_product.invoice_id " +
             "join product on invoice_has_product.product_code = product.code " +
             "join user on user.id = invoice.user_id where invoice.id = ?";
-    String ADD_PRODUCT_TO_INVOICE = "INSERT INTO invoice_has_product (invoice_id, product_code) VALUES (?,?)";
-    String UPDATE_INVOICE_STATUS = "UPDATE invoice SET status = ? WHERE invoice.id = ?";
+    String ADD_PRODUCT_TO_INVOICE = "INSERT INTO invoice_has_product (invoice_id, product_code, quantity_in_invoice) VALUES (?,?,?)";
+    String UPDATE_INVOICE_STATUS = "UPDATE invoice SET status = 'CLOSED' WHERE invoice.id = ?";
+    String FIND_ALL_INVOICES = "select * from invoice join user on user.id = invoice.user_id  and cast(created_at as date) = curdate()";
+    String SELECT_INVOICE_BY_ID = "SELECT user.id, user.username, user.password, user.role, product.code, product.name, product.quantity, product.price, invoice.id, invoice.created_at, invoice.total_price, invoice.status FROM INVOICE join user on invoice.user_id = user.id join invoice_has_product on invoice.id = invoice_has_product.invoice_id join product on product.code = invoice_has_product.product_code where invoice.id = ?";
 }

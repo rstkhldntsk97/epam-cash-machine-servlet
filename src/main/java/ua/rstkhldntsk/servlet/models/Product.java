@@ -3,9 +3,6 @@ package ua.rstkhldntsk.servlet.models;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/**
- * Represents an Product Entity
- */
 public class Product {
 
     private Long code;
@@ -78,11 +75,8 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + code +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                '}';
+        return "Product with code " + code +
+                ", name '" + name + '\'' +
+                ", price=" + price;
     }
-
 }

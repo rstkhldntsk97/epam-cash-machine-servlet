@@ -3,32 +3,19 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages"/>
-
-<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title><fmt:message key="cashier.title"/></title>
+    <title><fmt:message key="x.report.title"/></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-
-<%@ include file="menu.jspf" %><br/>
-
-<br/>
-<br/>
-<div class="container">
-
-    <form action="${pageContext.request.contextPath}/createInvoice" method="get">
-
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block"><fmt:message key="cashier.button.create.invoice"/></button>
-        </div>
-    </form>
-
+<%@ include file="menu.jspf" %><br/><br/>
+<div class="alert alert-info" role="alert">
+  <h4 class="alert-heading">X REPORT</h4>
+  <p><fmt:message key="count.of.closed.checks.message"/> <strong>${requestScope.COUNT}</strong></p>
+  <p><fmt:message key="money.received.message"/> <strong>${requestScope.TOTAL_SUM}</strong></p>
 </div>
-
-
 </body>
 </html>

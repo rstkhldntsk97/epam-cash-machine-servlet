@@ -1,8 +1,10 @@
 package ua.rstkhldntsk.servlet.dao;
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.ProductMapper;
 import ua.rstkhldntsk.servlet.models.Product;
+import ua.rstkhldntsk.servlet.services.InvoiceService;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -142,7 +144,7 @@ public class JDBCProductDAO implements ProductDAO {
             }
         } catch (SQLException e) {
 
-        }finally {
+        } finally {
             close(resultSet);
             close(preparedStatement);
             close(connection);

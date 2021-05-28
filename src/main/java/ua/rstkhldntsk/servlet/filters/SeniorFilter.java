@@ -1,6 +1,5 @@
 package ua.rstkhldntsk.servlet.filters;
 
-
 import ua.rstkhldntsk.servlet.models.User;
 
 import javax.servlet.*;
@@ -10,10 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/createUser", "/commodityExpert", "/cashier", "/createInvoice", "/seniorCashier.jsp", "/closeInvoice", "/senior", "/admin.jsp",
-"/users", "/users.jsp"})
-public class AuthFilter implements Filter {
-
+@WebFilter(urlPatterns = {"/senior", "/seniorCashier.jsp", "/editInvoice", "/createReports", "/reportX"})
+public class SeniorFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -25,8 +22,9 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
-        if (session == null || session.getAttribute("user") == null) {
-            servletRequest.getServletContext().getRequestDispatcher("/login").forward(request, response);
+        User user = (User) session.getAttribute("user");
+        if (user == null || !user.getRole().equals("SENIOR_CASHIER")) {
+            servletRequest.getServletContext().getRequestDispatcher("/WEB-INF/error404.jsp").forward(request, response);
         }
         filterChain.doFilter(request, response);
     }
@@ -35,4 +33,5 @@ public class AuthFilter implements Filter {
     public void destroy() {
         Filter.super.destroy();
     }
+
 }

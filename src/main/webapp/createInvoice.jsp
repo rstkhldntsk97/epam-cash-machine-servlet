@@ -12,22 +12,28 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<%@ include file="menu.jspf" %><br/>
-
-
-<table>
-    </tr>name="<%=request.getAttribute("productByCodeFromServer")%>"</tr>
-
-
-    <form class="form-signin" action="${pageContext.request.contextPath}/createInvoice" method="post">
-
-        <input type="code" name="code" class="form-control" placeholder="product code">
-        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
-                key="cashier.button.add.product.to.invoice"/></button>
-    </form>
-    <form class="form-signin" action="${pageContext.request.contextPath}/closeInvoice" method="get">
-        <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
-            key="cashier.button.close.invoice"/></button>
-    </form>
-</table>
+<%@ include file="menu.jspf" %>
+<br/>
+<br/>
+<br/>
+<div class="container">
+    <table>
+        <form class="form-signin" action="${pageContext.request.contextPath}/createInvoice" method="post">
+            <fmt:message key="check.product.code"/><br/>
+            <table>
+                <input type="code" name="code" class="form-control"
+                       placeholder="<fmt:message key="form.product.code"/>"><br/>
+                <input type="quantity" name="quantity" class="form-control"
+                       placeholder="<fmt:message key="form.product.quantity"/>"><br/>
+            </table>
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
+                    key="cashier.button.add.product.to.invoice"/></button>
+        </form>
+        <br/>
+        <form class="form-signin" action="${pageContext.request.contextPath}/closeInvoice" method="post">
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
+                    key="cashier.button.close.invoice"/></button>
+        </form>
+    </table>
+</div>
 </body>

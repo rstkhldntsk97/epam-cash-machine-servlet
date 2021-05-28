@@ -52,9 +52,9 @@
             <h4 class="card-title mt-3 text-center"><fmt:message key="expert.button.create.product"/></h4>
             <form class="form-signin" action="${pageContext.request.contextPath}/commodityExpert" method="post">
 
-                <input type="name" name="name" class="form-control" placeholder="name" required>
-                <input type="price" name="price" class="form-control" placeholder="price" required>
-                <input type="quantity" name="quantity" class="form-control" placeholder="quantity" required>
+                <input type="name" name="name" class="form-control" placeholder="<fmt:message key="form.product.name"/>" required>
+                <input type="price" name="price" class="form-control" placeholder="<fmt:message key="form.product.price"/>" required>
+                <input type="quantity" name="quantity" class="form-control" placeholder="<fmt:message key="form.product.quantity"/>" required>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
                         key="button.submit"/></button>
             </form>

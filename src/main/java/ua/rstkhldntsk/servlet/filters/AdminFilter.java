@@ -10,9 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/createUser", "/commodityExpert", "/cashier", "/createInvoice", "/seniorCashier.jsp", "/closeInvoice", "/senior", "/admin.jsp",
-"/users", "/users.jsp"})
-public class AuthFilter implements Filter {
+@WebFilter(urlPatterns = {"/createUser","/createUser.jsp", "/users", "/users.jsp"})
+public class AdminFilter implements Filter {
 
 
     @Override
@@ -25,8 +24,9 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
-        if (session == null || session.getAttribute("user") == null) {
-            servletRequest.getServletContext().getRequestDispatcher("/login").forward(request, response);
+        User user = (User) session.getAttribute("user");
+        if (user == null || !user.getRole().equals("ADMIN")) {
+            servletRequest.getServletContext().getRequestDispatcher("/WEB-INF/error404.jsp").forward(request, response);
         }
         filterChain.doFilter(request, response);
     }

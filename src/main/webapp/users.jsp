@@ -21,14 +21,12 @@
         <h4 class="card-title mt-3 text-center"><fmt:message key="admin.list.users"/></h4>
         <table>
             <tr>
-                <th>User name</th>
-                <th>Password</th>
-                <th>Role</th>
+                <th><fmt:message key="form.username"/></th>
+                <th><fmt:message key="form.role"/></th>
             </tr>
             <c:forEach items="${usersFromServer}" var="user">
                 <tr>
                     <td>${user.username}</td>
-                    <td>${user.password}</td>
                     <td>${user.role}</td>
                 </tr>
             </c:forEach>

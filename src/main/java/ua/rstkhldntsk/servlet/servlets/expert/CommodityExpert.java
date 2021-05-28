@@ -1,4 +1,4 @@
-package ua.rstkhldntsk.servlet.servlets;
+package ua.rstkhldntsk.servlet.servlets.expert;
 
 
 import ua.rstkhldntsk.servlet.models.Product;

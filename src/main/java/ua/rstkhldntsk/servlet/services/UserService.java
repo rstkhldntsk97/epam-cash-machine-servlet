@@ -6,6 +6,7 @@ import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
 import ua.rstkhldntsk.servlet.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserService {
 
@@ -34,8 +35,11 @@ public class UserService {
 
     public User login(String username, String password) {
         if (userDAO.checkUser(username, password)) {
-            return userDAO.findByUsername(username).get();
+            Optional<User> user = userDAO.findByUsername(username);
+            if (user.isPresent()) {
+                return user.get();
+            }
         }
-        return null;
+        return new User();
     }
 }

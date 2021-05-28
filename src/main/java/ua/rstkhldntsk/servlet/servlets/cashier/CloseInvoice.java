@@ -1,4 +1,4 @@
-package ua.rstkhldntsk.servlet.servlets;
+package ua.rstkhldntsk.servlet.servlets.cashier;
 
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.services.InvoiceService;
