@@ -10,10 +10,10 @@ public class UserMapper  implements ObjectMapper<User> {
     public User extractFromResultSet(ResultSet resultSet) throws SQLException {
         try {
             User user = new User();
-            Long id = resultSet.getLong("user.id");
-            String password = resultSet.getString("user.password");
-            String username = resultSet.getString("user.username");
-            String role = resultSet.getString("user.role");
+            Long id = resultSet.getLong("id");
+            String password = resultSet.getString("password");
+            String username = resultSet.getString("username");
+            String role = resultSet.getString("role");
             user.setId(id);
             user.setUsername(username);
             user.setPassword(password);

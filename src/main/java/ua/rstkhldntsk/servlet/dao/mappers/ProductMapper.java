@@ -11,10 +11,10 @@ public class ProductMapper implements ObjectMapper<Product> {
     public Product extractFromResultSet(ResultSet resultSet) throws SQLException {
         try {
             Product product = new Product();
-            product.setCode(resultSet.getLong("product.code"));
-            product.setName(resultSet.getString("product.name"));
-            product.setPrice(resultSet.getBigDecimal("product.price"));
-            product.setQuantity(resultSet.getInt("product.quantity"));
+            product.setCode(resultSet.getLong("code"));
+            product.setName(resultSet.getString("name"));
+            product.setPrice(resultSet.getBigDecimal("price"));
+            product.setQuantity(resultSet.getInt("quantity"));
             return product;
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -24,9 +24,9 @@ public class ProductMapper implements ObjectMapper<Product> {
     public Product extractProductFromInvoiceResultSet(ResultSet resultSet) throws SQLException {
         try {
             Product product = new Product();
-            product.setCode(resultSet.getLong("product.code"));
-            product.setName(resultSet.getString("product.name"));
-            product.setPrice(resultSet.getBigDecimal("product.price"));
+            product.setCode(resultSet.getLong("code"));
+            product.setName(resultSet.getString("name"));
+            product.setPrice(resultSet.getBigDecimal("price"));
             return product;
         } catch (SQLException e) {
             throw new IllegalStateException(e);

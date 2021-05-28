@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @WebServlet("/createInvoice")
 public class CreateInvoice extends HttpServlet {
@@ -55,7 +56,8 @@ public class CreateInvoice extends HttpServlet {
         Invoice invoice = (Invoice) session.getAttribute("invoice");
         try {
             product = productService.findProductByCode(Long.parseLong(code));
-            invoiceService.addProductToInvoice(code,quantity, invoice);
+            BigDecimal price = invoiceService.countPriceForProductByQuantity(Integer.parseInt(quantity), Long.parseLong(code));
+            invoiceService.addProductToInvoice(code,quantity, invoice, price);
             LOGGER.debug(product + " was successfully added to invoice in quantity of " + quantity);
         } catch (NumberFormatException e) {
             LOGGER.debug("No product with this code", e);

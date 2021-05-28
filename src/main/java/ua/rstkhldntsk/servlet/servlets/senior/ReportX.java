@@ -21,8 +21,8 @@ public class ReportX extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = (User) req.getSession().getAttribute("user");
-        List<Invoice> invoices = invoiceService.getAllUserInvoices(user);
+//        User user = (User) req.getSession().getAttribute("user");
+        List<Invoice> invoices = invoiceService.getAllInvoices();
         int countOfInvoices = invoices.size();
         double total = invoices.stream().mapToDouble(s -> s.getTotal().doubleValue()).sum();
         xReport.makeReport(countOfInvoices, total,req);

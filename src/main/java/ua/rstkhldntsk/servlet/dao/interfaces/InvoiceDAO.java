@@ -3,6 +3,7 @@ package ua.rstkhldntsk.servlet.dao.interfaces;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface InvoiceDAO extends GenericDAO<Invoice> {
@@ -15,8 +16,11 @@ public interface InvoiceDAO extends GenericDAO<Invoice> {
      */
     List<Invoice> findAllByUser(User user);
 
-    void addProduct(Long code,Integer quantity, Invoice invoice);
+    void addProduct(Long code, Integer quantity, Invoice invoice, BigDecimal price);
 
     void updateStatusToClosed(Invoice invoice);
 
+    Invoice findByUserAndInvoiceId(User user, Invoice invoice);
+
+    void updateTotal(Invoice invoice);
 }

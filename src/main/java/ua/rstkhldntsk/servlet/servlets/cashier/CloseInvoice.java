@@ -18,12 +18,8 @@ public class CloseInvoice extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        Invoice invoice = (Invoice)session.getAttribute("invoice");
 
-
-        invoiceService.closeInvoice(invoice);
-        req.getRequestDispatcher("/cashier").forward(req, resp);
+        req.getRequestDispatcher("/closedInvoice.jsp").forward(req, resp);
     }
 
     @Override
@@ -33,7 +29,6 @@ public class CloseInvoice extends HttpServlet {
 
 
         invoiceService.closeInvoice(invoice);
-
         doGet(req, resp);
     }
 }
