@@ -38,7 +38,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             resultSet = preparedStatement.executeQuery();
             InvoiceMapper invoiceMapper = new InvoiceMapper();
             Invoice invoice = new Invoice();
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 invoice = invoiceMapper.extractFromResultSet(resultSet);
             }
 //        Connection connection = null;
@@ -100,7 +100,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
     }
 
     @Override
-    public void update(Invoice invoice) {
+    public boolean update(Invoice invoice) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -108,12 +108,17 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             preparedStatement = connection.prepareStatement(UPDATE_INVOICE_TOTAL);
             preparedStatement.setLong(1 , invoice.getId());
             preparedStatement.setLong(2 , invoice.getId());
+            if (preparedStatement.executeUpdate() != 1) {
+                LOGGER.debug("error in update total of invoice");
+                return false;
+            }
         } catch (SQLException e) {
-
+            return false;
         } finally {
             close(preparedStatement);
             close(connection);
         }
+        return true;
     }
 
     @Override
@@ -205,7 +210,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
     }
 
     @Override
-    public void updateStatusToClosed(Invoice invoice) {
+    public boolean updateStatusToClosed(Invoice invoice) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -213,12 +218,18 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             preparedStatement = connection.prepareStatement(UPDATE_INVOICE_STATUS);
 //            preparedStatement.setString(1, invoice.getStatus());
             preparedStatement.setLong(1 , invoice.getId());
-        } catch (SQLException e) {
+            if (preparedStatement.executeUpdate() != 1) {
+                return false;
+            }
             LOGGER.debug("Invoice " + invoice.getId() + " is closed");
+        } catch (SQLException e) {
+            LOGGER.debug("Exc in updateStatusToClosed");
+            return false;
         } finally {
             close(preparedStatement);
             close(connection);
         }
+        return true;
     }
 
     @Override
@@ -248,20 +259,25 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
     }
 
     @Override
-    public void updateTotal(Invoice invoice) {
+    public boolean updateTotal(Invoice invoice) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(UPDATE_INVOICE_TOTAL);
-            preparedStatement.setFloat(1, invoice.getTotal());
+            preparedStatement.setLong(1, invoice.getId());
             preparedStatement.setLong(2, invoice.getId());
+            if (preparedStatement.executeUpdate() != 1) {
+                return false;
+            }
         } catch (SQLException e) {
             LOGGER.debug("Invoice " + invoice.getId() + " is closed");
+            return false;
         } finally {
             close(preparedStatement);
             close(connection);
         }
+        return true;
     }
 //
 //    public Integer findProductQuantityInInvoice(Product product, Invoice invoice){

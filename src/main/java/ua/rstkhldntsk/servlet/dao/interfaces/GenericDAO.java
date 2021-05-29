@@ -13,7 +13,7 @@ public interface GenericDAO<T> {
 
     void create(T model);
 
-    void update(T model);
+    boolean update(T model);
 
     void delete(Integer id);
 

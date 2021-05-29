@@ -70,8 +70,8 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public void update(User user) {
-
+    public boolean update(User user) {
+        return false;
     }
 
     @Override

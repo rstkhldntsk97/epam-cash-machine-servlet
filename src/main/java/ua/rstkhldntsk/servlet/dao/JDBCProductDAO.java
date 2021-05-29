@@ -54,7 +54,7 @@ public class JDBCProductDAO implements ProductDAO {
 
 
     @Override
-    public void update(Product model) {
+    public boolean update(Product model) {
         throw new UnsupportedOperationException();
     }
 

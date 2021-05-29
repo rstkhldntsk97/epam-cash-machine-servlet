@@ -62,7 +62,6 @@ public class InvoiceService {
 
     public void closeInvoice(Invoice invoice) {
         invoice = invoiceDAO.findById(invoice.getId()).get();
-        invoice.setTotal(Float.valueOf(invoice.getProducts().values().stream().reduce(0, Integer::sum)));
         invoiceDAO.updateTotal(invoice);
         invoiceDAO.updateStatusToClosed(invoice);
     }
@@ -75,17 +74,12 @@ public class InvoiceService {
     public BigDecimal countPriceForProductByQuantity(Integer quantity, Long productCode) {
         try {
             Product product = productDAO.findByCode(productCode).get();
-            LOGGER.debug("" + product.getPrice().multiply(BigDecimal.valueOf(quantity)));
+            LOGGER.debug(product.getName() + " " + product.getPrice().multiply(BigDecimal.valueOf(quantity)));
             return product.getPrice().multiply(BigDecimal.valueOf(quantity));
         } catch (NullPointerException e) {
             throw e;
         }
 
     }
-
-//    public BigDecimal countTotalForInvoice(Invoice invoice) {
-//        invoice = invoiceDAO.findById(invoice.getId()).get();
-//
-//    }
 
 }

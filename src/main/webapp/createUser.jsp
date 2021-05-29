@@ -27,7 +27,7 @@
 
                 <input type="username" name="username" class="form-control" placeholder="<fmt:message key="form.username"/>" required>
                 <input type="password" name="password" class="form-control" placeholder="<fmt:message key="form.password"/>" required>
-                <select name="role" id="role" multiple>
+                <select name="role" id="role" multiple required>
                     <option value="CASHIER"><fmt:message key="admin.form.cashier"/></option>
                     <option value="SENIOR_CASHIER"><fmt:message key="admin.form.senior.cashier"/></option>
                     <option value="COMMODITY_EXPERT"><fmt:message key="admin.form.expert"/></option>

@@ -18,9 +18,9 @@ public interface InvoiceDAO extends GenericDAO<Invoice> {
 
     void addProduct(Long code, Integer quantity, Invoice invoice, BigDecimal price);
 
-    void updateStatusToClosed(Invoice invoice);
+    boolean updateStatusToClosed(Invoice invoice);
 
     Invoice findByUserAndInvoiceId(User user, Invoice invoice);
 
-    void updateTotal(Invoice invoice);
+    boolean updateTotal(Invoice invoice);
 }
