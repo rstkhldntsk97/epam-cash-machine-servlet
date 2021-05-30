@@ -2,21 +2,15 @@ package ua.rstkhldntsk.servlet.services;
 
 import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.DaoFactory;
-import ua.rstkhldntsk.servlet.dao.JDBCInvoiceDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
 import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.exceptions.NotEnoughProduct;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
-import ua.rstkhldntsk.servlet.models.User;
-import ua.rstkhldntsk.servlet.servlets.cashier.CreateInvoice;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 public class InvoiceService {
 
@@ -79,7 +73,14 @@ public class InvoiceService {
         } catch (NullPointerException e) {
             throw e;
         }
+    }
 
+    public List<Invoice> findAllInvoices() {
+        return invoiceDAO.findAll();
+    }
+
+    public Invoice findById(Long id) {
+        return invoiceDAO.findById(id).get();
     }
 
 }

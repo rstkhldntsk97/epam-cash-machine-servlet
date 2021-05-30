@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class XReportService {
 
-    private static final Logger LOGGER = Logger.getLogger(XReportService.class);
+//    private static final Logger LOGGER = Logger.getLogger(XReportService.class);
 
     private static volatile XReportService instance;
 

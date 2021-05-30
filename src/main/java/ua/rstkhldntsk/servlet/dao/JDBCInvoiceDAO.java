@@ -139,9 +139,11 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Invoice invoice = new Invoice();
+                invoice.setId(resultSet.getLong("id"));
                 invoice.setTotal(resultSet.getFloat("total_price"));
                 invoice.setUser(userMapper.extractFromResultSet(resultSet));
                 invoice.setStatus(resultSet.getString("status"));
+                invoice.setCreatedAt(resultSet.getDate("created_at"));
                 invoices.add(invoice);
             }
         } catch (SQLException e) {
@@ -201,7 +203,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
                 invoice.setId(generatedKeys.getLong(1));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.debug("can't add this product");
         } finally {
             close(generatedKeys);
             close(preparedStatement);
