@@ -7,6 +7,7 @@ import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
 import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.exceptions.ProductNotExist;
+import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.utils.Page;
 
@@ -46,6 +47,10 @@ public class ProductService {
         productDAO.create(product);
     }
 
+    public void updateProduct(Product product) {
+        productDAO.update(product);
+    }
+
 
     /**
      * finds product by name
@@ -53,9 +58,15 @@ public class ProductService {
      * @param name name of product
      * @return product
      */
-    public Product findProductByName(String name) {
-        ProductDAO productDao = daoFactory.createProductDao();
-        return productDao.findByName(name).orElseThrow(RuntimeException::new);
+    public Product findProductByName(String name) throws ProductNotExist {
+        Optional<Product> product = productDAO.findByName(name);
+        if (product.isPresent()) {
+            return product.get();
+        } else {
+            throw new ProductNotExist();
+        }
+//        ProductDAO productDao = daoFactory.createProductDao();
+//        return productDao.findByName(name).orElseThrow(RuntimeException::new);
         //TODO change on my own exc
     }
 

@@ -41,15 +41,12 @@ public class InvoiceService {
         }
     }
 
-    public void addProductToInvoice(String code, String quantity, Invoice invoice, BigDecimal price) throws NotEnoughProduct, ItemExistException {
-        Long parsedCode = Long.parseLong(code);
-        Integer parsedQuantity = Integer.parseInt(quantity);
+    public void addProductToInvoice(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws NotEnoughProduct, ItemExistException {
 
-        Product product = productDAO.findByCode(parsedCode).get();
-        if (product.getQuantity() >= parsedQuantity) {
-            InvoiceDAO invoiceDao = daoFactory.createInvoiceDao();
-            invoiceDao.addProduct(parsedCode, parsedQuantity, invoice, price);
-            product.setQuantity(product.getQuantity() - parsedQuantity);
+        Product product = productDAO.findByCode(code).get();
+        if (product.getQuantity() >= quantity) {
+            invoiceDAO.addProduct(code, quantity, invoice, price);
+            product.setQuantity(product.getQuantity() - quantity);
             productDAO.update(product);
         } else {
             LOGGER.debug("Product is not available in this quantity");

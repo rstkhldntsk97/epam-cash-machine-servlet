@@ -14,7 +14,7 @@ public interface SQLQueries {
     //SQL queries for product table
     String INSERT_PRODUCT = "INSERT INTO product (name, price, quantity) VALUES (?,?,?)";
     String FIND_ALL_PRODUCTS = "SELECT * FROM product";
-    String FIND_PRODUCT_BY_NAME = "SELECT * FROM product WHERE product_name = ?";
+    String FIND_PRODUCT_BY_NAME = "SELECT * FROM product WHERE name = ?";
     String FIND_PRODUCT_BY_CODE = "SELECT * FROM product WHERE code = ?";
 
     //SQL queries for invoice and invoice_has_product tables
