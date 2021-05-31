@@ -105,7 +105,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public Optional<User> findByUsername(String name) {
+    public Optional<User> findByName(String name) {
         Connection con = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

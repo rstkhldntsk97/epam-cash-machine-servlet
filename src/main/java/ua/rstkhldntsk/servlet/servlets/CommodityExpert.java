@@ -21,14 +21,6 @@ public class CommodityExpert extends HttpServlet {
 
     ProductService productService = ProductService.getInstance();
 
-//    @Override
-//    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        resp.sendRedirect(req.getContextPath() + "/home.jsp");
-//        req.getRequestDispatcher("/commodityExpert.jsp").forward(req, resp);
-//        List<Product> products = productService.findAll();
-//        req.setAttribute("productsFromServer", products);
-//    }
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Product> products = productService.findAll();
@@ -50,6 +42,5 @@ public class CommodityExpert extends HttpServlet {
             session.setAttribute("message", resourceBundle.getString("product.exist"));
         }
         resp.sendRedirect(req.getContextPath() + "/home.jsp");
-//        doGet(req, resp);
     }
 }

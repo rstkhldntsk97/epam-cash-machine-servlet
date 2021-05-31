@@ -36,7 +36,7 @@ public class UserService {
 
     public User login(String username, String password) {
         if (userDAO.checkUser(username, password)) {
-            Optional<User> user = userDAO.findByUsername(username);
+            Optional<User> user = userDAO.findByName(username);
             if (user.isPresent()) {
                 return user.get();
             }

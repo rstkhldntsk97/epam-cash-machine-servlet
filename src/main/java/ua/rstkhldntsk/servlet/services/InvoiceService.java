@@ -9,6 +9,7 @@ import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.exceptions.NotEnoughProduct;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
+import ua.rstkhldntsk.servlet.models.User;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -79,6 +80,10 @@ public class InvoiceService {
 
     public List<Invoice> findAllInvoices() {
         return invoiceDAO.findAll();
+    }
+
+    public List<Invoice> findAllUserInvoices(User user) {
+        return invoiceDAO.findAllByUser(user);
     }
 
     public Invoice findById(Long id) {

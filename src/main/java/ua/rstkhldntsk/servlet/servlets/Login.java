@@ -40,6 +40,7 @@ public class Login extends HttpServlet {
         } else {
             LOGGER.info("User " + username + " logged in successfully");
             session.setAttribute("user", user);
+            session.setAttribute("role", role);
             resp.sendRedirect(req.getContextPath() + "/home.jsp");
         }
     }

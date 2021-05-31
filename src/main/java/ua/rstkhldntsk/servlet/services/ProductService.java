@@ -51,7 +51,6 @@ public class ProductService {
         productDAO.update(product);
     }
 
-
     /**
      * finds product by name
      *
@@ -65,9 +64,6 @@ public class ProductService {
         } else {
             throw new ProductNotExist();
         }
-//        ProductDAO productDao = daoFactory.createProductDao();
-//        return productDao.findByName(name).orElseThrow(RuntimeException::new);
-        //TODO change on my own exc
     }
 
     /**

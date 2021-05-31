@@ -86,28 +86,5 @@ public class CreateInvoice extends HttpServlet {
             req.setAttribute("productByCodeFromServer", product);
             req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
         }
-//
-//        try {
-//            product = productService.findProductByCode(Long.parseLong(parameter));
-//            BigDecimal price = invoiceService.countPriceForProductByQuantity(Integer.parseInt(quantity), Long.parseLong(parameter));
-//            invoiceService.addProductToInvoice(parameter, quantity, invoice, price);
-//            session.setAttribute("message", resourceBundle.getString("product.successfully.added"));
-//            LOGGER.debug(product + " was successfully added to invoice in quantity of " + quantity);
-//        } catch (NotEnoughProduct notEnoughProduct) {
-//            session.setAttribute("message", resourceBundle.getString("product.not.enough"));
-//            LOGGER.debug("No product with this code", notEnoughProduct);
-//        } catch (ProductNotExist productNotExist) {
-//            session.setAttribute("message", resourceBundle.getString("product.not.exist"));
-//            LOGGER.debug("Product not exist");
-//        } catch (NumberFormatException notEnoughProduct) {
-//            session.setAttribute("message", resourceBundle.getString("product.not.enough"));
-//            LOGGER.debug("Product quantity cast exception");
-//        } catch (ItemExistException e) {
-//            session.setAttribute("message", resourceBundle.getString("product.already.in.invoice"));
-//            LOGGER.debug("Product is already in invoice");
-//        }
-//        session.getAttribute("user");
-//        req.setAttribute("productByCodeFromServer", product);
-//        req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
     }
 }

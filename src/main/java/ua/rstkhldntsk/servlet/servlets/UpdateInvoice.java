@@ -21,7 +21,7 @@ public class UpdateInvoice extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
-        Invoice invoice = (Invoice)session.getAttribute("invoice");
+        Invoice invoice = (Invoice) session.getAttribute("invoice");
         String status = (String) session.getAttribute("status");
         invoice.setStatus(status);
         if (status.equals("CLOSED")) {

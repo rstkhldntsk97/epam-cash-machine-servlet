@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserDAO extends GenericDAO<User> {
 
-    public Optional<User> findByUsername(String name);
+    public Optional<User> findByName(String name);
 
     public String getUserRole(User user);
 

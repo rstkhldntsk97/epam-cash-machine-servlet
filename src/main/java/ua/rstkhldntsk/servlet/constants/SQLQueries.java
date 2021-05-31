@@ -30,7 +30,7 @@ public interface SQLQueries {
             "join product on invoice_has_product.product_code = product.code " +
             "join user on user.id = invoice.user_id where invoice.id = ?";
     String ADD_PRODUCT_TO_INVOICE = "INSERT INTO invoice_has_product (invoice_id, product_code, quantity_in_invoice, price) VALUES (?,?,?, ?)";
-    String FIND_ALL_INVOICES = "select * from invoice join user on user.id = invoice.user_id";
+    String FIND_ALL_INVOICES = "select * from invoice join user on user.id = invoice.user_id where status = 'CLOSED'";
     String FIND_ALL_INVOICES_BY_USER = "select * from invoice join user on user.id = invoice.user_id where user.id = ?";
     String FIND_INVOICE_BY_USER_ID_AND_INVOICE_ID = "select * from invoice join user on user.id = invoice.user_id join invoice_has_product on invoice.id = invoice_has_product.invoice_id join product on product.code = invoice_has_product.product_code where user.id = ? and invoice.id = ?";
     String DELETE_INVOICE = "DELETE FROM invoice WHERE id = ?";
