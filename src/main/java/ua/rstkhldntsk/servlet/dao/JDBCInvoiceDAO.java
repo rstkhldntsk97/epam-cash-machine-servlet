@@ -72,50 +72,6 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
         }
     }
 
-//    @Override
-//    public boolean updateTotal(Invoice invoice) {
-//        Connection connection = null;
-//        PreparedStatement preparedStatement = null;
-//        try {
-//            connection = dataSource.getConnection();
-//            preparedStatement = connection.prepareStatement(UPDATE_INVOICE_TOTAL);
-//            preparedStatement.setLong(1, invoice.getId());
-//            preparedStatement.setLong(2, invoice.getId());
-//            if (preparedStatement.executeUpdate() != 1) {
-//                return false;
-//            }
-//        } catch (SQLException e) {
-//            LOGGER.debug("Invoice " + invoice.getId() + " is closed");
-//            return false;
-//        } finally {
-//            close(preparedStatement);
-//            close(connection);
-//        }
-//        return true;
-//    }
-//    @Override
-//    public boolean updateStatus(Invoice invoice) {
-//        Connection connection = null;
-//        PreparedStatement preparedStatement = null;
-//        try {
-//            connection = dataSource.getConnection();
-//            preparedStatement = connection.prepareStatement(UPDATE_INVOICE_STATUS);
-//            preparedStatement.setString(1, invoice.getStatus());
-//            preparedStatement.setLong(2, invoice.getId());
-//            if (preparedStatement.executeUpdate() != 1) {
-//                return false;
-//            }
-//            LOGGER.debug("Invoice " + invoice.getId() + " is closed");
-//        } catch (SQLException e) {
-//            LOGGER.debug("Exc in updateStatusToClosed");
-//            return false;
-//        } finally {
-//            close(preparedStatement);
-//            close(connection);
-//        }
-//        return true;
-//    }
-
     @Override
     public boolean update(Invoice invoice) {
         Connection connection = null;

@@ -49,6 +49,8 @@ public class InvoiceService {
         if (product.getQuantity() >= parsedQuantity) {
             InvoiceDAO invoiceDao = daoFactory.createInvoiceDao();
             invoiceDao.addProduct(parsedCode, parsedQuantity, invoice, price);
+            product.setQuantity(product.getQuantity() - parsedQuantity);
+            productDAO.update(product);
         } else {
             LOGGER.debug("Product is not available in this quantity");
             throw new NotEnoughProduct();
@@ -56,17 +58,9 @@ public class InvoiceService {
     }
 
     public void updateInvoice(Invoice invoice) {
-//        invoice = invoiceDAO.findById(invoice.getId()).get();
-//        invoiceDAO.updateTotal(invoice);
-//        invoiceDAO.updateStatus(invoice);
         invoiceDAO.update(invoice);
     }
 
-//    public void closeInvoice(Invoice invoice) {
-//        invoice = invoiceDAO.findById(invoice.getId()).get();
-//        invoiceDAO.updateTotal(invoice);
-//        invoiceDAO.updateStatus(invoice);
-//    }
 
     public void deleteInvoice(Invoice invoice) {
         invoiceDAO.delete(invoice);

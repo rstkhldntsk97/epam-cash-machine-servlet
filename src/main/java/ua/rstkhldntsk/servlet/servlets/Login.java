@@ -19,6 +19,8 @@ public class Login extends HttpServlet {
 
     private static final Logger LOGGER = Logger.getLogger(Login.class);
     private UserService userService = new UserService();
+
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }

@@ -19,12 +19,6 @@ public class UpdateInvoice extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        HttpSession session = req.getSession();
-//        Invoice invoice = (Invoice)session.getAttribute("invoice");
-//
-//
-//        invoiceService.closeInvoice(invoice);
-//        doGet(req, resp);
         HttpSession session = req.getSession();
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
         Invoice invoice = (Invoice)session.getAttribute("invoice");
@@ -32,12 +26,15 @@ public class UpdateInvoice extends HttpServlet {
         invoice.setStatus(status);
         if (status.equals("CLOSED")) {
             invoiceService.updateInvoice(invoice);
+            session.removeAttribute("invoice");
             session.setAttribute("message", "invoice is successfully closed");
             req.getRequestDispatcher("/home.jsp").forward(req, resp);
         } else if (status.equals("DECLINED")) {
             invoiceService.updateInvoice(invoice);
             session.setAttribute("message", "invoice is successfully declined");
+            session.removeAttribute("invoice");
             req.getRequestDispatcher("/home.jsp").forward(req, resp);
         }
     }
+
 }

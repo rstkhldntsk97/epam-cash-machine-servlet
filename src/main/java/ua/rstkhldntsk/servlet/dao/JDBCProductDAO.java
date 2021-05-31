@@ -55,8 +55,24 @@ public class JDBCProductDAO implements ProductDAO {
 
 
     @Override
-    public boolean update(Product model) {
-        throw new UnsupportedOperationException();
+    public boolean update(Product product) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(UPDATE_PRODUCT);
+            preparedStatement.setInt(1, product.getQuantity());
+            preparedStatement.setLong(2, product.getCode());
+            if (preparedStatement.executeUpdate() != 1) {
+                return false;
+            }
+        } catch (SQLException e) {
+            return false;
+        } finally {
+            close(preparedStatement);
+            close(connection);
+        }
+        return true;
     }
 
     @Override
@@ -76,11 +92,6 @@ public class JDBCProductDAO implements ProductDAO {
             resultSet = preparedStatement.executeQuery();
             ProductMapper mapper = new ProductMapper();
             while (resultSet.next()) {
-//                Long code = resultSet.getLong("code");
-//                String name = resultSet.getString("name");
-//                BigDecimal price = resultSet.getBigDecimal("price");
-//                Integer quantity = resultSet.getInt("quantity");
-//                products.add(new Product(code, name, price, quantity));
                 products.add(mapper.extractFromResultSet(resultSet));
             }
             return products;
@@ -106,11 +117,6 @@ public class JDBCProductDAO implements ProductDAO {
             resultSet = preparedStatement.executeQuery();
             ProductMapper mapper = new ProductMapper();
             if (resultSet.next()) {
-//                Long id = resultSet.getLong("code");
-//                BigDecimal price = resultSet.getBigDecimal("price");
-//                Integer quantity = resultSet.getInt("quantity");
-//                Product product = new Product(id, name, price, quantity);
-//                result = Optional.of(product);
                 result = Optional.of(mapper.extractFromResultSet(resultSet));
             }
         } catch (SQLException e) {
@@ -136,11 +142,6 @@ public class JDBCProductDAO implements ProductDAO {
             resultSet = preparedStatement.executeQuery();
             ProductMapper mapper = new ProductMapper();
             if (resultSet.next()) {
-//                String name = resultSet.getString("name");
-//                BigDecimal price = resultSet.getBigDecimal("price");
-//                Integer quantity = resultSet.getInt("quantity");
-//                Product product = new Product(code, name, price, quantity);
-//                result = Optional.of(product);
                 result = Optional.of(mapper.extractFromResultSet(resultSet));
             }
         } catch (SQLException e) {
