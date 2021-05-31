@@ -65,13 +65,12 @@ public class Invoice {
 
     @Override
     public String toString() {
-        return "Invoice{" +
-                "id=" + id +
-                ", total=" + total +
-                ", user=" + user.getId() + user.getUsername() +
-                ", status='" + status + '\'' +
-                ", createdAt=" + createdAt +
-                ", products=" + products +
-                '}';
+        return "Invoice №" + id +
+                ", total " + total +
+                ", user " + user.getUsername() +
+                ", status " + status +
+                ", created date " + createdAt +
+                ", products " + (products.toString().replaceAll("=", " "));
     }
+
 }

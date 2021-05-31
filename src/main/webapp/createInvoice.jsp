@@ -17,6 +17,14 @@
 <br/>
 <br/>
 <div class="container">
+    <c:if test="${message ne null}">
+        <div class="alert alert-dismissible alert-${type}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="close" aria-hidden="true">&times;</button>
+            <span>${message}</span>
+        </div>
+    </c:if>
+    <c:remove var="message" scope="session"/>
+    <c:remove var="type" scope="session"/>
     <table>
         <form class="form-signin" action="${pageContext.request.contextPath}/createInvoice" method="post">
             <fmt:message key="check.product.code"/><br/>
@@ -30,8 +38,9 @@
                     key="cashier.button.add.product.to.invoice"/></button>
         </form>
         <br/>
-        <form class="form-signin" action="${pageContext.request.contextPath}/closeInvoice" method="post">
-            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
+        <form class="form-signin" action="${pageContext.request.contextPath}/updateInvoice" method="post">
+
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><%session.setAttribute("status","CLOSED");%><fmt:message
                     key="cashier.button.close.invoice"/></button>
         </form>
     </table>

@@ -4,15 +4,15 @@ import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.InvoiceMapper;
 import ua.rstkhldntsk.servlet.dao.mappers.UserMapper;
+import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.models.Invoice;
+import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.models.User;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static ua.rstkhldntsk.servlet.constants.SQLQueries.*;
 
@@ -37,34 +37,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
             InvoiceMapper invoiceMapper = new InvoiceMapper();
-            Invoice invoice = new Invoice();
-            if (resultSet.next()) {
-                invoice = invoiceMapper.extractFromResultSet(resultSet);
-            }
-//        Connection connection = null;
-//        PreparedStatement preparedStatement = null;
-//        ResultSet resultSet = null;
-//        Invoice invoice = new Invoice();
-//        try {
-//            connection = dataSource.getConnection();
-//            preparedStatement = connection.prepareStatement(FIND_INVOICE_BY_ID);
-//            resultSet = preparedStatement.executeQuery();
-//            ProductMapper productMapper = new ProductMapper();
-//            UserMapper userMapper = new UserMapper();
-//            while (resultSet.next()) {
-//                String status = resultSet.getString("status");
-//                Date createdAt = resultSet.getDate("create_at");
-//                Float productPrice = resultSet.getFloat("price");
-//                Integer quantityInInvoice = resultSet.getInt("quantity_in_invoice");
-//                User user = userMapper.extractFromResultSet(resultSet);
-//
-//                invoice.setId(id);
-//                invoice.setUser(user);
-//                invoice.setCreatedAt(createdAt);
-//                invoice.setStatus(status);
-//                invoice.setTotal(productPrice * quantityInInvoice);
-//                invoice.getProducts().put(productMapper.extractProductFromInvoiceResultSet(resultSet), resultSet.getInt("quantity_in_invoice"));
-//            }
+            Invoice invoice = invoiceMapper.extractFromResultSet(resultSet);
             return Optional.of(invoice);
         } catch (SQLException e) {
             throw new IllegalStateException(e);
@@ -99,17 +72,62 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
         }
     }
 
+//    @Override
+//    public boolean updateTotal(Invoice invoice) {
+//        Connection connection = null;
+//        PreparedStatement preparedStatement = null;
+//        try {
+//            connection = dataSource.getConnection();
+//            preparedStatement = connection.prepareStatement(UPDATE_INVOICE_TOTAL);
+//            preparedStatement.setLong(1, invoice.getId());
+//            preparedStatement.setLong(2, invoice.getId());
+//            if (preparedStatement.executeUpdate() != 1) {
+//                return false;
+//            }
+//        } catch (SQLException e) {
+//            LOGGER.debug("Invoice " + invoice.getId() + " is closed");
+//            return false;
+//        } finally {
+//            close(preparedStatement);
+//            close(connection);
+//        }
+//        return true;
+//    }
+//    @Override
+//    public boolean updateStatus(Invoice invoice) {
+//        Connection connection = null;
+//        PreparedStatement preparedStatement = null;
+//        try {
+//            connection = dataSource.getConnection();
+//            preparedStatement = connection.prepareStatement(UPDATE_INVOICE_STATUS);
+//            preparedStatement.setString(1, invoice.getStatus());
+//            preparedStatement.setLong(2, invoice.getId());
+//            if (preparedStatement.executeUpdate() != 1) {
+//                return false;
+//            }
+//            LOGGER.debug("Invoice " + invoice.getId() + " is closed");
+//        } catch (SQLException e) {
+//            LOGGER.debug("Exc in updateStatusToClosed");
+//            return false;
+//        } finally {
+//            close(preparedStatement);
+//            close(connection);
+//        }
+//        return true;
+//    }
+
     @Override
     public boolean update(Invoice invoice) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(UPDATE_INVOICE_TOTAL);
-            preparedStatement.setLong(1 , invoice.getId());
-            preparedStatement.setLong(2 , invoice.getId());
+            preparedStatement = connection.prepareStatement(UPDATE_INVOICE);
+            preparedStatement.setLong(1, invoice.getId());
+            preparedStatement.setString(2, invoice.getStatus());
+            preparedStatement.setLong(3, invoice.getId());
             if (preparedStatement.executeUpdate() != 1) {
-                LOGGER.debug("error in update total of invoice");
+                LOGGER.debug("Something went wrong in updating invoice");
                 return false;
             }
         } catch (SQLException e) {
@@ -122,8 +140,24 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
     }
 
     @Override
-    public void delete(Integer id) {
-
+    public boolean delete(Invoice invoice) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+        try {
+            con = dataSource.getConnection();
+            stmt = con.prepareStatement(DELETE_INVOICE);
+            stmt.setLong(1, invoice.getId());
+            if (stmt.executeUpdate() != 1) {
+                return false;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Can't delete invoice:" + invoice.getId());
+            return false;
+        } finally {
+            close(stmt);
+            close(con);
+        }
+        return true;
     }
 
     @Override
@@ -186,7 +220,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
     }
 
     @Override
-    public void addProduct(Long code, Integer quantity, Invoice invoice, BigDecimal price) {
+    public void addProduct(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws ItemExistException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -204,34 +238,12 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             }
         } catch (SQLException e) {
             LOGGER.debug("can't add this product");
+            throw new ItemExistException();
         } finally {
             close(generatedKeys);
             close(preparedStatement);
             close(connection);
         }
-    }
-
-    @Override
-    public boolean updateStatusToClosed(Invoice invoice) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(UPDATE_INVOICE_STATUS);
-//            preparedStatement.setString(1, invoice.getStatus());
-            preparedStatement.setLong(1 , invoice.getId());
-            if (preparedStatement.executeUpdate() != 1) {
-                return false;
-            }
-            LOGGER.debug("Invoice " + invoice.getId() + " is closed");
-        } catch (SQLException e) {
-            LOGGER.debug("Exc in updateStatusToClosed");
-            return false;
-        } finally {
-            close(preparedStatement);
-            close(connection);
-        }
-        return true;
     }
 
     @Override
@@ -259,51 +271,5 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
         }
         return invoice1;
     }
-
-    @Override
-    public boolean updateTotal(Invoice invoice) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(UPDATE_INVOICE_TOTAL);
-            preparedStatement.setLong(1, invoice.getId());
-            preparedStatement.setLong(2, invoice.getId());
-            if (preparedStatement.executeUpdate() != 1) {
-                return false;
-            }
-        } catch (SQLException e) {
-            LOGGER.debug("Invoice " + invoice.getId() + " is closed");
-            return false;
-        } finally {
-            close(preparedStatement);
-            close(connection);
-        }
-        return true;
-    }
-//
-//    public Integer findProductQuantityInInvoice(Product product, Invoice invoice){
-//        Connection con = null;
-//        PreparedStatement preparedStatement = null;
-//        ResultSet resultSet = null;
-//        try {
-//            con = dataSource.getConnection();
-//            preparedStatement = con.prepareStatement(FIND_INVOICE_BY_USER_ID_AND_INVOICE_ID);
-//            preparedStatement.setLong(1 , user.getId());
-//            preparedStatement.setLong(1 , invoice.getId());
-//            resultSet = preparedStatement.executeQuery();
-//            InvoiceMapper mapper = new InvoiceMapper();
-//            while (resultSet.next()) {
-//                invoice1 = mapper.extractFromResultSet(resultSet);
-//            }
-//        } catch (SQLException e) {
-//            throw new IllegalStateException();
-//        } finally {
-//            close(resultSet);
-//            close(preparedStatement);
-//            close(con);
-//        }
-//        return invoice1;
-//    }
 
 }

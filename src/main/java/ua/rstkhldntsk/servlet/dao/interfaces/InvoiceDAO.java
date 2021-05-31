@@ -1,5 +1,6 @@
 package ua.rstkhldntsk.servlet.dao.interfaces;
 
+import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
 
@@ -16,11 +17,11 @@ public interface InvoiceDAO extends GenericDAO<Invoice> {
      */
     List<Invoice> findAllByUser(User user);
 
-    void addProduct(Long code, Integer quantity, Invoice invoice, BigDecimal price);
+    void addProduct(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws ItemExistException;
 
-    boolean updateStatusToClosed(Invoice invoice);
+//    boolean updateStatus(Invoice invoice);
+//
+//    boolean updateTotal(Invoice invoice);
 
     Invoice findByUserAndInvoiceId(User user, Invoice invoice);
-
-    boolean updateTotal(Invoice invoice);
 }

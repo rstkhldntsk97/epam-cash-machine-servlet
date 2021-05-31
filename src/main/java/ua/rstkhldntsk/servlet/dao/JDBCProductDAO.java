@@ -3,6 +3,7 @@ package ua.rstkhldntsk.servlet.dao;
 import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.ProductMapper;
+import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.services.InvoiceService;
 
@@ -28,7 +29,7 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
     @Override
-    public void create(Product product) {
+    public void create(Product product) throws ItemExistException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -44,7 +45,7 @@ public class JDBCProductDAO implements ProductDAO {
                 product.setCode(generatedKeys.getLong(1));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ItemExistException();
         } finally {
             close(generatedKeys);
             close(preparedStatement);
@@ -59,7 +60,7 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
     @Override
-    public void delete(Integer id) {
+    public boolean delete(Product product) {
         throw new UnsupportedOperationException();
     }
 

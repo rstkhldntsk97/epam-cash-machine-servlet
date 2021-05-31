@@ -1,4 +1,4 @@
-package ua.rstkhldntsk.servlet.servlets.senior;
+package ua.rstkhldntsk.servlet.servlets;
 
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.services.InvoiceService;
@@ -29,8 +29,8 @@ public class EditInvoice extends HttpServlet {
         HttpSession session = req.getSession();
         String invoiceId = req.getParameter("id");
         Invoice invoiceToEdit = invoiceService.findById(Long.parseLong(invoiceId));
-//        session.setAttribute("invoiceToEdit", invoiceToEdit);
-        req.setAttribute("invoiceToEdit", invoiceToEdit);
+        session.setAttribute("invoice", invoiceToEdit);
+        req.setAttribute("invoice", invoiceToEdit);
         req.getRequestDispatcher("/currentInvoice.jsp").forward(req, resp);
     }
 }

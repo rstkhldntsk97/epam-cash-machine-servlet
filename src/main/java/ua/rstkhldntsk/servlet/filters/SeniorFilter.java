@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/senior", "/seniorCashier.jsp", "/editInvoice", "/createReports", "/reportX"})
+@WebFilter(urlPatterns = {"/senior", "/seniorCashier.jsp", "/editInvoice", "/createReports", "/reportX", "/reportZ"})
 public class SeniorFilter implements Filter {
 
     @Override

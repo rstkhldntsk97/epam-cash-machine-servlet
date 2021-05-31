@@ -15,16 +15,16 @@ public class InvoiceMapper implements ObjectMapper<Invoice> {
     public Invoice extractFromResultSet(ResultSet resultSet) throws SQLException {
         try {
             Invoice invoice = new Invoice();
-            invoice.setId(resultSet.getLong("id"));
-            invoice.setStatus(resultSet.getString("status"));
-            invoice.setCreatedAt(resultSet.getDate("created_at"));
-            invoice.setUser(userMapper.extractFromResultSet(resultSet));
-            Product product = productMapper.extractFromResultSet(resultSet);
-            int quantityInInvoice = resultSet.getInt("quantity_in_invoice");
-            invoice.getProducts().put(product, quantityInInvoice);
-            invoice.setTotal(resultSet.getFloat("total_price"));
-//            invoice.setTotal(invoice.getProducts().values().stream().reduce(0, Integer::sum));
-
+            while (resultSet.next()) {
+                invoice.setId(resultSet.getLong("id"));
+                invoice.setStatus(resultSet.getString("status"));
+                invoice.setCreatedAt(resultSet.getDate("created_at"));
+                invoice.setUser(userMapper.extractFromResultSet(resultSet));
+                Product product = productMapper.extractFromResultSet(resultSet);
+                int quantityInInvoice = resultSet.getInt("quantity_in_invoice");
+                invoice.getProducts().put(product, quantityInInvoice);
+                invoice.setTotal(resultSet.getFloat("total_price"));
+            }
             return invoice;
         } catch (SQLException e) {
             throw new IllegalStateException(e);

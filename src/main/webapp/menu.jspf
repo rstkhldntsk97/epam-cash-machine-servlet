@@ -43,7 +43,7 @@
 
             <c:if test="${user.role eq 'COMMODITY_EXPERT'}">
                 <li class="nav-item active">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/stock"><fmt:message
+                    <a class="nav-link" href="${pageContext.request.contextPath}/commodityExpert"><fmt:message
                             key="menu.button.expert.stock"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
@@ -57,7 +57,7 @@
 
             <c:if test="${user.role eq 'ADMIN'}">
                 <li class="nav-item active">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/users"><fmt:message
+                    <a class="nav-link" href="${pageContext.request.contextPath}/admin"><fmt:message
                             key="menu.button.admin.my.users"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>

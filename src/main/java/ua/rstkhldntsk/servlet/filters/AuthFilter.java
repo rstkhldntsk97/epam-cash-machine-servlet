@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter(urlPatterns = {"/createUser", "/commodityExpert", "/cashier", "/createInvoice", "/seniorCashier.jsp", "/closeInvoice", "/senior", "/admin.jsp",
-"/users", "/users.jsp"})
+"/users", "/users.jsp", "/home.jsp"})
 public class AuthFilter implements Filter {
 
 

@@ -75,8 +75,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product with code " + code +
-                ", name '" + name + '\'' +
-                ", price=" + price;
+        return name;
     }
 }

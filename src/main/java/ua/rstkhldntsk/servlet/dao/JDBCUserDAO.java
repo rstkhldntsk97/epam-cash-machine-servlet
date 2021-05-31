@@ -2,6 +2,7 @@ package ua.rstkhldntsk.servlet.dao;
 
 import ua.rstkhldntsk.servlet.dao.interfaces.UserDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.UserMapper;
+import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.models.User;
 
 import javax.sql.DataSource;
@@ -45,7 +46,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public void create(User user) {
+    public void create(User user) throws ItemExistException {
         Connection con = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -61,7 +62,7 @@ public class JDBCUserDAO implements UserDAO {
                 user.setId(generatedKeys.getLong(1));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new ItemExistException();
         } finally {
             close(generatedKeys);
             close(preparedStatement);
@@ -75,8 +76,8 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public void delete(Integer id) {
-
+    public boolean delete(User user) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -44,14 +44,6 @@
                 </table>
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message key="form.invoice.edit"/></button>
             </form>
-            <br/>
-            <form class="form-signin" action="${pageContext.request.contextPath}/declineInvoice" method="post">
-                <fmt:message key="form.decline.invoice.message"/><br/>
-                <table>
-                    <input type="id" name="id" class="form-control" placeholder="<fmt:message key="form.invoice.id"/>"><br/>
-                </table>
-                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message key="form.invoice.edit"/></button>
-            </form>
         </table>
     </article>
 </div>

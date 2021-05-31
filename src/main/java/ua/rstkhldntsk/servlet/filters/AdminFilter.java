@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/createUser","/createUser.jsp", "/users", "/users.jsp"})
+@WebFilter(urlPatterns = {"/createUser","/createUser.jsp", "/users", "/users.jsp", "/admin"})
 public class AdminFilter implements Filter {
 
 

@@ -1,7 +1,8 @@
-package ua.rstkhldntsk.servlet.servlets.cashier;
+package ua.rstkhldntsk.servlet.servlets;
 
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
+import ua.rstkhldntsk.servlet.services.InvoiceService;
 import ua.rstkhldntsk.servlet.services.ProductService;
 
 import javax.servlet.ServletException;
@@ -16,23 +17,16 @@ import java.io.IOException;
 @WebServlet("/cashier")
 public class Cashier extends HttpServlet {
 
-
-    ProductService productService = ProductService.getInstance();
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        req.getRequestDispatcher("/cashier.jsp").forward(req, resp);
-    }
+    InvoiceService invoiceService = InvoiceService.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Invoice invoice = new Invoice();
         HttpSession session = req.getSession();
-//        invoice.setUser((User) session.getAttribute("user"));
-
+        User user = (User)session.getAttribute("user");
+        Invoice invoice = new Invoice();
+        invoice.setUser(user);
         session.setAttribute("invoice", invoice);
-
-        req.getRequestDispatcher("/createInvoice").forward(req, resp);
+        invoiceService.createNewInvoice(invoice);
+        req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
     }
 }

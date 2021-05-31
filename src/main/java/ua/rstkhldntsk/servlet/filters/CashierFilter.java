@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/closeInvoice","/cashier", "/createInvoice", "/createInvoice.jsp", "/closeInvoice.jsp", "/cashier.jsp"})
+@WebFilter(urlPatterns = {"/closeInvoice", "/cashier", "/createInvoice", "/createInvoice.jsp", "/closeInvoice.jsp", "/cashier.jsp", "/editInvoice", "/editInvoice.jsp"})
 public class CashierFilter implements Filter {
 
     @Override

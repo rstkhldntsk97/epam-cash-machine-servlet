@@ -5,6 +5,7 @@ import ua.rstkhldntsk.servlet.dao.DaoFactory;
 import ua.rstkhldntsk.servlet.dao.JDBCProductDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
+import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.exceptions.ProductNotExist;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.utils.Page;
@@ -41,7 +42,7 @@ public class ProductService {
     }
 
 
-    public void createProduct(Product product) {
+    public void createProduct(Product product) throws ItemExistException {
         productDAO.create(product);
     }
 

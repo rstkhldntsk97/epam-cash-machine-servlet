@@ -5,6 +5,7 @@ import ua.rstkhldntsk.servlet.dao.DaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
 import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
+import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.exceptions.NotEnoughProduct;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
@@ -33,14 +34,14 @@ public class InvoiceService {
 
     public void createNewInvoice(Invoice invoice) {
         InvoiceDAO invoiceDao = daoFactory.createInvoiceDao();
-        invoiceDao.create(invoice);
+        try {
+            invoiceDao.create(invoice);
+        } catch (ItemExistException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Invoice getInvoiceById(Long id) {
-        return invoiceDAO.findById(id).get();
-    }
-
-    public void addProductToInvoice(String code, String quantity, Invoice invoice, BigDecimal price) throws NotEnoughProduct {
+    public void addProductToInvoice(String code, String quantity, Invoice invoice, BigDecimal price) throws NotEnoughProduct, ItemExistException {
         Long parsedCode = Long.parseLong(code);
         Integer parsedQuantity = Integer.parseInt(quantity);
 
@@ -54,15 +55,25 @@ public class InvoiceService {
         }
     }
 
-    public void closeInvoice(Invoice invoice) {
-        invoice = invoiceDAO.findById(invoice.getId()).get();
-        invoiceDAO.updateTotal(invoice);
-        invoiceDAO.updateStatusToClosed(invoice);
+    public void updateInvoice(Invoice invoice) {
+//        invoice = invoiceDAO.findById(invoice.getId()).get();
+//        invoiceDAO.updateTotal(invoice);
+//        invoiceDAO.updateStatus(invoice);
+        invoiceDAO.update(invoice);
+    }
+
+//    public void closeInvoice(Invoice invoice) {
+//        invoice = invoiceDAO.findById(invoice.getId()).get();
+//        invoiceDAO.updateTotal(invoice);
+//        invoiceDAO.updateStatus(invoice);
+//    }
+
+    public void deleteInvoice(Invoice invoice) {
+        invoiceDAO.delete(invoice);
     }
 
     public List<Invoice> getAllInvoices() {
-        InvoiceDAO invoiceDao = daoFactory.createInvoiceDao();
-        return invoiceDao.findAll();
+        return invoiceDAO.findAll();
     }
 
     public BigDecimal countPriceForProductByQuantity(Integer quantity, Long productCode) {

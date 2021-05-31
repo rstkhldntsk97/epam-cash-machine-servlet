@@ -1,5 +1,7 @@
 package ua.rstkhldntsk.servlet.dao.interfaces;
 
+import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,11 +13,11 @@ public interface GenericDAO<T> {
 
     Optional<T> findById(Long id);
 
-    void create(T model);
+    void create(T model) throws ItemExistException;
 
     boolean update(T model);
 
-    void delete(Integer id);
+    boolean delete(T model);
 
     List<T> findAll();
 
