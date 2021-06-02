@@ -1,10 +1,12 @@
 package ua.rstkhldntsk.servlet.servlets;
 
 
+import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.services.ProductService;
 import ua.rstkhldntsk.servlet.utils.Page;
+import ua.rstkhldntsk.servlet.utils.Validator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,11 +45,21 @@ public class CommodityExpert extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
+        ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
         String nameEN = req.getParameter("nameEN");
         String nameUA = req.getParameter("nameUA");
-        BigDecimal price = BigDecimal.valueOf(Long.parseLong(req.getParameter("price")));
-        Integer quantity = Integer.parseInt(req.getParameter("quantity"));
-        ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
+        String priceStr = req.getParameter("price");
+        String  quantityStr = req.getParameter("quantity");
+        BigDecimal price = null;
+        Integer quantity = null;
+        try {
+            nameEN = Validator.productNameValidate(nameEN);
+            price = Validator.productPriceValidate(priceStr);
+            quantity = Validator.productQuantityValidate(quantityStr);
+        } catch (InvalidInput invalidInput) {
+            session.setAttribute("message", resourceBundle.getString("invalid.input"));
+        }
+
         try {
             productService.createProduct(new Product(nameEN, price, quantity), nameUA, nameEN);
             session.setAttribute("message", resourceBundle.getString("create.product.success"));

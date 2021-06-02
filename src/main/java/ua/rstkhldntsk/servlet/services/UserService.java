@@ -40,7 +40,7 @@ public class UserService {
         return page;
     }
 
-    public void create(User user) throws ProductAlreadyExistException {
+    public void create(User user) {
         userDAO.create(user);
     }
 

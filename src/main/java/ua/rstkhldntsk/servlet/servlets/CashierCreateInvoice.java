@@ -1,6 +1,7 @@
 package ua.rstkhldntsk.servlet.servlets;
 
 import org.apache.log4j.Logger;
+import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.exceptions.NotEnoughProduct;
 import ua.rstkhldntsk.servlet.exceptions.ProductNotExist;
@@ -8,6 +9,7 @@ import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.services.InvoiceService;
 import ua.rstkhldntsk.servlet.services.ProductService;
+import ua.rstkhldntsk.servlet.utils.Validator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,19 +33,20 @@ public class CashierCreateInvoice extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
-        String parameter = req.getParameter("code");
-        String quantity = req.getParameter("quantity");
+        String parameter1 = req.getParameter("code");
+        String parameter2 = req.getParameter("quantity");
 
         Product product = null;
         Invoice invoice = (Invoice) session.getAttribute("invoice");
 
         try {
-            Long code = Long.parseLong(parameter);
+            Long code = Validator.productCodeValidate(parameter1);
+            Integer quantity = Validator.productQuantityValidate(parameter2);
             //try to find product by code
             try {
-                product = productService.findProductByCode(Long.parseLong(parameter));
-                BigDecimal price = invoiceService.countPriceForProductByQuantity(Integer.parseInt(quantity), Long.parseLong(parameter));
-                invoiceService.addProductToInvoice(code, Integer.parseInt(quantity), invoice, price);
+                product = productService.findProductByCode(code);
+                BigDecimal price = invoiceService.countPriceForProductByQuantity(quantity, code);
+                invoiceService.addProductToInvoice(code, quantity, invoice, price);
                 invoiceService.updateInvoice(invoice);
                 session.setAttribute("message", resourceBundle.getString("product.successfully.added"));
                 LOGGER.debug(product + " was successfully added to invoice in quantity of " + quantity);
@@ -62,14 +65,15 @@ public class CashierCreateInvoice extends HttpServlet {
             }
             session.getAttribute("user");
             req.setAttribute("productByCodeFromServer", product);
-//            req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
             resp.sendRedirect(req.getContextPath() + "/createInvoice.jsp");
         } catch (NumberFormatException e) {
             //try to find product by name
             try {
-                product = productService.findProductByName(parameter);
-                BigDecimal price = invoiceService.countPriceForProductByQuantity(Integer.parseInt(quantity), product.getCode());
-                invoiceService.addProductToInvoice(product.getCode(), Integer.parseInt(quantity), invoice, price);
+                String name = Validator.productNameValidate(parameter1);
+                Integer quantity = Validator.productQuantityValidate(parameter2);
+                product = productService.findProductByName(name);
+                BigDecimal price = invoiceService.countPriceForProductByQuantity(quantity, product.getCode());
+                invoiceService.addProductToInvoice(product.getCode(), quantity, invoice, price);
                 session.setAttribute("message", resourceBundle.getString("product.successfully.added"));
                 LOGGER.debug(product + " was successfully added to invoice in quantity of " + quantity);
             } catch (NotEnoughProduct notEnoughProduct) {
@@ -81,13 +85,15 @@ public class CashierCreateInvoice extends HttpServlet {
             } catch (ProductAlreadyExistException e1) {
                 session.setAttribute("message", resourceBundle.getString("product.already.in.invoice"));
                 LOGGER.debug("Product is already in invoice");
-            } catch (ProductNotExist productNotExist) {
+            } catch (ProductNotExist | InvalidInput productNotExist) {
                 productNotExist.printStackTrace();
             }
             session.getAttribute("user");
             req.setAttribute("productByCodeFromServer", product);
-//            req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
             resp.sendRedirect(req.getContextPath() + "/createInvoice.jsp");
+        } catch (InvalidInput invalidInput) {
+            session.setAttribute("message", resourceBundle.getString("invalid.input"));
+            req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
         }
     }
 }

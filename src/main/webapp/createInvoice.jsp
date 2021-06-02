@@ -42,10 +42,6 @@
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><%session.setAttribute("status","CLOSED");%><fmt:message
                     key="button.close.invoice"/></button>
         </form>
-        <form class="form-signin" action="${pageContext.request.contextPath}/updateInvoice" method="post">
-<%--            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><%session.setAttribute("status","DECLINED");%><fmt:message--%>
-<%--                    key="button.decline.invoice"/></button>--%>
-<%--        </form>--%>
     </table>
 </div>
 </body>

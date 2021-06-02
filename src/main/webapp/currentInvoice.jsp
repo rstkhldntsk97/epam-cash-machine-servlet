@@ -16,7 +16,7 @@
 <br/>
 <div class="card bg-light">
     <article class="card-body mx-auto" style="max-width: 400px;">
-        <h4 class="card-title mt-3 text-center">><fmt:message key="invoice.#"/> ${invoice.id}</h4>
+        <h4 class="card-title mt-3 text-center">><fmt:message key="invoice.no"/> ${invoice.id}</h4>
         <table border="1" cellpadding="5" cellspacing="5">
             <tr>
                 <th><fmt:message key="cashier.title"/></th>

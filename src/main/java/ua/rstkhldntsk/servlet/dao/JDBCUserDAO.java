@@ -1,5 +1,6 @@
 package ua.rstkhldntsk.servlet.dao;
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.interfaces.UserDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.UserMapper;
 import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
@@ -16,7 +17,7 @@ import static ua.rstkhldntsk.servlet.constants.SQLQueries.*;
 public class JDBCUserDAO implements UserDAO {
 
     private DataSource dataSource;
-
+    private static final Logger LOGGER = Logger.getLogger(JDBCUserDAO.class);
     public JDBCUserDAO(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -46,7 +47,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public void create(User user) throws ProductAlreadyExistException {
+    public void create(User user) {
         Connection con = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -62,7 +63,7 @@ public class JDBCUserDAO implements UserDAO {
                 user.setId(generatedKeys.getLong(1));
             }
         } catch (SQLException e) {
-            throw new ProductAlreadyExistException();
+            LOGGER.error(e);
         } finally {
             close(generatedKeys);
             close(preparedStatement);

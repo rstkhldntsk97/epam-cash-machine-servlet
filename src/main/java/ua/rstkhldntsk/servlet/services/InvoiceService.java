@@ -33,11 +33,7 @@ public class InvoiceService {
     }
 
     public void createNewInvoice(Invoice invoice) {
-        try {
-            invoiceDAO.create(invoice);
-        } catch (ProductAlreadyExistException e) {
-            e.printStackTrace();
-        }
+        invoiceDAO.create(invoice);
     }
 
     public void addProductToInvoice(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws NotEnoughProduct, ProductAlreadyExistException {

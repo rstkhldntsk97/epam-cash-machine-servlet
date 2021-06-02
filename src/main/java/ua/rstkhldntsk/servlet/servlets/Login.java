@@ -1,9 +1,11 @@
 package ua.rstkhldntsk.servlet.servlets;
 
 import org.apache.log4j.Logger;
+import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.utils.Encoder;
 import ua.rstkhldntsk.servlet.services.UserService;
+import ua.rstkhldntsk.servlet.utils.Validator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +32,14 @@ public class Login extends HttpServlet {
         HttpSession session = req.getSession();
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
         String username = req.getParameter("username");
-        String password = Encoder.encodePassword(req.getParameter("password"));
+        String password = req.getParameter("password");
+        try {
+            username = Validator.usernameValidate(username);
+            password = Validator.passwordValidate(Encoder.encodePassword(password));
+        } catch (InvalidInput invalidInput) {
+            invalidInput.printStackTrace();
+        }
+
         User user = userService.login(username, password);
         String role = user.getRole();
         if (role == null) {

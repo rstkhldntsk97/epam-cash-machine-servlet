@@ -29,7 +29,7 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
     @Override
-    public void create(Product product) throws ProductAlreadyExistException {
+    public void create(Product product) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -45,7 +45,6 @@ public class JDBCProductDAO implements ProductDAO {
             }
         } catch (SQLException e) {
             LOGGER.error(e);
-            throw new ProductAlreadyExistException();
         } finally {
             close(generatedKeys);
             close(preparedStatement);

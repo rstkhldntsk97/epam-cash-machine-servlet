@@ -1,32 +1,64 @@
 package ua.rstkhldntsk.servlet.utils;
 
+import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
+
+import java.math.BigDecimal;
+
 public class Validator {
 
-    public void productCodeValidate() {
-
+    public static Long productCodeValidate(String code) throws InvalidInput {
+        String pattern = "[0-9]+";
+        if (!code.matches(pattern)) {
+            throw new InvalidInput();
+        }
+        return Long.parseLong(code);
     }
 
-    public void productNameValidate() {
-
+    public static String productNameValidate(String name) throws InvalidInput {
+        String pattern = "[A-Za-zА-Яа-яЇЄїє0-9 ']+";
+        if (!name.matches(pattern)) {
+            throw new InvalidInput();
+        }
+        return name;
     }
 
-    public void productPriceValidate() {
-
+    public static BigDecimal productPriceValidate(String price) throws InvalidInput {
+        String pattern = "[0-9]+";
+        if (!price.matches(pattern)) {
+            throw new InvalidInput();
+        }
+        return BigDecimal.valueOf(Float.parseFloat(price));
     }
 
-    public void productQuantityValidate() {
-
+    public static Integer productQuantityValidate(String quantity) throws InvalidInput {
+        String pattern = "[0-9]+";
+        if (!quantity.matches(pattern)) {
+            throw new InvalidInput();
+        }
+        return Integer.parseInt(quantity);
     }
 
-    public void UsernameValidate() {
-
+    public static String usernameValidate(String username) throws InvalidInput {
+        String pattern = "[A-Za-z1]+";
+        if (!username.matches(pattern)) {
+            throw new InvalidInput();
+        }
+        return username;
     }
 
-    public void PasswordValidate() {
-
+    public static String passwordValidate(String password) throws InvalidInput{
+        String pattern = "[A-Za-z0-9]+";
+        if (!password.matches(pattern)) {
+            throw new InvalidInput();
+        }
+        return password;
     }
 
-    public void InvoiceIdValidate() {
-
+    public static Long invoiceIdValidate(String id) throws InvalidInput{
+        String pattern = "[0-9]+";
+        if (!id.matches(pattern)) {
+            throw new InvalidInput();
+        }
+        return Long.parseLong(id);
     }
 }
