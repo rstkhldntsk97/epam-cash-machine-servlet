@@ -24,8 +24,8 @@ public interface SQLQueries {
 
 
 
-    String FIND_PRODUCT_BY_NAME = "SELECT * FROM product WHERE name = ?";
-    String FIND_PRODUCT_BY_CODE = "SELECT * FROM product WHERE code = ?";
+    String FIND_PRODUCT_BY_NAME = "SELECT * FROM product JOIN productEN on product.code=productEN.product_code WHERE name = ?";
+    String FIND_PRODUCT_BY_CODE = "SELECT * FROM product JOIN productEN on product.code=productEN.product_code WHERE code = ?";
 
     //SQL queries for invoice and invoice_has_product tables
     String INSERT_NEW_INVOICE = "INSERT INTO invoice (user_id) VALUES (?)";
@@ -37,11 +37,12 @@ public interface SQLQueries {
     String SELECT_PRODUCTS_BY_INVOICE = "SELECT * FROM invoice_has_product JOIN product ON product.code = invoice_has_product.product_id WHERE invoice_id = ?";
     String FIND_INVOICE_BY_ID = "select * from invoice " +
             "join invoice_has_product on invoice.id = invoice_has_product.invoice_id " +
-            "join product on invoice_has_product.product_code = product.code " +
+            "join product on invoice_has_product.product_code = product.code JOIN productEN on product.code=productEN.product_code " +
             "join user on user.id = invoice.user_id where invoice.id = ?";
     String ADD_PRODUCT_TO_INVOICE = "INSERT INTO invoice_has_product (invoice_id, product_code, quantity_in_invoice, price) VALUES (?,?,?, ?)";
     String FIND_ALL_INVOICES = "select * from invoice join user on user.id = invoice.user_id where status = 'CLOSED'";
     String FIND_ALL_INVOICES_BY_USER = "select * from invoice join user on user.id = invoice.user_id where user.id = ?";
-    String FIND_INVOICE_BY_USER_ID_AND_INVOICE_ID = "select * from invoice join user on user.id = invoice.user_id join invoice_has_product on invoice.id = invoice_has_product.invoice_id join product on product.code = invoice_has_product.product_code where user.id = ? and invoice.id = ?";
+    String FIND_INVOICE_BY_USER_ID_AND_INVOICE_ID = "select * from invoice join user on user.id = invoice.user_id join invoice_has_product on invoice.id = invoice_has_product.invoice_id " +
+            "join product on product.code = invoice_has_product.product_code where user.id = ? and invoice.id = ?";
     String DELETE_INVOICE = "DELETE FROM invoice WHERE id = ?";
 }

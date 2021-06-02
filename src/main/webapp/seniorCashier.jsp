@@ -22,7 +22,7 @@
     <form action="${pageContext.request.contextPath}/editInvoice" method="get">
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block"><fmt:message
-                    key="senior.cashier.button.edit.invoice"/></button>
+                    key="button.edit.invoice"/></button>
         </div>
     </form>
 
@@ -30,7 +30,7 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block"><fmt:message
-                    key="senior.cashier.button.create.report.X"/></button>
+                    key="button.create.report.X"/></button>
         </div>
     </form>
 
@@ -38,7 +38,7 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block"><fmt:message
-                    key="senior.cashier.button.create.report.Z"/></button>
+                    key="button.create.report.Z"/></button>
         </div>
     </form>
 

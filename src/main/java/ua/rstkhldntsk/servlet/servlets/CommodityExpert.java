@@ -1,7 +1,7 @@
 package ua.rstkhldntsk.servlet.servlets;
 
 
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.services.ProductService;
 import ua.rstkhldntsk.servlet.utils.Page;
@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.ResourceBundle;
 
 @WebServlet("/commodityExpert")
@@ -25,6 +24,7 @@ public class CommodityExpert extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
+
         String lang = (String) session.getAttribute("lang");
         int page = 1;
         if(req.getParameter("page") != null) {
@@ -51,7 +51,7 @@ public class CommodityExpert extends HttpServlet {
         try {
             productService.createProduct(new Product(nameEN, price, quantity), nameUA, nameEN);
             session.setAttribute("message", resourceBundle.getString("create.product.success"));
-        } catch (ItemExistException e) {
+        } catch (ProductAlreadyExistException e) {
             session.setAttribute("message", resourceBundle.getString("product.exist"));
         }
         resp.sendRedirect(req.getContextPath() + "/home.jsp");

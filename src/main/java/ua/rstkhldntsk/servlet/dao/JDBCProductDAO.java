@@ -1,21 +1,22 @@
 package ua.rstkhldntsk.servlet.dao;
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.ProductMapper;
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.models.Product;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import static ua.rstkhldntsk.servlet.constants.SQLQueries.*;
 
 public class JDBCProductDAO implements ProductDAO {
 
+    private static final Logger LOGGER = Logger.getLogger(JDBCProductDAO.class);
     private DataSource dataSource;
 
     public JDBCProductDAO(DataSource dataSource) {
@@ -28,7 +29,7 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
     @Override
-    public void create(Product product) throws ItemExistException {
+    public void create(Product product) throws ProductAlreadyExistException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -43,7 +44,8 @@ public class JDBCProductDAO implements ProductDAO {
                 product.setCode(generatedKeys.getLong(1));
             }
         } catch (SQLException e) {
-            throw new ItemExistException();
+            LOGGER.error(e);
+            throw new ProductAlreadyExistException();
         } finally {
             close(generatedKeys);
             close(preparedStatement);
@@ -51,7 +53,7 @@ public class JDBCProductDAO implements ProductDAO {
         }
     }
 
-    public void createTranslateUA(Product product, String translate) throws ItemExistException {
+    public void createTranslateUA(Product product, String translate) throws ProductAlreadyExistException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -62,14 +64,15 @@ public class JDBCProductDAO implements ProductDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new ItemExistException();
+            LOGGER.error(e);
+            throw new ProductAlreadyExistException();
         } finally {
             close(preparedStatement);
             close(connection);
         }
     }
 
-    public void createTranslateEN(Product product, String translate) throws ItemExistException {
+    public void createTranslateEN(Product product, String translate) throws ProductAlreadyExistException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -80,7 +83,8 @@ public class JDBCProductDAO implements ProductDAO {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new ItemExistException();
+            LOGGER.error(e);
+            throw new ProductAlreadyExistException();
         } finally {
             close(preparedStatement);
             close(connection);
@@ -101,6 +105,7 @@ public class JDBCProductDAO implements ProductDAO {
                 return false;
             }
         } catch (SQLException e) {
+            LOGGER.error(e);
             return false;
         } finally {
             close(preparedStatement);
@@ -128,19 +133,21 @@ public class JDBCProductDAO implements ProductDAO {
             while (resultSet.next()) {
                 products.add(mapper.extractFromResultSet(resultSet));
             }
-            return products;
         } catch (SQLException e) {
-            throw new IllegalStateException(e);
+            LOGGER.error(e);
         } finally {
             close(resultSet);
             close(preparedStatement);
             close(connection);
         }
+        return products;
     }
 
 
     public List<Product> findAllByPage(Integer page, String lang) {
-
+        if (lang == null) {
+            lang = "EN";
+        }
         List<Product> products = new ArrayList<>();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -153,14 +160,14 @@ public class JDBCProductDAO implements ProductDAO {
             while (resultSet.next()) {
                 products.add(mapper.extractFromResultSet(resultSet));
             }
-            return products;
         } catch (SQLException e) {
-            throw new IllegalStateException(e);
+            LOGGER.error(e);
         } finally {
             close(resultSet);
             close(preparedStatement);
             close(connection);
         }
+        return products;
     }
 
     @Override
@@ -179,7 +186,7 @@ public class JDBCProductDAO implements ProductDAO {
                 result = Optional.of(mapper.extractFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-
+            LOGGER.error(e);
         } finally {
             close(resultSet);
             close(preparedStatement);
@@ -204,7 +211,7 @@ public class JDBCProductDAO implements ProductDAO {
                 result = Optional.of(mapper.extractFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-
+            LOGGER.error(e);
         } finally {
             close(resultSet);
             close(preparedStatement);

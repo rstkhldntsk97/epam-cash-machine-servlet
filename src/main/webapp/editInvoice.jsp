@@ -21,8 +21,8 @@
             <tr>
                 <th><fmt:message key="form.invoice.id"/></th>
                 <th><fmt:message key="cashier.title"/></th>
-                <th><fmt:message key="form.invoice.total.price"/></th>
-                <th><fmt:message key="form.invoice.date"/></th>
+                <th><fmt:message key="invoice.total.price"/></th>
+                <th><fmt:message key="invoice.date"/></th>
                 <th><fmt:message key="form.invoice.status"/></th>
             </tr>
             <c:forEach items="${invoicesFromServer}" var="invoice">

@@ -35,8 +35,8 @@
             <h4 class="card-title mt-3 text-center"><fmt:message key="admin.create.new.user"/></h4>
             <form class="form-signin" action="${pageContext.request.contextPath}/admin" method="post">
 
-                <input type="username" name="username" class="form-control" placeholder="<fmt:message key="form.username"/>" required>
-                <input type="password" name="password" class="form-control" placeholder="<fmt:message key="form.password"/>" required>
+                <input type="username" name="username" class="form-control" placeholder="<fmt:message key="username"/>" required>
+                <input type="password" name="password" class="form-control" placeholder="<fmt:message key="password"/>" required>
                 <select name="role" id="role" multiple required>
                     <option value="CASHIER"><fmt:message key="cashier.title"/></option>
                     <option value="SENIOR_CASHIER"><fmt:message key="senior.cashier.title"/></option>

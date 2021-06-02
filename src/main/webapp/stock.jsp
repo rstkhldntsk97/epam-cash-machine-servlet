@@ -34,10 +34,10 @@
             <h4 class="card-title mt-3 text-center"><fmt:message key="expert.list.products"/></h4>
             <table border="1" cellpadding="5" cellspacing="5">
                 <tr>
-                    <th><fmt:message key="form.product.code"/></th>
+                    <th><fmt:message key="product.code"/></th>
                     <th><fmt:message key="form.product.name"/></th>
-                    <th><fmt:message key="form.product.price"/></th>
-                    <th><fmt:message key="form.product.quantity"/></th>
+                    <th><fmt:message key="product.price"/></th>
+                    <th><fmt:message key="product.quantity"/></th>
                 </tr>
                 <c:forEach items="${productsFromServer}" var="product">
                     <tr>

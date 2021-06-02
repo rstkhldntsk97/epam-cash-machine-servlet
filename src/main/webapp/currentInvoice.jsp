@@ -16,14 +16,14 @@
 <br/>
 <div class="card bg-light">
     <article class="card-body mx-auto" style="max-width: 400px;">
-        <h4 class="card-title mt-3 text-center">Invoice № ${invoice.id}</h4>
+        <h4 class="card-title mt-3 text-center">><fmt:message key="invoice.#"/> ${invoice.id}</h4>
         <table border="1" cellpadding="5" cellspacing="5">
             <tr>
                 <th><fmt:message key="cashier.title"/></th>
             </tr>
             <td>${invoice.user.username}</td>
             <tr>
-                <th><fmt:message key="form.invoice.date"/></th>
+                <th><fmt:message key="invoice.date"/></th>
             </tr>
             <td>${invoice.createdAt}</td>
             <tr>
@@ -31,7 +31,7 @@
             </tr>
             <td>${invoice.status}</td>
             <tr>
-                <th><fmt:message key="form.invoice.total.price"/></th>
+                <th><fmt:message key="invoice.total.price"/></th>
             </tr>
             <td>${invoice.total}</td>
             <tr>
@@ -43,7 +43,7 @@
     </article>
     <form class="form-signin" action="${pageContext.request.contextPath}/updateInvoice" method="post">
         <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"> <%session.setAttribute("status","DECLINED");%>
-            <fmt:message key="senior.cashier.button.decline.invoice"/></button>
+            <fmt:message key="button.decline.invoice"/></button>
     </form>
 
 </div>

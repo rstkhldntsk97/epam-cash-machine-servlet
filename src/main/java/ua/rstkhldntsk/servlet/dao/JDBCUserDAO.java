@@ -1,10 +1,8 @@
 package ua.rstkhldntsk.servlet.dao;
 
 import ua.rstkhldntsk.servlet.dao.interfaces.UserDAO;
-import ua.rstkhldntsk.servlet.dao.mappers.ProductMapper;
 import ua.rstkhldntsk.servlet.dao.mappers.UserMapper;
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
-import ua.rstkhldntsk.servlet.models.Product;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.models.User;
 
 import javax.sql.DataSource;
@@ -48,7 +46,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public void create(User user) throws ItemExistException {
+    public void create(User user) throws ProductAlreadyExistException {
         Connection con = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -64,7 +62,7 @@ public class JDBCUserDAO implements UserDAO {
                 user.setId(generatedKeys.getLong(1));
             }
         } catch (SQLException e) {
-            throw new ItemExistException();
+            throw new ProductAlreadyExistException();
         } finally {
             close(generatedKeys);
             close(preparedStatement);

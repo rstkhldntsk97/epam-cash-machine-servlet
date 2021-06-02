@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.InvoiceMapper;
 import ua.rstkhldntsk.servlet.dao.mappers.UserMapper;
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
 
@@ -61,9 +61,10 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             if (generatedKeys.next()) {
                 invoice.setId(generatedKeys.getLong(1));
             }
+            invoice.setStatus("NEW");
             LOGGER.debug("Invoice " + invoice.getId() + " created successfully");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         } finally {
             close(generatedKeys);
             close(preparedStatement);
@@ -82,10 +83,11 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             preparedStatement.setString(2, invoice.getStatus());
             preparedStatement.setLong(3, invoice.getId());
             if (preparedStatement.executeUpdate() != 1) {
-                LOGGER.debug("Something went wrong in updating invoice");
+                LOGGER.error("Something went wrong in updating invoice");
                 return false;
             }
         } catch (SQLException e) {
+            LOGGER.error(e);
             return false;
         } finally {
             close(preparedStatement);
@@ -105,8 +107,8 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             if (stmt.executeUpdate() != 1) {
                 return false;
             }
-        } catch (Exception e) {
-            LOGGER.error("Can't delete invoice:" + invoice.getId());
+        } catch (SQLException e) {
+            LOGGER.error(e);
             return false;
         } finally {
             close(stmt);
@@ -177,7 +179,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
 
         @Override
         public void addProduct (Long code, Integer quantity, Invoice invoice, BigDecimal price) throws
-        ItemExistException {
+                ProductAlreadyExistException {
             Connection connection = null;
             PreparedStatement preparedStatement = null;
             ResultSet generatedKeys = null;
@@ -195,7 +197,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
                 }
             } catch (SQLException e) {
                 LOGGER.debug("can't add this product");
-                throw new ItemExistException();
+                throw new ProductAlreadyExistException();
             } finally {
                 close(generatedKeys);
                 close(preparedStatement);

@@ -23,7 +23,7 @@
     <form action="${pageContext.request.contextPath}/cashier" method="post">
 
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block"><fmt:message key="cashier.button.create.invoice"/></button>
+            <button type="submit" class="btn btn-primary btn-block"><fmt:message key="button.create.invoice"/></button>
         </div>
     </form>
 

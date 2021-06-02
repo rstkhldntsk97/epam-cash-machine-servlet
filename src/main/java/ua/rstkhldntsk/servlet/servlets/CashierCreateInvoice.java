@@ -1,7 +1,7 @@
 package ua.rstkhldntsk.servlet.servlets;
 
 import org.apache.log4j.Logger;
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.exceptions.NotEnoughProduct;
 import ua.rstkhldntsk.servlet.exceptions.ProductNotExist;
 import ua.rstkhldntsk.servlet.models.Invoice;
@@ -20,9 +20,9 @@ import java.math.BigDecimal;
 import java.util.ResourceBundle;
 
 @WebServlet("/createInvoice")
-public class CreateInvoice extends HttpServlet {
+public class CashierCreateInvoice extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(CreateInvoice.class);
+    private static final Logger LOGGER = Logger.getLogger(CashierCreateInvoice.class);
 
     ProductService productService = ProductService.getInstance();
     InvoiceService invoiceService = InvoiceService.getInstance();
@@ -56,7 +56,7 @@ public class CreateInvoice extends HttpServlet {
             } catch (NumberFormatException notEnoughProduct) {
                 session.setAttribute("message", resourceBundle.getString("product.not.enough"));
                 LOGGER.debug("Product quantity cast exception");
-            } catch (ItemExistException e) {
+            } catch (ProductAlreadyExistException e) {
                 session.setAttribute("message", resourceBundle.getString("product.already.in.invoice"));
                 LOGGER.debug("Product is already in invoice");
             }
@@ -78,7 +78,7 @@ public class CreateInvoice extends HttpServlet {
             } catch (NumberFormatException notEnoughProduct) {
                 session.setAttribute("message", resourceBundle.getString("product.not.enough"));
                 LOGGER.debug("Product quantity cast exception");
-            } catch (ItemExistException e1) {
+            } catch (ProductAlreadyExistException e1) {
                 session.setAttribute("message", resourceBundle.getString("product.already.in.invoice"));
                 LOGGER.debug("Product is already in invoice");
             } catch (ProductNotExist productNotExist) {

@@ -22,8 +22,7 @@ public class LocaleFilter implements Filter {
             request.getSession().setAttribute("lang", request.getParameter("lang"));
         }
         if (session.getAttribute("lang") != null) {
-            ResourceBundle resourceBundle = ResourceBundle.getBundle("messages",
-                    new Locale((String) session.getAttribute("lang")));
+            ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", new Locale((String) session.getAttribute("lang")));
             session.setAttribute("resourceBundle", resourceBundle);
         } else {
             ResourceBundle defaultResourceBundle = ResourceBundle.getBundle("messages");

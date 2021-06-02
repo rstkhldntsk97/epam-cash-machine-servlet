@@ -3,8 +3,7 @@ package ua.rstkhldntsk.servlet.services;
 import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.DaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
-import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.exceptions.ProductNotExist;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.utils.Page;
@@ -57,7 +56,7 @@ public class ProductService {
     }
 
 
-    public void createProduct(Product product, String translateUA, String translateEN) throws ItemExistException {
+    public void createProduct(Product product, String translateUA, String translateEN) throws ProductAlreadyExistException {
         productDAO.create(product);
         productDAO.createTranslateEN(product, translateEN);
         productDAO.createTranslateUA(product, translateUA);

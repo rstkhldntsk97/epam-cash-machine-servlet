@@ -23,21 +23,21 @@
             <c:if test="${user.role eq 'SENIOR_CASHIER'}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/reportX"><fmt:message
-                            key="senior.cashier.button.create.report.X"/><span class="sr-only">(current)</span></a>
+                            key="button.create.report.X"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 
             <c:if test="${user.role eq 'SENIOR_CASHIER'}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/reportZ"><fmt:message
-                            key="senior.cashier.button.create.report.Z"/><span class="sr-only">(current)</span></a>
+                            key="button.create.report.Z"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 
             <c:if test="${user.role eq 'SENIOR_CASHIER'}">
                 <li class="nav-item active">
                     <a class="nav-link" href="${pageContext.request.contextPath}/editInvoice"><fmt:message
-                            key="senior.cashier.button.edit.invoice"/><span class="sr-only">(current)</span></a>
+                            key="button.edit.invoice"/><span class="sr-only">(current)</span></a>
                 </li>
             </c:if>
 

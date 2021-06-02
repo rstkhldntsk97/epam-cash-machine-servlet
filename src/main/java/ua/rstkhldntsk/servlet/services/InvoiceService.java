@@ -3,9 +3,8 @@ package ua.rstkhldntsk.servlet.services;
 import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.DaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
-import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.exceptions.NotEnoughProduct;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
@@ -36,12 +35,12 @@ public class InvoiceService {
     public void createNewInvoice(Invoice invoice) {
         try {
             invoiceDAO.create(invoice);
-        } catch (ItemExistException e) {
+        } catch (ProductAlreadyExistException e) {
             e.printStackTrace();
         }
     }
 
-    public void addProductToInvoice(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws NotEnoughProduct, ItemExistException {
+    public void addProductToInvoice(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws NotEnoughProduct, ProductAlreadyExistException {
         Product product = productDAO.findByCode(code).get();
         if (product.getQuantity() >= quantity) {
             invoiceDAO.addProduct(code, quantity, invoice, price);

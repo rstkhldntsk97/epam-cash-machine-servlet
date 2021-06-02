@@ -1,6 +1,6 @@
 package ua.rstkhldntsk.servlet.dao.interfaces;
 
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,7 +13,7 @@ public interface GenericDAO<T> {
 
     Optional<T> findById(Long id);
 
-    void create(T model) throws ItemExistException;
+    void create(T model) throws ProductAlreadyExistException;
 
     boolean update(T model);
 

@@ -16,7 +16,7 @@
 <br/>
 <br/>
 <br/>
-<div class="container">
+<br class="container">
     <c:if test="${message ne null}">
         <div class="alert alert-dismissible alert-${type}">
             <button type="button" class="close" data-dismiss="alert" aria-label="close" aria-hidden="true">&times;</button>
@@ -30,19 +30,22 @@
             <fmt:message key="check.product.code"/><br/>
             <table>
                 <input type="code" name="code" class="form-control"
-                       placeholder="<fmt:message key="form.product.code"/>"><br/>
+                       placeholder="<fmt:message key="product.code"/>"><br/>
                 <input type="quantity" name="quantity" class="form-control"
-                       placeholder="<fmt:message key="form.product.quantity"/>"><br/>
+                       placeholder="<fmt:message key="product.quantity"/>"><br/>
             </table>
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
-                    key="cashier.button.add.product.to.invoice"/></button>
+                    key="button.add.product.to.invoice"/></button>
         </form>
         <br/>
         <form class="form-signin" action="${pageContext.request.contextPath}/updateInvoice" method="post">
-
             <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><%session.setAttribute("status","CLOSED");%><fmt:message
-                    key="cashier.button.close.invoice"/></button>
+                    key="button.close.invoice"/></button>
         </form>
+        <form class="form-signin" action="${pageContext.request.contextPath}/updateInvoice" method="post">
+<%--            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><%session.setAttribute("status","DECLINED");%><fmt:message--%>
+<%--                    key="button.decline.invoice"/></button>--%>
+<%--        </form>--%>
     </table>
 </div>
 </body>

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 @WebServlet("/updateInvoice")
-public class UpdateInvoice extends HttpServlet {
+public class CashierUpdateInvoice extends HttpServlet {
 
     InvoiceService invoiceService = InvoiceService.getInstance();
 
@@ -24,17 +24,15 @@ public class UpdateInvoice extends HttpServlet {
         Invoice invoice = (Invoice) session.getAttribute("invoice");
         String status = (String) session.getAttribute("status");
         invoice.setStatus(status);
-        if (status.equals("CLOSED")) {
+        if (status.equals("DECLINED")) {
             invoiceService.updateInvoice(invoice);
             session.removeAttribute("invoice");
-            session.setAttribute("message", "invoice is successfully closed");
-//            req.getRequestDispatcher("/home.jsp").forward(req, resp);
+            session.setAttribute("message", resourceBundle.getString("invoice.is.declined"));
             resp.sendRedirect(req.getContextPath() + "/home.jsp");
-        } else if (status.equals("DECLINED")) {
+        } else if (status.equals("CLOSED")) {
             invoiceService.updateInvoice(invoice);
-            session.setAttribute("message", "invoice is successfully declined");
             session.removeAttribute("invoice");
-//            req.getRequestDispatcher("/home.jsp").forward(req, resp);
+            session.setAttribute("message", resourceBundle.getString("invoice.is.closed"));
             resp.sendRedirect(req.getContextPath() + "/home.jsp");
         }
     }

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/editInvoice")
-public class EditInvoice extends HttpServlet {
+public class SeniorUpdateInvoice extends HttpServlet {
 
     InvoiceService invoiceService = new InvoiceService();
 

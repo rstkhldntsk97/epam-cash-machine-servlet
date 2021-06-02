@@ -1,7 +1,6 @@
 package ua.rstkhldntsk.servlet.servlets;
 
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
-import ua.rstkhldntsk.servlet.models.Product;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.utils.Encoder;
 import ua.rstkhldntsk.servlet.services.UserService;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -48,7 +46,7 @@ public class AdminServlet extends HttpServlet {
         try {
             userService.create(new User(username, password, role));
             session.setAttribute("message", resourceBundle.getString("create.user.success"));
-        } catch (ItemExistException e) {
+        } catch (ProductAlreadyExistException e) {
             session.setAttribute("message", resourceBundle.getString("create.user.exist.exc"));
         }
         resp.sendRedirect(req.getContextPath() + "/createUser.jsp");

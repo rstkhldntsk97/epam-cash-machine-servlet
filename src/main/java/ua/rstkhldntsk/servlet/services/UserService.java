@@ -2,9 +2,7 @@ package ua.rstkhldntsk.servlet.services;
 
 import ua.rstkhldntsk.servlet.dao.DaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.UserDAO;
-import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
-import ua.rstkhldntsk.servlet.models.Product;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.utils.Page;
 
@@ -42,7 +40,7 @@ public class UserService {
         return page;
     }
 
-    public void create(User user) throws ItemExistException {
+    public void create(User user) throws ProductAlreadyExistException {
         userDAO.create(user);
     }
 

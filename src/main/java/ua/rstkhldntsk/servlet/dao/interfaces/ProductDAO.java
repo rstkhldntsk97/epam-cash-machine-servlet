@@ -1,6 +1,6 @@
 package ua.rstkhldntsk.servlet.dao.interfaces;
 
-import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.models.Product;
 
 import java.util.List;
@@ -15,8 +15,8 @@ public interface ProductDAO extends GenericDAO<Product> {
 
     List<Product> findAllByPage(Integer page, String lang);
 
-    public void createTranslateEN(Product product, String translate) throws ItemExistException;
+    public void createTranslateEN(Product product, String translate) throws ProductAlreadyExistException;
 
-    public void createTranslateUA(Product product, String translate) throws ItemExistException;
+    public void createTranslateUA(Product product, String translate) throws ProductAlreadyExistException;
 
 }
