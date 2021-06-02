@@ -44,6 +44,7 @@ public class CreateInvoice extends HttpServlet {
                 product = productService.findProductByCode(Long.parseLong(parameter));
                 BigDecimal price = invoiceService.countPriceForProductByQuantity(Integer.parseInt(quantity), Long.parseLong(parameter));
                 invoiceService.addProductToInvoice(code, Integer.parseInt(quantity), invoice, price);
+                invoiceService.updateInvoice(invoice);
                 session.setAttribute("message", resourceBundle.getString("product.successfully.added"));
                 LOGGER.debug(product + " was successfully added to invoice in quantity of " + quantity);
             } catch (NotEnoughProduct notEnoughProduct) {
@@ -61,7 +62,8 @@ public class CreateInvoice extends HttpServlet {
             }
             session.getAttribute("user");
             req.setAttribute("productByCodeFromServer", product);
-            req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
+//            req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/createInvoice.jsp");
         } catch (NumberFormatException e) {
             //try to find product by name
             try {
@@ -84,7 +86,8 @@ public class CreateInvoice extends HttpServlet {
             }
             session.getAttribute("user");
             req.setAttribute("productByCodeFromServer", product);
-            req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
+//            req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/createInvoice.jsp");
         }
     }
 }

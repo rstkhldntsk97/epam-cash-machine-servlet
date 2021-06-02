@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
-    <title><fmt:message key="admin.title"/></title>
+    <title><fmt:message key="home.title"/></title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

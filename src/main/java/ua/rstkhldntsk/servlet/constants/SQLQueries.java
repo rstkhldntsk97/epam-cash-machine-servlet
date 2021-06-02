@@ -12,8 +12,18 @@ public interface SQLQueries {
 
 
     //SQL queries for product table
-    String INSERT_PRODUCT = "INSERT INTO product (name, price, quantity) VALUES (?,?,?)";
-    String FIND_ALL_PRODUCTS = "SELECT * FROM product";
+    String INSERT_PRODUCT = "INSERT INTO product (price, quantity) VALUES (?,?)";
+    String INSERT_PRODUCT_EN = "INSERT INTO productEN(product_code, name) values (?, ?)";
+    String INSERT_PRODUCT_UA = "INSERT INTO productUA(product_code, name) values (?, ?)";
+
+    String FIND_ALL_PRODUCTS = "SELECT * FROM product JOIN productEN ON product.code=productEN.product_code";
+
+    String FIND_ALL_PRODUCTS_BY_LANG_1ST = "SELECT * FROM product JOIN product";
+    String LANG_2ND = " on product.code = product";
+    String LANG_3RD = ".product_code";
+
+
+
     String FIND_PRODUCT_BY_NAME = "SELECT * FROM product WHERE name = ?";
     String FIND_PRODUCT_BY_CODE = "SELECT * FROM product WHERE code = ?";
 

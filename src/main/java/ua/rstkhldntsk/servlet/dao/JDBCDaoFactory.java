@@ -12,19 +12,6 @@ public class JDBCDaoFactory extends DaoFactory {
 
     private DataSource dataSource = ConnectionPoolHolder.getDataSource();
 
-    /**
-     * creates connection with database
-     *
-     * @return connection
-     */
-    private Connection getConnection() {
-        try {
-            return dataSource.getConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public UserDAO createUserDao() {
         return new JDBCUserDAO(dataSource);

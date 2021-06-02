@@ -13,6 +13,7 @@ public class Invoice {
     private Map<Product, Integer> products = new HashMap<>();
 
     public Invoice() {
+        this.status = "NEW";
     }
 
     public Long getId() {

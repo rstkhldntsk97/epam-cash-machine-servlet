@@ -18,8 +18,8 @@ public class InvoiceService {
 
     private static volatile InvoiceService instance;
     private DaoFactory daoFactory = DaoFactory.getInstance();
-    InvoiceDAO invoiceDAO = JDBCDaoFactory.getInstance().createInvoiceDao();
-    ProductDAO productDAO = JDBCDaoFactory.getInstance().createProductDao();
+    InvoiceDAO invoiceDAO = daoFactory.createInvoiceDao();
+    ProductDAO productDAO = daoFactory.createProductDao();
     private static final Logger LOGGER = Logger.getLogger(InvoiceService.class);
 
     public static InvoiceService getInstance() {
@@ -34,16 +34,14 @@ public class InvoiceService {
     }
 
     public void createNewInvoice(Invoice invoice) {
-        InvoiceDAO invoiceDao = daoFactory.createInvoiceDao();
         try {
-            invoiceDao.create(invoice);
+            invoiceDAO.create(invoice);
         } catch (ItemExistException e) {
             e.printStackTrace();
         }
     }
 
     public void addProductToInvoice(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws NotEnoughProduct, ItemExistException {
-
         Product product = productDAO.findByCode(code).get();
         if (product.getQuantity() >= quantity) {
             invoiceDAO.addProduct(code, quantity, invoice, price);
@@ -87,6 +85,7 @@ public class InvoiceService {
     }
 
     public Invoice findById(Long id) {
+
         return invoiceDAO.findById(id).get();
     }
 

@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
-    <title><fmt:message key="create.product.title"/></title>
+    <title><fmt:message key="expert.title"/></title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -33,7 +33,9 @@
             <h4 class="card-title mt-3 text-center"><fmt:message key="expert.button.create.product"/></h4>
             <form class="form-signin" action="${pageContext.request.contextPath}/commodityExpert" method="post">
 
-                <input type="name" name="name" class="form-control" placeholder="<fmt:message key="form.product.name"/>"
+                <input type="name" name="nameEN" class="form-control" placeholder="<fmt:message key="form.product.name.EN"/>"
+                       required>
+                <input type="name" name="nameUA" class="form-control" placeholder="<fmt:message key="form.product.name.UA"/>"
                        required>
                 <input type="price" name="price" class="form-control"
                        placeholder="<fmt:message key="form.product.price"/>" required>

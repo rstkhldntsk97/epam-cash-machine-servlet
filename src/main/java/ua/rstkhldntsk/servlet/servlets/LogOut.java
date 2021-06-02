@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,24 +18,22 @@ import java.util.List;
 @WebServlet("/logout")
 public class LogOut extends HttpServlet {
 
-    private UserService userService = new UserService();
-
+    InvoiceService invoiceService = InvoiceService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        InvoiceService invoiceService = InvoiceService.getInstance();
-        User user = (User) req.getAttribute("user");
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("user");
         if (user.getRole().equals("CASHIER")) {
             List<Invoice> invoices = invoiceService.findAllUserInvoices(user);
-
             invoices.forEach(invoice -> {
                 if (invoice.getStatus().equals("NEW")) {
                     invoiceService.deleteInvoice(invoice);
                 }
             });
-
         }
-        req.getSession().invalidate();
+        session.invalidate();
         resp.sendRedirect(req.getContextPath() + "/");
     }
+
 }

@@ -28,12 +28,14 @@ public class UpdateInvoice extends HttpServlet {
             invoiceService.updateInvoice(invoice);
             session.removeAttribute("invoice");
             session.setAttribute("message", "invoice is successfully closed");
-            req.getRequestDispatcher("/home.jsp").forward(req, resp);
+//            req.getRequestDispatcher("/home.jsp").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/home.jsp");
         } else if (status.equals("DECLINED")) {
             invoiceService.updateInvoice(invoice);
             session.setAttribute("message", "invoice is successfully declined");
             session.removeAttribute("invoice");
-            req.getRequestDispatcher("/home.jsp").forward(req, resp);
+//            req.getRequestDispatcher("/home.jsp").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/home.jsp");
         }
     }
 

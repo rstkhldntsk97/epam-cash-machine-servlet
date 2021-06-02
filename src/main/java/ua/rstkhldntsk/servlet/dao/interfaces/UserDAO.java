@@ -15,4 +15,5 @@ public interface UserDAO extends GenericDAO<User> {
 
     public boolean checkUser(String username, String password);
 
+    List<User> findAllByPage(Integer pageInfo);
 }

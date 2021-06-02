@@ -31,6 +31,7 @@ public class EditInvoice extends HttpServlet {
         Invoice invoiceToEdit = invoiceService.findById(Long.parseLong(invoiceId));
         session.setAttribute("invoice", invoiceToEdit);
         req.setAttribute("invoice", invoiceToEdit);
-        req.getRequestDispatcher("/currentInvoice.jsp").forward(req, resp);
+//        req.getRequestDispatcher("/currentInvoice.jsp").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/currentInvoice.jsp");
     }
 }

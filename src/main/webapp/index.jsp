@@ -21,7 +21,7 @@
     <div class="jumbotron">
         <div class="container" style="text-align: center">
             <h1><fmt:message key="index.service.presentation"/></h1>
-            <p><fmt:message key="index.service.description"/></p>
+            <p><fmt:message key="info.index.service.description"/></p>
         </div>
 
     </div>

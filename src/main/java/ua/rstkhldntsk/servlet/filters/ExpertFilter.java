@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/commodityExpert","/commodityExpert.jsp", "/stock", "/users.jsp"})
+@WebFilter(urlPatterns = {"/commodityExpert", "/stock.jsp", "/createProduct.jsp"})
 public class ExpertFilter implements Filter{
 
     @Override

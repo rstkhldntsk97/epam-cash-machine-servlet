@@ -1,6 +1,5 @@
 package ua.rstkhldntsk.servlet.utils;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,18 +8,9 @@ public class Page<T> {
     private int totalRecords;
     private int currentPage = 1;
     private List<T> content = new ArrayList<>();
-    private int maxResult = 8;
+    private int maxResult = 5;
     private int totalPages;
-    private String sortType = "DESC";
-
-    public Page() {
-    }
-
-    public Page(Integer currentPage, Integer maxResult, String sortType) {
-        this.currentPage = currentPage == null ? this.currentPage : currentPage;
-        this.maxResult = maxResult == null ? this.maxResult : maxResult;
-        this.sortType = sortType == null ? this.sortType : sortType;
-    }
+    private String sortType = "ASC";
 
     public int getTotalRecords() {
         return totalRecords;
@@ -69,4 +59,5 @@ public class Page<T> {
     public void setSortType(String sortType) {
         this.sortType = sortType;
     }
+
 }

@@ -1,8 +1,10 @@
 package ua.rstkhldntsk.servlet.dao;
 
 import ua.rstkhldntsk.servlet.dao.interfaces.UserDAO;
+import ua.rstkhldntsk.servlet.dao.mappers.ProductMapper;
 import ua.rstkhldntsk.servlet.dao.mappers.UserMapper;
 import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.models.User;
 
 import javax.sql.DataSource;
@@ -102,6 +104,30 @@ public class JDBCUserDAO implements UserDAO {
             close(con);
         }
         return users;
+    }
+
+    @Override
+    public List<User> findAllByPage(Integer page) {
+        List<User> users = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(FIND_ALL_USERS + " order by id ASC LIMIT " + (page - 1) * 5 + "," + 5);
+            resultSet = preparedStatement.executeQuery();
+            UserMapper mapper = new UserMapper();
+            while (resultSet.next()) {
+                users.add(mapper.extractFromResultSet(resultSet));
+            }
+            return users;
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+            close(connection);
+        }
     }
 
     @Override

@@ -1,9 +1,11 @@
 package ua.rstkhldntsk.servlet.servlets;
 
 import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
+import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.utils.Encoder;
 import ua.rstkhldntsk.servlet.services.UserService;
+import ua.rstkhldntsk.servlet.utils.Page;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,8 +26,15 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<User> users = userService.findAll();
-        req.setAttribute("usersFromServer", users);
+
+        int page = 1;
+        if(req.getParameter("page") != null) {
+            page = Integer.parseInt(req.getParameter("page"));
+        }
+        Page<User> users = userService.findAllByPage(page);
+        req.setAttribute("usersFromServer", users.getContent());
+        req.setAttribute("noOfPages", users.getTotalPages());
+        req.setAttribute("currentPage", page);
         req.getRequestDispatcher("/users.jsp").forward(req, resp);
     }
 
@@ -42,7 +51,6 @@ public class AdminServlet extends HttpServlet {
         } catch (ItemExistException e) {
             session.setAttribute("message", resourceBundle.getString("create.user.exist.exc"));
         }
-//        req.getRequestDispatcher("/home.jsp").forward(req,resp);
-        req.getRequestDispatcher("/createUser.jsp").forward(req,resp);
+        resp.sendRedirect(req.getContextPath() + "/createUser.jsp");
     }
 }

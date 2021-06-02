@@ -2,12 +2,10 @@ package ua.rstkhldntsk.servlet.services;
 
 import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.DaoFactory;
-import ua.rstkhldntsk.servlet.dao.JDBCProductDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
 import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.exceptions.ProductNotExist;
-import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.utils.Page;
 
@@ -17,8 +15,8 @@ import java.util.Optional;
 public class ProductService {
 
     private static volatile ProductService instance;
-    private DaoFactory daoFactory = DaoFactory.getInstance();
-    ProductDAO productDAO = JDBCDaoFactory.getInstance().createProductDao();
+    private final DaoFactory daoFactory = DaoFactory.getInstance();
+    private final ProductDAO productDAO = daoFactory.createProductDao();
     private static final Logger LOGGER = Logger.getLogger(ProductService.class);
 
     private ProductService() {
@@ -42,9 +40,27 @@ public class ProductService {
         return productDAO.findAll();
     }
 
+    /**
+     * finds page with products
+     *
+     * @param pageInfo pageInfo
+     * @return page with products
+     */
+    public Page<Product> findAllByPage(Integer pageInfo, String lang) {
+        Page<Product> page = new Page<>();
+        page.setContent(productDAO.findAllByPage(pageInfo, lang));
+        int totalRecords = productDAO.findAll().size();
+        page.setTotalRecords(totalRecords);
+        int totalPages = (int) Math.ceil(page.getTotalRecords() * 1.0 / page.getMaxResult());
+        page.setTotalPages(totalPages);
+        return page;
+    }
 
-    public void createProduct(Product product) throws ItemExistException {
+
+    public void createProduct(Product product, String translateUA, String translateEN) throws ItemExistException {
         productDAO.create(product);
+        productDAO.createTranslateEN(product, translateEN);
+        productDAO.createTranslateUA(product, translateUA);
     }
 
     public void updateProduct(Product product) {
@@ -62,6 +78,7 @@ public class ProductService {
         if (product.isPresent()) {
             return product.get();
         } else {
+            LOGGER.error("invalid code");
             throw new ProductNotExist();
         }
     }
@@ -77,7 +94,7 @@ public class ProductService {
         if (product.isPresent()) {
             return product.get();
         } else {
-            LOGGER.debug("invalid code");
+            LOGGER.error("invalid code");
             throw new ProductNotExist();
         }
     }

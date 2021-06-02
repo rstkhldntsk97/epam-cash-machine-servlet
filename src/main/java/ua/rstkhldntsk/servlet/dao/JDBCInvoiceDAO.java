@@ -6,7 +6,6 @@ import ua.rstkhldntsk.servlet.dao.mappers.InvoiceMapper;
 import ua.rstkhldntsk.servlet.dao.mappers.UserMapper;
 import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.models.Invoice;
-import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.models.User;
 
 import javax.sql.DataSource;
@@ -56,7 +55,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(INSERT_NEW_INVOICE, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1 , invoice.getUser().getId());
+            preparedStatement.setLong(1, invoice.getUser().getId());
             preparedStatement.executeUpdate();
             generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -146,86 +145,88 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
         return invoices;
     }
 
-    @Override
-    public List<Invoice> findAllByUser(User user) {
-        List<Invoice> invoices = new ArrayList<>();
-        UserMapper userMapper = new UserMapper();
-        Connection con = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            con = dataSource.getConnection();
-            preparedStatement = con.prepareStatement(FIND_ALL_INVOICES_BY_USER);
-            preparedStatement.setLong(1 , user.getId());
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Invoice invoice = new Invoice();
-                invoice.setTotal(resultSet.getFloat("total_price"));
-                invoice.setUser(userMapper.extractFromResultSet(resultSet));
-                invoice.setStatus(resultSet.getString("status"));
-                invoices.add(invoice);
+        @Override
+        public List<Invoice> findAllByUser (User user){
+            List<Invoice> invoices = new ArrayList<>();
+            UserMapper userMapper = new UserMapper();
+            Connection con = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            try {
+                con = dataSource.getConnection();
+                preparedStatement = con.prepareStatement(FIND_ALL_INVOICES_BY_USER);
+                preparedStatement.setLong(1, user.getId());
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    Invoice invoice = new Invoice();
+                    invoice.setId(resultSet.getLong("id"));
+                    invoice.setTotal(resultSet.getFloat("total_price"));
+                    invoice.setUser(userMapper.extractFromResultSet(resultSet));
+                    invoice.setStatus(resultSet.getString("status"));
+                    invoices.add(invoice);
+                }
+            } catch (SQLException e) {
+                throw new IllegalStateException();
+            } finally {
+                close(resultSet);
+                close(preparedStatement);
+                close(con);
             }
-        } catch (SQLException e) {
-            throw new IllegalStateException();
-        } finally {
-            close(resultSet);
-            close(preparedStatement);
-            close(con);
+            return invoices;
         }
-        return invoices;
-    }
 
-    @Override
-    public void addProduct(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws ItemExistException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet generatedKeys = null;
-        try {
-            connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(ADD_PRODUCT_TO_INVOICE, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1 , invoice.getId());
-            preparedStatement.setLong(2, code);
-            preparedStatement.setInt(3, quantity);
-            preparedStatement.setBigDecimal(4, price);
-            preparedStatement.executeUpdate();
-            generatedKeys = preparedStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                invoice.setId(generatedKeys.getLong(1));
+        @Override
+        public void addProduct (Long code, Integer quantity, Invoice invoice, BigDecimal price) throws
+        ItemExistException {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet generatedKeys = null;
+            try {
+                connection = dataSource.getConnection();
+                preparedStatement = connection.prepareStatement(ADD_PRODUCT_TO_INVOICE, Statement.RETURN_GENERATED_KEYS);
+                preparedStatement.setLong(1, invoice.getId());
+                preparedStatement.setLong(2, code);
+                preparedStatement.setInt(3, quantity);
+                preparedStatement.setBigDecimal(4, price);
+                preparedStatement.executeUpdate();
+                generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    invoice.setId(generatedKeys.getLong(1));
+                }
+            } catch (SQLException e) {
+                LOGGER.debug("can't add this product");
+                throw new ItemExistException();
+            } finally {
+                close(generatedKeys);
+                close(preparedStatement);
+                close(connection);
             }
-        } catch (SQLException e) {
-            LOGGER.debug("can't add this product");
-            throw new ItemExistException();
-        } finally {
-            close(generatedKeys);
-            close(preparedStatement);
-            close(connection);
         }
-    }
 
-    @Override
-    public Invoice findByUserAndInvoiceId(User user, Invoice invoice) {
-        Invoice invoice1 = null;
-        Connection con = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            con = dataSource.getConnection();
-            preparedStatement = con.prepareStatement(FIND_INVOICE_BY_USER_ID_AND_INVOICE_ID);
-            preparedStatement.setLong(1 , user.getId());
-            preparedStatement.setLong(1 , invoice.getId());
-            resultSet = preparedStatement.executeQuery();
-            InvoiceMapper mapper = new InvoiceMapper();
-            while (resultSet.next()) {
-                invoice1 = mapper.extractFromResultSet(resultSet);
+        @Override
+        public Invoice findByUserAndInvoiceId (User user, Invoice invoice){
+            Invoice invoice1 = null;
+            Connection con = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            try {
+                con = dataSource.getConnection();
+                preparedStatement = con.prepareStatement(FIND_INVOICE_BY_USER_ID_AND_INVOICE_ID);
+                preparedStatement.setLong(1, user.getId());
+                preparedStatement.setLong(1, invoice.getId());
+                resultSet = preparedStatement.executeQuery();
+                InvoiceMapper mapper = new InvoiceMapper();
+                while (resultSet.next()) {
+                    invoice1 = mapper.extractFromResultSet(resultSet);
+                }
+            } catch (SQLException e) {
+                throw new IllegalStateException();
+            } finally {
+                close(resultSet);
+                close(preparedStatement);
+                close(con);
             }
-        } catch (SQLException e) {
-            throw new IllegalStateException();
-        } finally {
-            close(resultSet);
-            close(preparedStatement);
-            close(con);
+            return invoice1;
         }
-        return invoice1;
-    }
 
-}
+    }

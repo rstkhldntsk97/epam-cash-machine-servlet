@@ -16,10 +16,11 @@
 <body>
 <%@ include file="menu.jspf" %>
 <br/>
+<br/>
 <div class="card bg-light">
     <article class="card-body mx-auto" style="max-width: 400px;">
         <h4 class="card-title mt-3 text-center"><fmt:message key="admin.list.users"/></h4>
-        <table>
+        <table border="1" cellpadding="5" cellspacing="5">
             <tr>
                 <th><fmt:message key="form.username"/></th>
                 <th><fmt:message key="form.role"/></th>
@@ -31,6 +32,33 @@
                 </tr>
             </c:forEach>
         </table>
+
+        <%--For displaying Previous link except for the 1st page --%>
+        <c:if test="${currentPage != 1}">
+            <td><a href="admin?page=${currentPage - 1}"><fmt:message key="button.previous"/></a></td>
+        </c:if>
+
+        <%--For displaying Page numbers.
+        The when condition does not display a link for the current page--%>
+        <table border="1" cellpadding="5" cellspacing="5">
+            <tr>
+                <c:forEach begin="1" end="${noOfPages}" var="i">
+                    <c:choose>
+                        <c:when test="${currentPage eq i}">
+                            <td>${i}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td><a href="admin?page=${i}">${i}</a></td>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            </tr>
+        </table>
+
+        <%--For displaying Next link --%>
+        <c:if test="${currentPage lt noOfPages}">
+            <td><a href="admin?page=${currentPage + 1}"><fmt:message key="button.next"/></a></td>
+        </c:if>
     </article>
 </div>
 </body>

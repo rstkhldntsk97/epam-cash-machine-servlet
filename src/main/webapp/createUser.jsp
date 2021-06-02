@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
-    <title><fmt:message key="create.product.title"/></title>
+    <title><fmt:message key="admin.title"/></title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -38,9 +38,9 @@
                 <input type="username" name="username" class="form-control" placeholder="<fmt:message key="form.username"/>" required>
                 <input type="password" name="password" class="form-control" placeholder="<fmt:message key="form.password"/>" required>
                 <select name="role" id="role" multiple required>
-                    <option value="CASHIER"><fmt:message key="admin.form.cashier"/></option>
-                    <option value="SENIOR_CASHIER"><fmt:message key="admin.form.senior.cashier"/></option>
-                    <option value="COMMODITY_EXPERT"><fmt:message key="admin.form.expert"/></option>
+                    <option value="CASHIER"><fmt:message key="cashier.title"/></option>
+                    <option value="SENIOR_CASHIER"><fmt:message key="senior.cashier.title"/></option>
+                    <option value="COMMODITY_EXPERT"><fmt:message key="expert.title"/></option>
                 </select>
 
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message

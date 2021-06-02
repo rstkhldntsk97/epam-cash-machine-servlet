@@ -94,7 +94,7 @@
 
             <c:if test="${user ne null}">
                 <li class="nav-item active">
-                    <a class="nav-link"><fmt:message key="menu.username"/><u>${user.username}</u></a>
+                    <a class="nav-link" ><u>${user.username}</u></a>
                 </li>
             </c:if>
             <li>

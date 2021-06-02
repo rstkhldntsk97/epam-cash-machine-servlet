@@ -1,16 +1,15 @@
 package ua.rstkhldntsk.servlet.dao;
 
-import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.ProductMapper;
 import ua.rstkhldntsk.servlet.exceptions.ItemExistException;
 import ua.rstkhldntsk.servlet.models.Product;
-import ua.rstkhldntsk.servlet.services.InvoiceService;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static ua.rstkhldntsk.servlet.constants.SQLQueries.*;
@@ -36,9 +35,8 @@ public class JDBCProductDAO implements ProductDAO {
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, product.getName());
-            preparedStatement.setBigDecimal(2, product.getPrice());
-            preparedStatement.setInt(3, product.getQuantity());
+            preparedStatement.setBigDecimal(1, product.getPrice());
+            preparedStatement.setInt(2, product.getQuantity());
             preparedStatement.executeUpdate();
             generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -48,6 +46,42 @@ public class JDBCProductDAO implements ProductDAO {
             throw new ItemExistException();
         } finally {
             close(generatedKeys);
+            close(preparedStatement);
+            close(connection);
+        }
+    }
+
+    public void createTranslateUA(Product product, String translate) throws ItemExistException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(INSERT_PRODUCT_UA);
+            preparedStatement.setLong(1, product.getCode());
+            preparedStatement.setString(2, translate);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new ItemExistException();
+        } finally {
+            close(preparedStatement);
+            close(connection);
+        }
+    }
+
+    public void createTranslateEN(Product product, String translate) throws ItemExistException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(INSERT_PRODUCT_EN);
+            preparedStatement.setLong(1, product.getCode());
+            preparedStatement.setString(2, translate);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new ItemExistException();
+        } finally {
             close(preparedStatement);
             close(connection);
         }
@@ -89,6 +123,31 @@ public class JDBCProductDAO implements ProductDAO {
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(FIND_ALL_PRODUCTS);
+            resultSet = preparedStatement.executeQuery();
+            ProductMapper mapper = new ProductMapper();
+            while (resultSet.next()) {
+                products.add(mapper.extractFromResultSet(resultSet));
+            }
+            return products;
+        } catch (SQLException e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+            close(connection);
+        }
+    }
+
+
+    public List<Product> findAllByPage(Integer page, String lang) {
+
+        List<Product> products = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(FIND_ALL_PRODUCTS_BY_LANG_1ST + lang.toUpperCase() + LANG_2ND + lang + LANG_3RD + " order by code ASC LIMIT " + (page - 1) * 5 + "," + 5);
             resultSet = preparedStatement.executeQuery();
             ProductMapper mapper = new ProductMapper();
             while (resultSet.next()) {
