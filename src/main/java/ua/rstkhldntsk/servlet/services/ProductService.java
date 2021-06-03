@@ -76,10 +76,9 @@ public class ProductService {
         Optional<Product> product = productDAO.findByName(name);
         if (product.isPresent()) {
             return product.get();
-        } else {
-            LOGGER.error("invalid code");
-            throw new ProductNotExist();
         }
+        LOGGER.error("invalid code");
+        throw new ProductNotExist();
     }
 
     /**

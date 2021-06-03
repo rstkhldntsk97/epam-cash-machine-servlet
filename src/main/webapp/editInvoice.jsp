@@ -15,6 +15,16 @@
 <%@ include file="menu.jspf" %>
 <br/>
 <div class="card bg-light">
+    <br/><br/>
+    <c:if test="${message ne null}">
+        <div class="alert alert-dismissible alert-${type}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="close" aria-hidden="true">&times;
+            </button>
+            <span>${message}</span>
+        </div>
+    </c:if>
+    <c:remove var="message" scope="session"/>
+    <c:remove var="type" scope="session"/>
     <article class="card-body mx-auto" style="max-width: 400px;">
         <h4 class="card-title mt-3 text-center"><fmt:message key="senior.list.invoices"/></h4>
         <table border="1" cellpadding="5" cellspacing="5">

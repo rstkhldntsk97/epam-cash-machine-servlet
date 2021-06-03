@@ -16,7 +16,7 @@
 <br/>
 <div class="card bg-light">
     <article class="card-body mx-auto" style="max-width: 400px;">
-        <h4 class="card-title mt-3 text-center">><fmt:message key="invoice.no"/> ${invoice.id}</h4>
+        <h4 class="card-title mt-3 text-center"><fmt:message key="invoice.no"/> ${invoice.id}</h4>
         <table border="1" cellpadding="5" cellspacing="5">
             <tr>
                 <th><fmt:message key="cashier.title"/></th>
@@ -37,7 +37,11 @@
             <tr>
                 <th><fmt:message key="form.invoice.all.products"/></th>
             </tr>
-            <td>${invoice.products}</td>
+            <td>
+            <c:forEach items="${invoice.products}" var="product">
+                <c:out value="${product.key}"/><br/>
+            </c:forEach>
+            </td>
         </table>
 
     </article>

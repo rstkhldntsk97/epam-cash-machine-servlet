@@ -56,13 +56,10 @@ public class CommodityExpert extends HttpServlet {
             nameEN = Validator.productNameValidate(nameEN);
             price = Validator.productPriceValidate(priceStr);
             quantity = Validator.productQuantityValidate(quantityStr);
-        } catch (InvalidInput invalidInput) {
-            session.setAttribute("message", resourceBundle.getString("invalid.input"));
-        }
-
-        try {
             productService.createProduct(new Product(nameEN, price, quantity), nameUA, nameEN);
             session.setAttribute("message", resourceBundle.getString("create.product.success"));
+        } catch (InvalidInput invalidInput) {
+            session.setAttribute("message", resourceBundle.getString("invalid.input"));
         } catch (ProductAlreadyExistException e) {
             session.setAttribute("message", resourceBundle.getString("product.exist"));
         }

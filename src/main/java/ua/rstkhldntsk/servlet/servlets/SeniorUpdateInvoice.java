@@ -1,7 +1,11 @@
 package ua.rstkhldntsk.servlet.servlets;
 
+import com.mysql.cj.xdevapi.Schema;
+import ua.rstkhldntsk.servlet.exceptions.IdNotExist;
+import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.services.InvoiceService;
+import ua.rstkhldntsk.servlet.utils.Validator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @WebServlet("/editInvoice")
 public class SeniorUpdateInvoice extends HttpServlet {
@@ -27,11 +32,20 @@ public class SeniorUpdateInvoice extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
+        ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
         String invoiceId = req.getParameter("id");
-        Invoice invoiceToEdit = invoiceService.findById(Long.parseLong(invoiceId));
-        session.setAttribute("invoice", invoiceToEdit);
-        req.setAttribute("invoice", invoiceToEdit);
-//        req.getRequestDispatcher("/currentInvoice.jsp").forward(req, resp);
-        resp.sendRedirect(req.getContextPath() + "/currentInvoice.jsp");
+        try {
+            Long id = Validator.invoiceIdValidate(invoiceId);
+            Invoice invoiceToEdit = invoiceService.findById(id);
+            session.setAttribute("invoice", invoiceToEdit);
+            req.setAttribute("invoice", invoiceToEdit);
+            resp.sendRedirect(req.getContextPath() + "/currentInvoice.jsp");
+        } catch (InvalidInput invalidInput) {
+            session.setAttribute("message", resourceBundle.getString("invalid.input"));
+            doGet(req, resp);
+        } catch (IdNotExist idNotExist) {
+            session.setAttribute("message", resourceBundle.getString("id.not.exist"));
+            doGet(req, resp);
+        }
     }
 }

@@ -27,6 +27,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
 
     @Override
     public Optional<Invoice> findById(Long id) {
+        Optional<Invoice> invoice = Optional.empty();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -36,8 +37,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             preparedStatement.setLong(1, id);
             resultSet = preparedStatement.executeQuery();
             InvoiceMapper invoiceMapper = new InvoiceMapper();
-            Invoice invoice = invoiceMapper.extractFromResultSet(resultSet);
-            return Optional.of(invoice);
+            invoice = Optional.of(invoiceMapper.extractFromResultSet(resultSet));
         } catch (SQLException e) {
             throw new IllegalStateException(e);
         } finally {
@@ -45,6 +45,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             close(preparedStatement);
             close(connection);
         }
+        return invoice;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class Validator {
     }
 
     public static BigDecimal productPriceValidate(String price) throws InvalidInput {
-        String pattern = "[0-9]+";
+        String pattern = "[0-9,.]+";
         if (!price.matches(pattern)) {
             throw new InvalidInput();
         }
@@ -31,7 +31,7 @@ public class Validator {
     }
 
     public static Integer productQuantityValidate(String quantity) throws InvalidInput {
-        String pattern = "[0-9]+";
+        String pattern = "[0-9.,]+";
         if (!quantity.matches(pattern)) {
             throw new InvalidInput();
         }
@@ -47,7 +47,7 @@ public class Validator {
     }
 
     public static String passwordValidate(String password) throws InvalidInput{
-        String pattern = "[A-Za-z0-9]+";
+        String pattern = "[A-Za-z0-9]{8,}";
         if (!password.matches(pattern)) {
             throw new InvalidInput();
         }

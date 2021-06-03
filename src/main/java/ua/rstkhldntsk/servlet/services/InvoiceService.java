@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.DaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
+import ua.rstkhldntsk.servlet.exceptions.IdNotExist;
+import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.exceptions.NotEnoughProduct;
 import ua.rstkhldntsk.servlet.models.Invoice;
@@ -12,11 +14,12 @@ import ua.rstkhldntsk.servlet.models.User;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public class InvoiceService {
 
     private static volatile InvoiceService instance;
-    private DaoFactory daoFactory = DaoFactory.getInstance();
+    private final DaoFactory daoFactory = DaoFactory.getInstance();
     InvoiceDAO invoiceDAO = daoFactory.createInvoiceDao();
     ProductDAO productDAO = daoFactory.createProductDao();
     private static final Logger LOGGER = Logger.getLogger(InvoiceService.class);
@@ -79,9 +82,13 @@ public class InvoiceService {
         return invoiceDAO.findAllByUser(user);
     }
 
-    public Invoice findById(Long id) {
-
-        return invoiceDAO.findById(id).get();
+    public Invoice findById(Long id) throws IdNotExist {
+        Optional<Invoice> invoice = invoiceDAO.findById(id);
+        if (invoice.isPresent()) {
+            return invoice.get();
+        }
+        LOGGER.error("wrong id");
+        throw new IdNotExist();
     }
 
 }

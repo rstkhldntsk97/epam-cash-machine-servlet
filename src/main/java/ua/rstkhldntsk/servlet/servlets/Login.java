@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
         User user = userService.login(username, password);
         String role = user.getRole();
         if (role == null) {
-            LOGGER.warn("There is no users with username: " + username);
+            LOGGER.warn("There is no users with username: " + username + " and password: " + password);
             session.setAttribute("message", resourceBundle.getString("login.danger.alert"));
             resp.sendRedirect(req.getContextPath() + "/error404.jsp");
         } else {
