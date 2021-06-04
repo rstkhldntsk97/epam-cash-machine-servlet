@@ -12,20 +12,16 @@ public interface SQLQueries {
 
 
     //SQL queries for product table
-    String INSERT_PRODUCT = "INSERT INTO product (price, quantity) VALUES (?,?)";
-    String INSERT_PRODUCT_EN = "INSERT INTO productEN(product_code, name) values (?, ?)";
-    String INSERT_PRODUCT_UA = "INSERT INTO productUA(product_code, name) values (?, ?)";
+    String INSERT_PRODUCT = "INSERT INTO product (code, price, quantity) VALUES (?,?,?)";
+    String INSERT_PRODUCT_EN = "INSERT INTO product_translate(product_code, lang_id, name) values (?, 1, ?)";
+    String INSERT_PRODUCT_UA = "INSERT INTO product_translate(product_code, lang_id, name) values (?, 2, ?)";
 
-    String FIND_ALL_PRODUCTS = "SELECT * FROM product JOIN productEN ON product.code=productEN.product_code";
+    String FIND_ALL_PRODUCTS = "SELECT product.code, product.quantity,product.price,product_translate.name FROM product JOIN product_translate ON product.code = product_translate.product_code join language on language.id = product_translate.lang_id where language.lang = 'EN'";
 
-    String FIND_ALL_PRODUCTS_BY_LANG_1ST = "SELECT * FROM product JOIN product";
-    String LANG_2ND = " on product.code = product";
-    String LANG_3RD = ".product_code";
+    String FIND_ALL_PRODUCTS_BY_LANG = "SELECT product.code, product.quantity,product.price,product_translate.name FROM product JOIN product_translate ON product.code = product_translate.product_code join language on language.id = product_translate.lang_id where language.lang = ?";
 
-
-
-    String FIND_PRODUCT_BY_NAME = "SELECT * FROM product JOIN productEN on product.code=productEN.product_code WHERE name = ?";
-    String FIND_PRODUCT_BY_CODE = "SELECT * FROM product JOIN productEN on product.code=productEN.product_code WHERE code = ?";
+    String FIND_PRODUCT_BY_NAME = "SELECT * FROM product JOIN product_translate on product.code=product_translate.product_code WHERE lang_id = ? and name = ?";
+    String FIND_PRODUCT_BY_CODE = "SELECT * FROM product JOIN product_translate on product.code=product_translate.product_code WHERE lang_id = ? and code = ?";
 
     //SQL queries for invoice and invoice_has_product tables
     String INSERT_NEW_INVOICE = "INSERT INTO invoice (user_id) VALUES (?)";
@@ -37,8 +33,8 @@ public interface SQLQueries {
     String SELECT_PRODUCTS_BY_INVOICE = "SELECT * FROM invoice_has_product JOIN product ON product.code = invoice_has_product.product_id WHERE invoice_id = ?";
     String FIND_INVOICE_BY_ID = "select * from invoice " +
             "join invoice_has_product on invoice.id = invoice_has_product.invoice_id " +
-            "join product on invoice_has_product.product_code = product.code JOIN productEN on product.code=productEN.product_code " +
-            "join user on user.id = invoice.user_id where invoice.id = ?";
+            "join product on invoice_has_product.product_code = product.code JOIN product_translate on product.code=product_translate.product_code " +
+            "join user on user.id = invoice.user_id where lang_id = ? and invoice.id = ?";
     String ADD_PRODUCT_TO_INVOICE = "INSERT INTO invoice_has_product (invoice_id, product_code, quantity_in_invoice, price) VALUES (?,?,?, ?)";
     String FIND_ALL_INVOICES = "select * from invoice join user on user.id = invoice.user_id where status = 'CLOSED'";
     String FIND_ALL_INVOICES_BY_USER = "select * from invoice join user on user.id = invoice.user_id where user.id = ?";

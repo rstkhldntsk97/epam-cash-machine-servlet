@@ -72,8 +72,8 @@ public class ProductService {
      * @param name name of product
      * @return product
      */
-    public Product findProductByName(String name) throws ProductNotExist {
-        Optional<Product> product = productDAO.findByName(name);
+    public Product findProductByName(String name, Integer langId) throws ProductNotExist {
+        Optional<Product> product = productDAO.findByName(name, langId);
         if (product.isPresent()) {
             return product.get();
         }
@@ -87,13 +87,12 @@ public class ProductService {
      * @param code code of product
      * @return product
      */
-    public Product findProductByCode(Long code) throws ProductNotExist {
-        Optional<Product> product = productDAO.findByCode(code);
+    public Product findProductByCode(Long code, Integer langId) throws ProductNotExist {
+        Optional<Product> product = productDAO.findByCode(code, langId);
         if (product.isPresent()) {
             return product.get();
-        } else {
-            LOGGER.error("invalid code");
-            throw new ProductNotExist();
         }
+        LOGGER.error("invalid code");
+        throw new ProductNotExist();
     }
 }

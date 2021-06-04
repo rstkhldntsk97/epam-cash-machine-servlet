@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface GenericDAO<T> {
 
-    Optional<T> findById(Long id);
+    Optional<T> findById(Long id, Integer langId);
 
     void create(T model) ;
 

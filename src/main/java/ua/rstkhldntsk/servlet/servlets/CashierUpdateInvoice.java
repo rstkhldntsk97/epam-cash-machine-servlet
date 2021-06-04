@@ -25,7 +25,7 @@ public class CashierUpdateInvoice extends HttpServlet {
         String status = (String) session.getAttribute("status");
         invoice.setStatus(status);
         if (status.equals("DECLINED")) {
-            invoiceService.updateInvoice(invoice);
+            invoiceService.deleteInvoice(invoice);
             session.removeAttribute("invoice");
             session.setAttribute("message", resourceBundle.getString("invoice.is.declined"));
             resp.sendRedirect(req.getContextPath() + "/home.jsp");

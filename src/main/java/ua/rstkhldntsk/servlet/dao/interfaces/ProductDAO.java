@@ -8,15 +8,15 @@ import java.util.Optional;
 
 public interface ProductDAO extends GenericDAO<Product> {
 
-    Optional<Product> findByName(String name);
+    Optional<Product> findByName(String name, Integer langId);
 
 
-    Optional<Product> findByCode(Long code);
+    Optional<Product> findByCode(Long code, Integer langId);
 
     List<Product> findAllByPage(Integer page, String lang);
 
-    public void createTranslateEN(Product product, String translate) throws ProductAlreadyExistException;
+    void createTranslateEN(Product product, String translate) throws ProductAlreadyExistException;
 
-    public void createTranslateUA(Product product, String translate) throws ProductAlreadyExistException;
+    void createTranslateUA(Product product, String translate) throws ProductAlreadyExistException;
 
 }

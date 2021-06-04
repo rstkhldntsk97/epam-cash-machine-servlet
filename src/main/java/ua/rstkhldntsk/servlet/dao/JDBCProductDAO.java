@@ -24,7 +24,7 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
+    public Optional<Product> findById(Long id, Integer langId) {
         throw new UnsupportedOperationException();
     }
 
@@ -36,8 +36,9 @@ public class JDBCProductDAO implements ProductDAO {
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setBigDecimal(1, product.getPrice());
-            preparedStatement.setInt(2, product.getQuantity());
+            preparedStatement.setLong(1, product.getCode());
+            preparedStatement.setBigDecimal(2, product.getPrice());
+            preparedStatement.setInt(3, product.getQuantity());
             preparedStatement.executeUpdate();
             generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -153,7 +154,8 @@ public class JDBCProductDAO implements ProductDAO {
         ResultSet resultSet = null;
         try {
             connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(FIND_ALL_PRODUCTS_BY_LANG_1ST + lang.toUpperCase() + LANG_2ND + lang + LANG_3RD + " order by code ASC LIMIT " + (page - 1) * 5 + "," + 5);
+            preparedStatement = connection.prepareStatement(FIND_ALL_PRODUCTS_BY_LANG + " order by code ASC LIMIT " + (page - 1) * 5 + "," + 5);
+            preparedStatement.setString(1, lang);
             resultSet = preparedStatement.executeQuery();
             ProductMapper mapper = new ProductMapper();
             while (resultSet.next()) {
@@ -170,7 +172,7 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
     @Override
-    public Optional<Product> findByName(String name) {
+    public Optional<Product> findByName(String name, Integer langId) {
         Optional<Product> result = Optional.empty();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -178,7 +180,8 @@ public class JDBCProductDAO implements ProductDAO {
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_NAME);
-            preparedStatement.setString(1, name);
+            preparedStatement.setInt(1, langId);
+            preparedStatement.setString(2, name);
             resultSet = preparedStatement.executeQuery();
             ProductMapper mapper = new ProductMapper();
             if (resultSet.next()) {
@@ -195,7 +198,7 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
     @Override
-    public Optional<Product> findByCode(Long code) {
+    public Optional<Product> findByCode(Long code, Integer langId) {
         Optional<Product> result = Optional.empty();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -203,7 +206,8 @@ public class JDBCProductDAO implements ProductDAO {
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CODE);
-            preparedStatement.setLong(1, code);
+            preparedStatement.setInt(1, langId);
+            preparedStatement.setLong(2, code);
             resultSet = preparedStatement.executeQuery();
             ProductMapper mapper = new ProductMapper();
             if (resultSet.next()) {

@@ -33,6 +33,7 @@ public class CashierCreateInvoice extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
+        Integer langId = Validator.languageValidate((String) session.getAttribute("lang"));
         String parameter1 = req.getParameter("code");
         String parameter2 = req.getParameter("quantity");
 
@@ -44,9 +45,9 @@ public class CashierCreateInvoice extends HttpServlet {
             Integer quantity = Validator.productQuantityValidate(parameter2);
             //try to find product by code
             try {
-                product = productService.findProductByCode(code);
-                BigDecimal price = invoiceService.countPriceForProductByQuantity(quantity, code);
-                invoiceService.addProductToInvoice(code, quantity, invoice, price);
+                product = productService.findProductByCode(code, langId);
+                BigDecimal price = invoiceService.countPriceForProductByQuantity(quantity, code, langId);
+                invoiceService.addProductToInvoice(code, quantity, invoice, price, langId);
                 invoiceService.updateInvoice(invoice);
                 session.setAttribute("message", resourceBundle.getString("product.successfully.added"));
                 LOGGER.debug(product + " was successfully added to invoice in quantity of " + quantity);
@@ -66,14 +67,14 @@ public class CashierCreateInvoice extends HttpServlet {
             session.getAttribute("user");
             req.setAttribute("productByCodeFromServer", product);
             resp.sendRedirect(req.getContextPath() + "/createInvoice.jsp");
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | InvalidInput e ) {
             //try to find product by name
             try {
                 String name = Validator.productNameValidate(parameter1);
                 Integer quantity = Validator.productQuantityValidate(parameter2);
-                product = productService.findProductByName(name);
-                BigDecimal price = invoiceService.countPriceForProductByQuantity(quantity, product.getCode());
-                invoiceService.addProductToInvoice(product.getCode(), quantity, invoice, price);
+                product = productService.findProductByName(name, langId);
+                BigDecimal price = invoiceService.countPriceForProductByQuantity(quantity, product.getCode(), langId);
+                invoiceService.addProductToInvoice(product.getCode(), quantity, invoice, price, langId);
                 session.setAttribute("message", resourceBundle.getString("product.successfully.added"));
                 LOGGER.debug(product + " was successfully added to invoice in quantity of " + quantity);
             } catch (NotEnoughProduct notEnoughProduct) {
@@ -86,14 +87,12 @@ public class CashierCreateInvoice extends HttpServlet {
                 session.setAttribute("message", resourceBundle.getString("product.already.in.invoice"));
                 LOGGER.debug("Product is already in invoice");
             } catch (ProductNotExist | InvalidInput productNotExist) {
-                productNotExist.printStackTrace();
+                session.setAttribute("message", resourceBundle.getString("invalid.input"));
+                req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
             }
             session.getAttribute("user");
             req.setAttribute("productByCodeFromServer", product);
             resp.sendRedirect(req.getContextPath() + "/createInvoice.jsp");
-        } catch (InvalidInput invalidInput) {
-            session.setAttribute("message", resourceBundle.getString("invalid.input"));
-            req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
         }
     }
 }

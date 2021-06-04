@@ -61,4 +61,15 @@ public class Validator {
         }
         return Long.parseLong(id);
     }
+
+    public static Integer languageValidate(String lang) {
+        Integer langId=1;
+        if (lang!=null) {
+            if (lang.equals("ua")) {
+                langId = 2;
+                return langId;
+            }
+        }
+        return langId;
+    }
 }

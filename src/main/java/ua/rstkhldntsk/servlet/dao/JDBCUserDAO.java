@@ -23,7 +23,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> findById(Long id, Integer langId) {
         Connection con = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

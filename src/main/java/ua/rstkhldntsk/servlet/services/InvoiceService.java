@@ -39,8 +39,8 @@ public class InvoiceService {
         invoiceDAO.create(invoice);
     }
 
-    public void addProductToInvoice(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws NotEnoughProduct, ProductAlreadyExistException {
-        Product product = productDAO.findByCode(code).get();
+    public void addProductToInvoice(Long code, Integer quantity, Invoice invoice, BigDecimal price, Integer langId) throws NotEnoughProduct, ProductAlreadyExistException {
+        Product product = productDAO.findByCode(code, langId).get();
         if (product.getQuantity() >= quantity) {
             invoiceDAO.addProduct(code, quantity, invoice, price);
             product.setQuantity(product.getQuantity() - quantity);
@@ -64,9 +64,9 @@ public class InvoiceService {
         return invoiceDAO.findAll();
     }
 
-    public BigDecimal countPriceForProductByQuantity(Integer quantity, Long productCode) {
+    public BigDecimal countPriceForProductByQuantity(Integer quantity, Long productCode, Integer langId) {
         try {
-            Product product = productDAO.findByCode(productCode).get();
+            Product product = productDAO.findByCode(productCode, langId).get();
             LOGGER.debug(product.getName() + " " + product.getPrice().multiply(BigDecimal.valueOf(quantity)));
             return product.getPrice().multiply(BigDecimal.valueOf(quantity));
         } catch (NullPointerException e) {
@@ -82,10 +82,14 @@ public class InvoiceService {
         return invoiceDAO.findAllByUser(user);
     }
 
-    public Invoice findById(Long id) throws IdNotExist {
-        Optional<Invoice> invoice = invoiceDAO.findById(id);
+    public Invoice findById(Long id, Integer langId) throws IdNotExist {
+        Optional<Invoice> invoice = invoiceDAO.findById(id, langId);
         if (invoice.isPresent()) {
-            return invoice.get();
+            if (invoice.get().getId() != null) {
+                return invoice.get();
+            }
+            LOGGER.error("wrong id");
+            throw new IdNotExist();
         }
         LOGGER.error("wrong id");
         throw new IdNotExist();
