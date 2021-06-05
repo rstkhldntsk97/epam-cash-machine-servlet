@@ -18,9 +18,6 @@ public class ProductService {
     private final ProductDAO productDAO = daoFactory.createProductDao();
     private static final Logger LOGGER = Logger.getLogger(ProductService.class);
 
-    private ProductService() {
-    }
-
     /**
      * @return instance
      */
@@ -45,7 +42,7 @@ public class ProductService {
      * @param pageInfo pageInfo
      * @return page with products
      */
-    public Page<Product> findAllByPage(Integer pageInfo, String lang) {
+    public Page<Product> findAllByPage(Integer pageInfo, Integer lang) {
         Page<Product> page = new Page<>();
         page.setContent(productDAO.findAllByPage(pageInfo, lang));
         int totalRecords = productDAO.findAll().size();
@@ -57,9 +54,16 @@ public class ProductService {
 
 
     public void createProduct(Product product, String translateUA, String translateEN) throws ProductAlreadyExistException {
-        productDAO.create(product);
-        productDAO.createTranslateEN(product, translateEN);
-        productDAO.createTranslateUA(product, translateUA);
+        try {
+            Product product1 = findProductByName(product.getName(), 1);
+            if (!product1.getName().equals(product.getName())) {
+            }
+            throw new ProductAlreadyExistException();
+        } catch (ProductNotExist productNotExist) {
+            productDAO.create(product);
+            productDAO.createTranslateEN(product, translateEN);
+            productDAO.createTranslateUA(product, translateUA);
+        }
     }
 
     public void updateProduct(Product product) {
@@ -87,8 +91,8 @@ public class ProductService {
      * @param code code of product
      * @return product
      */
-    public Product findProductByCode(Long code, Integer langId) throws ProductNotExist {
-        Optional<Product> product = productDAO.findByCode(code, langId);
+    public Product findProductByCode(Integer code, Integer langId) throws ProductNotExist {
+        Optional<Product> product = productDAO.findById(code, langId);
         if (product.isPresent()) {
             return product.get();
         }

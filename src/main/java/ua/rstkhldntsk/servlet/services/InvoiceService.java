@@ -39,8 +39,8 @@ public class InvoiceService {
         invoiceDAO.create(invoice);
     }
 
-    public void addProductToInvoice(Long code, Integer quantity, Invoice invoice, BigDecimal price, Integer langId) throws NotEnoughProduct, ProductAlreadyExistException {
-        Product product = productDAO.findByCode(code, langId).get();
+    public void addProductToInvoice(Integer code, Integer quantity, Invoice invoice, BigDecimal price, Integer langId) throws NotEnoughProduct, ProductAlreadyExistException {
+        Product product = productDAO.findById(code, langId).get();
         if (product.getQuantity() >= quantity) {
             invoiceDAO.addProduct(code, quantity, invoice, price);
             product.setQuantity(product.getQuantity() - quantity);
@@ -49,6 +49,12 @@ public class InvoiceService {
             LOGGER.debug("Product is not available in this quantity");
             throw new NotEnoughProduct();
         }
+    }
+
+    public void deleteProductFromInvoice(String productName, Integer invoiceId, Integer langId) {
+        Product product = productDAO.findByName(productName, langId).get();
+        invoiceDAO.deleteProductFromInvoice(product.getCode(), invoiceId);
+
     }
 
     public void updateInvoice(Invoice invoice) {
@@ -64,9 +70,9 @@ public class InvoiceService {
         return invoiceDAO.findAll();
     }
 
-    public BigDecimal countPriceForProductByQuantity(Integer quantity, Long productCode, Integer langId) {
+    public BigDecimal countPriceForProductByQuantity(Integer quantity, Integer productCode, Integer langId) {
         try {
-            Product product = productDAO.findByCode(productCode, langId).get();
+            Product product = productDAO.findById(productCode, langId).get();
             LOGGER.debug(product.getName() + " " + product.getPrice().multiply(BigDecimal.valueOf(quantity)));
             return product.getPrice().multiply(BigDecimal.valueOf(quantity));
         } catch (NullPointerException e) {

@@ -27,7 +27,6 @@ public class Cashier extends HttpServlet {
         invoice.setUser(user);
         session.setAttribute("invoice", invoice);
         invoiceService.createNewInvoice(invoice);
-//        req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
         resp.sendRedirect(req.getContextPath() + "/createInvoice.jsp");
     }
 }

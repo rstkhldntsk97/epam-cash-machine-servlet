@@ -38,9 +38,9 @@
                 <th><fmt:message key="form.invoice.all.products"/></th>
             </tr>
             <td>
-            <c:forEach items="${invoice.products}" var="product">
-                <c:out value="${product.key}"/><br/>
-            </c:forEach>
+                <c:forEach items="${invoice.products}" var="product">
+                    <c:out value="${product.key}"/><br/>
+                </c:forEach>
             </td>
         </table>
 

@@ -16,7 +16,7 @@ public class InvoiceMapper implements ObjectMapper<Invoice> {
         try {
             Invoice invoice = new Invoice();
             while (resultSet.next()) {
-                invoice.setId(resultSet.getLong("id"));
+                invoice.setId(resultSet.getInt("id"));
                 invoice.setStatus(resultSet.getString("status"));
                 invoice.setCreatedAt(resultSet.getDate("created_at"));
                 invoice.setUser(userMapper.extractFromResultSet(resultSet));

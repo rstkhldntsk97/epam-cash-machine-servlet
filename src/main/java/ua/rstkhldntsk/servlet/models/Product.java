@@ -5,12 +5,12 @@ import java.util.Objects;
 
 public class Product {
 
-    private Long code;
+    private Integer code;
     private String name;
     private BigDecimal price;
     private Integer quantity;
 
-    public Product(Long code, String name, BigDecimal price, Integer quantity) {
+    public Product(Integer code, String name, BigDecimal price, Integer quantity) {
         this.code = code;
         this.name = name;
         this.price = price;
@@ -26,11 +26,11 @@ public class Product {
     public Product() {
     }
 
-    public Long getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(Long code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 

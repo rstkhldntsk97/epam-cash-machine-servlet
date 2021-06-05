@@ -28,12 +28,13 @@ public class CommodityExpert extends HttpServlet {
         HttpSession session = req.getSession();
 
         String lang = (String) session.getAttribute("lang");
+        Integer langId = Validator.languageValidate(lang);
         int page = 1;
         if(req.getParameter("page") != null) {
             page = Integer.parseInt(req.getParameter("page"));
         }
 
-        Page<Product> products = productService.findAllByPage(page, lang);
+        Page<Product> products = productService.findAllByPage(page, langId);
 
         req.setAttribute("productsFromServer", products.getContent());
         req.setAttribute("noOfPages", products.getTotalPages());
@@ -48,19 +49,16 @@ public class CommodityExpert extends HttpServlet {
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
         String nameEN = req.getParameter("nameEN");
         String nameUA = req.getParameter("nameUA");
-        String codeStr = req.getParameter("code");
         String priceStr = req.getParameter("price");
         String  quantityStr = req.getParameter("quantity");
         BigDecimal price = null;
         Integer quantity = null;
-        Long code = null;
         try {
             nameEN = Validator.productNameValidate(nameEN);
 //            nameUA = Validator.productNameValidate(nameUA);
-            code = Validator.productCodeValidate(codeStr);
             price = Validator.productPriceValidate(priceStr);
             quantity = Validator.productQuantityValidate(quantityStr);
-            productService.createProduct(new Product(code, nameEN, price, quantity), nameUA, nameEN);
+            productService.createProduct(new Product(nameEN, price, quantity), nameUA, nameEN);
             session.setAttribute("message", resourceBundle.getString("create.product.success"));
         } catch (InvalidInput invalidInput) {
             session.setAttribute("message", resourceBundle.getString("invalid.input"));

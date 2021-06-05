@@ -22,9 +22,9 @@ import java.math.BigDecimal;
 import java.util.ResourceBundle;
 
 @WebServlet("/createInvoice")
-public class CashierCreateInvoice extends HttpServlet {
+public class CreateInvoice extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(CashierCreateInvoice.class);
+    private static final Logger LOGGER = Logger.getLogger(CreateInvoice.class);
 
     ProductService productService = ProductService.getInstance();
     InvoiceService invoiceService = InvoiceService.getInstance();
@@ -41,7 +41,7 @@ public class CashierCreateInvoice extends HttpServlet {
         Invoice invoice = (Invoice) session.getAttribute("invoice");
 
         try {
-            Long code = Validator.productCodeValidate(parameter1);
+            Integer code = Validator.productCodeValidate(parameter1);
             Integer quantity = Validator.productQuantityValidate(parameter2);
             //try to find product by code
             try {
@@ -49,7 +49,7 @@ public class CashierCreateInvoice extends HttpServlet {
                 BigDecimal price = invoiceService.countPriceForProductByQuantity(quantity, code, langId);
                 invoiceService.addProductToInvoice(code, quantity, invoice, price, langId);
                 invoiceService.updateInvoice(invoice);
-                session.setAttribute("message", resourceBundle.getString("product.successfully.added"));
+                session.setAttribute("message",product.getName() + " " +  resourceBundle.getString("product.successfully.added"));
                 LOGGER.debug(product + " was successfully added to invoice in quantity of " + quantity);
             } catch (NotEnoughProduct notEnoughProduct) {
                 session.setAttribute("message", resourceBundle.getString("product.not.enough"));
@@ -75,7 +75,7 @@ public class CashierCreateInvoice extends HttpServlet {
                 product = productService.findProductByName(name, langId);
                 BigDecimal price = invoiceService.countPriceForProductByQuantity(quantity, product.getCode(), langId);
                 invoiceService.addProductToInvoice(product.getCode(), quantity, invoice, price, langId);
-                session.setAttribute("message", resourceBundle.getString("product.successfully.added"));
+                session.setAttribute("message", product.getName() + " " + resourceBundle.getString("product.successfully.added"));
                 LOGGER.debug(product + " was successfully added to invoice in quantity of " + quantity);
             } catch (NotEnoughProduct notEnoughProduct) {
                 session.setAttribute("message", resourceBundle.getString("product.not.enough"));

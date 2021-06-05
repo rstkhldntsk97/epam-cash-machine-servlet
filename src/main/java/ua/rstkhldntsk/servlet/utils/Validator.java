@@ -6,12 +6,12 @@ import java.math.BigDecimal;
 
 public class Validator {
 
-    public static Long productCodeValidate(String code) throws InvalidInput {
+    public static Integer productCodeValidate(String code) throws InvalidInput {
         String pattern = "[0-9]+";
         if (!code.matches(pattern)) {
             throw new InvalidInput();
         }
-        return Long.parseLong(code);
+        return Integer.parseInt(code);
     }
 
     public static String productNameValidate(String name) throws InvalidInput {
@@ -19,7 +19,7 @@ public class Validator {
         if (!name.matches(pattern)) {
             throw new InvalidInput();
         }
-        return name;
+        return name.toLowerCase();
     }
 
     public static BigDecimal productPriceValidate(String price) throws InvalidInput {

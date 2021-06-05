@@ -6,6 +6,7 @@ import ua.rstkhldntsk.servlet.models.User;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public interface InvoiceDAO extends GenericDAO<Invoice> {
 
@@ -17,11 +18,26 @@ public interface InvoiceDAO extends GenericDAO<Invoice> {
      */
     List<Invoice> findAllByUser(User user);
 
-    void addProduct(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws ProductAlreadyExistException;
+    /**
+     * adds product to invoice
+     *
+     * @param code product code
+     * @param quantity product quantity in current invoice
+     * @param invoice current invoice
+     * @param price total of product in invoice
+     */
+    void addProduct(Integer code, Integer quantity, Invoice invoice, BigDecimal price) throws ProductAlreadyExistException;
 
-//    boolean updateStatus(Invoice invoice);
-//
-//    boolean updateTotal(Invoice invoice);
+    /**
+     * finds invoice
+     *
+     * @param id invoice id
+     * @param langId language
+     * @return optional of invoice
+     */
+    Optional<Invoice> findById(Long id, Integer langId);
 
     Invoice findByUserAndInvoiceId(User user, Invoice invoice);
+
+    boolean deleteProductFromInvoice(Integer productCode, Integer invoiceId);
 }

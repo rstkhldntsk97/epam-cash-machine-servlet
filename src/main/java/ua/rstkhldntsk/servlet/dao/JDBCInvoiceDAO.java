@@ -19,7 +19,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
 
     private static final Logger LOGGER = Logger.getLogger(JDBCInvoiceDAO.class);
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     public JDBCInvoiceDAO(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -50,23 +50,25 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
     }
 
     @Override
-    public void create(Invoice invoice) {
+    public boolean create(Invoice invoice) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
         try {
             connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(INSERT_NEW_INVOICE, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement(CREATE_INVOICE, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, invoice.getUser().getId());
             preparedStatement.executeUpdate();
             generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                invoice.setId(generatedKeys.getLong(1));
+                invoice.setId(generatedKeys.getInt(1));
             }
             invoice.setStatus("NEW");
             LOGGER.debug("Invoice " + invoice.getId() + " created successfully");
+            return true;
         } catch (SQLException e) {
             LOGGER.error(e);
+            return false;
         } finally {
             close(generatedKeys);
             close(preparedStatement);
@@ -132,7 +134,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Invoice invoice = new Invoice();
-                invoice.setId(resultSet.getLong("id"));
+                invoice.setId(resultSet.getInt("id"));
                 invoice.setTotal(resultSet.getFloat("total_price"));
                 invoice.setUser(userMapper.extractFromResultSet(resultSet));
                 invoice.setStatus(resultSet.getString("status"));
@@ -149,88 +151,107 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
         return invoices;
     }
 
-        @Override
-        public List<Invoice> findAllByUser (User user){
-            List<Invoice> invoices = new ArrayList<>();
-            UserMapper userMapper = new UserMapper();
-            Connection con = null;
-            PreparedStatement preparedStatement = null;
-            ResultSet resultSet = null;
-            try {
-                con = dataSource.getConnection();
-                preparedStatement = con.prepareStatement(FIND_ALL_INVOICES_BY_USER);
-                preparedStatement.setLong(1, user.getId());
-                resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    Invoice invoice = new Invoice();
-                    invoice.setId(resultSet.getLong("id"));
-                    invoice.setTotal(resultSet.getFloat("total_price"));
-                    invoice.setUser(userMapper.extractFromResultSet(resultSet));
-                    invoice.setStatus(resultSet.getString("status"));
-                    invoices.add(invoice);
-                }
-            } catch (SQLException e) {
-                throw new IllegalStateException();
-            } finally {
-                close(resultSet);
-                close(preparedStatement);
-                close(con);
+    @Override
+    public List<Invoice> findAllByUser(User user) {
+        List<Invoice> invoices = new ArrayList<>();
+        UserMapper userMapper = new UserMapper();
+        Connection con = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            con = dataSource.getConnection();
+            preparedStatement = con.prepareStatement(FIND_ALL_INVOICES_BY_USER);
+            preparedStatement.setLong(1, user.getId());
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Invoice invoice = new Invoice();
+                invoice.setId(resultSet.getInt("id"));
+                invoice.setTotal(resultSet.getFloat("total_price"));
+                invoice.setUser(userMapper.extractFromResultSet(resultSet));
+                invoice.setStatus(resultSet.getString("status"));
+                invoices.add(invoice);
             }
-            return invoices;
+        } catch (SQLException e) {
+            throw new IllegalStateException();
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+            close(con);
         }
-
-        @Override
-        public void addProduct (Long code, Integer quantity, Invoice invoice, BigDecimal price) throws
-                ProductAlreadyExistException {
-            Connection connection = null;
-            PreparedStatement preparedStatement = null;
-            ResultSet generatedKeys = null;
-            try {
-                connection = dataSource.getConnection();
-                preparedStatement = connection.prepareStatement(ADD_PRODUCT_TO_INVOICE, Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setLong(1, invoice.getId());
-                preparedStatement.setLong(2, code);
-                preparedStatement.setInt(3, quantity);
-                preparedStatement.setBigDecimal(4, price);
-                preparedStatement.executeUpdate();
-                generatedKeys = preparedStatement.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    invoice.setId(generatedKeys.getLong(1));
-                }
-            } catch (SQLException e) {
-                LOGGER.debug("can't add this product");
-                throw new ProductAlreadyExistException();
-            } finally {
-                close(generatedKeys);
-                close(preparedStatement);
-                close(connection);
-            }
-        }
-
-        @Override
-        public Invoice findByUserAndInvoiceId (User user, Invoice invoice){
-            Invoice invoice1 = null;
-            Connection con = null;
-            PreparedStatement preparedStatement = null;
-            ResultSet resultSet = null;
-            try {
-                con = dataSource.getConnection();
-                preparedStatement = con.prepareStatement(FIND_INVOICE_BY_USER_ID_AND_INVOICE_ID);
-                preparedStatement.setLong(1, user.getId());
-                preparedStatement.setLong(1, invoice.getId());
-                resultSet = preparedStatement.executeQuery();
-                InvoiceMapper mapper = new InvoiceMapper();
-                while (resultSet.next()) {
-                    invoice1 = mapper.extractFromResultSet(resultSet);
-                }
-            } catch (SQLException e) {
-                throw new IllegalStateException();
-            } finally {
-                close(resultSet);
-                close(preparedStatement);
-                close(con);
-            }
-            return invoice1;
-        }
-
+        return invoices;
     }
+
+    @Override
+    public void addProduct(Integer code, Integer quantity, Invoice invoice, BigDecimal price) throws ProductAlreadyExistException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet generatedKeys = null;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(ADD_PRODUCT_TO_INVOICE, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, invoice.getId());
+            preparedStatement.setLong(2, code);
+            preparedStatement.setInt(3, quantity);
+            preparedStatement.setBigDecimal(4, price);
+            preparedStatement.executeUpdate();
+            generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                invoice.setId(generatedKeys.getInt(1));
+            }
+        } catch (SQLException e) {
+            LOGGER.debug("can't add this product");
+            throw new ProductAlreadyExistException();
+        } finally {
+            close(generatedKeys);
+            close(preparedStatement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public Invoice findByUserAndInvoiceId(User user, Invoice invoice) {
+        Invoice invoice1 = null;
+        Connection con = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            con = dataSource.getConnection();
+            preparedStatement = con.prepareStatement(FIND_INVOICE_BY_USER_ID_AND_INVOICE_ID);
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setLong(1, invoice.getId());
+            resultSet = preparedStatement.executeQuery();
+            InvoiceMapper mapper = new InvoiceMapper();
+            while (resultSet.next()) {
+                invoice1 = mapper.extractFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException();
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+            close(con);
+        }
+        return invoice1;
+    }
+
+    @Override
+    public boolean deleteProductFromInvoice(Integer productCode, Integer invoiceId) {
+        Connection con = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            con = dataSource.getConnection();
+            preparedStatement = con.prepareStatement(DELETE_PRODUCT_FROM_INVOICE);
+            preparedStatement.setInt(1, invoiceId);
+            preparedStatement.setInt(2, productCode);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException throwables) {
+            LOGGER.error(throwables);
+            return false;
+        } finally {
+            close(preparedStatement);
+            close(con);
+        }
+    }
+
+}

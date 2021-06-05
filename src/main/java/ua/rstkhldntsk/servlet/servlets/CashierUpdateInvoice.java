@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
+
 @WebServlet("/updateInvoice")
 public class CashierUpdateInvoice extends HttpServlet {
 

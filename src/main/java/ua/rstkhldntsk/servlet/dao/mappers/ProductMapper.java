@@ -11,22 +11,10 @@ public class ProductMapper implements ObjectMapper<Product> {
     public Product extractFromResultSet(ResultSet resultSet) throws SQLException {
         try {
             Product product = new Product();
-            product.setCode(resultSet.getLong("code"));
+            product.setCode(resultSet.getInt("code"));
             product.setName(resultSet.getString("name"));
             product.setPrice(resultSet.getBigDecimal("price"));
             product.setQuantity(resultSet.getInt("quantity"));
-            return product;
-        } catch (SQLException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public Product extractProductFromInvoiceResultSet(ResultSet resultSet) throws SQLException {
-        try {
-            Product product = new Product();
-            product.setCode(resultSet.getLong("code"));
-            product.setName(resultSet.getString("name"));
-            product.setPrice(resultSet.getBigDecimal("price"));
             return product;
         } catch (SQLException e) {
             throw new IllegalStateException(e);

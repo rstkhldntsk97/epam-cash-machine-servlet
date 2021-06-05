@@ -3,7 +3,7 @@ package ua.rstkhldntsk.servlet.dao;
 import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.interfaces.UserDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.UserMapper;
-import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
+import ua.rstkhldntsk.servlet.exceptions.UserExistException;
 import ua.rstkhldntsk.servlet.models.User;
 
 import javax.sql.DataSource;
@@ -23,13 +23,13 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public Optional<User> findById(Long id, Integer langId) {
+    public Optional<User> findById(Long id) {
         Connection con = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             con = dataSource.getConnection();
-            statement = con.prepareStatement(FIND_BY_ID);
+            statement = con.prepareStatement(FIND_USER_BY_ID);
             statement.setLong(1, id);
             resultSet = statement.executeQuery();
             UserMapper mapper = new UserMapper();
@@ -47,7 +47,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public void create(User user) {
+    public boolean create(User user) {
         Connection con = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -57,13 +57,17 @@ public class JDBCUserDAO implements UserDAO {
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getRole());
-            preparedStatement.executeUpdate();
+            if (preparedStatement.executeUpdate() !=1) {
+                return false;
+            }
             generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 user.setId(generatedKeys.getLong(1));
             }
+            return true;
         } catch (SQLException e) {
             LOGGER.error(e);
+            throw new UserExistException();
         } finally {
             close(generatedKeys);
             close(preparedStatement);
@@ -73,7 +77,7 @@ public class JDBCUserDAO implements UserDAO {
 
     @Override
     public boolean update(User user) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -96,7 +100,7 @@ public class JDBCUserDAO implements UserDAO {
                 users.add(mapper.extractFromResultSet(resultSet));
             }
         } catch (SQLException e) {
-            throw new IllegalStateException();
+            LOGGER.error(e);
         } finally {
             close(resultSet);
             close(statement);
@@ -119,14 +123,14 @@ public class JDBCUserDAO implements UserDAO {
             while (resultSet.next()) {
                 users.add(mapper.extractFromResultSet(resultSet));
             }
-            return users;
         } catch (SQLException e) {
-            throw new IllegalStateException(e);
+            LOGGER.error(e);
         } finally {
             close(resultSet);
             close(preparedStatement);
             close(connection);
         }
+        return users;
     }
 
     @Override
@@ -145,36 +149,14 @@ public class JDBCUserDAO implements UserDAO {
             }
             return Optional.empty();
         } catch (SQLException e) {
-            throw new IllegalStateException(e.getMessage());
+            LOGGER.error(e);
+            return Optional.empty();
         } finally {
             close(resultSet);
             close(statement);
             close(con);
         }
     }
-
-    @Override
-    public String getUserRole(User user) {
-        Connection con = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            con = dataSource.getConnection();
-            statement = con.prepareStatement(FIND_USER_ROLE_BY_ID);
-            resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getString("role");
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException();
-        } finally {
-            close(resultSet);
-            close(statement);
-            close(con);
-        }
-        return null;
-    }
-
 
     public boolean checkUser(String username, String password) {
         boolean exist = false;
@@ -183,13 +165,13 @@ public class JDBCUserDAO implements UserDAO {
         ResultSet rs = null;
         try {
             connection = dataSource.getConnection();
-            statement = connection.prepareStatement(SQL_CHECK_USER);
+            statement = connection.prepareStatement(CHECK_USER);
             statement.setString(1, username);
             statement.setString(2, password);
             rs = statement.executeQuery();
             exist = rs.next();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e);
         } finally {
             close(rs);
             close(statement);
