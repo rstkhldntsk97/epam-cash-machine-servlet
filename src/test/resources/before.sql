@@ -72,9 +72,9 @@ VALUES ('admin', '5f4dcc3b5aa765d61d8327deb882cf99', 'ADMIN'),
 
 
 INSERT INTO product (code, price, quantity)
-VALUES (1, 100, 100),
-       (2, 200, 200),
-       (3, 300, 300);
+VALUES (1, 100, 1000),
+       (2, 200, 2000),
+       (3, 300, 3000);
 
 INSERT INTO product_translate(product_code, lang_id, name)
 VALUES (1, 1, 'bed'),
@@ -90,6 +90,6 @@ VALUES (4),
        (4);
 
 INSERT INTO invoice_has_product (invoice_id, product_code, quantity_in_invoice, price)
-VALUES (1, 1, 10, 1000),
-       (2, 2, 10, 2000),
-       (3, 3, 10, 3000);
+VALUES (1, 1, 10, 100), (1, 2, 10, 200),
+       (2, 2, 10, 200),
+       (3, 3, 10, 300);

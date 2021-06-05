@@ -8,6 +8,7 @@ import ua.rstkhldntsk.servlet.database.DBInitializer;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -28,7 +29,7 @@ public class JDBCInvoiceDAOTest {
     }
 
     @Test
-    public void findByIdNotEquals(){
+    public void findByIdNotEquals() {
         Invoice invoice = invoiceDAO.findById(1L, 1).get();
         Invoice invoice1 = invoiceDAO.findById(12L, 1).get();
         assertNotEquals(invoice, invoice1);
@@ -42,7 +43,7 @@ public class JDBCInvoiceDAOTest {
         assertTrue(invoiceDAO.create(invoice));
     }
 
-    @Test (expected = NullPointerException.class)
+    @Test(expected = NullPointerException.class)
     public void createFailedWithException() {
         invoiceDAO.create(new Invoice());
     }
@@ -54,6 +55,40 @@ public class JDBCInvoiceDAOTest {
         Invoice invoice = new Invoice();
         invoice.setUser(user);
         invoiceDAO.create(invoice);
+    }
+
+    @Test
+    public void update() {
+        Invoice invoice = new Invoice();
+        invoice.setId(10);
+        invoice.setTotal(101.0f);
+        assertTrue(invoiceDAO.update(invoice));
+    }
+
+    @Test
+    public void delete() {
+        Invoice invoice = new Invoice();
+        invoice.setId(3);
+        assertTrue(invoiceDAO.delete(invoice));
+    }
+
+    @Test
+    public void findAll() {
+        List<Invoice> invoiceDAOAll = invoiceDAO.findAll();
+        assertNotNull(invoiceDAOAll);
+    }
+
+    @Test
+    public void findAllByUser() {
+        User user = new User();
+        user.setId(1L);
+        List<Invoice> userInvoices = invoiceDAO.findAllByUser(user);
+        assertNotNull(userInvoices);
+    }
+
+    @Test
+    public void deleteProductFromInvoice() {
+        assertTrue(invoiceDAO.deleteProductFromInvoice(2, 1));
     }
 
 }

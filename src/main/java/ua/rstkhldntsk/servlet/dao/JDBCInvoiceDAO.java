@@ -209,32 +209,6 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
     }
 
     @Override
-    public Invoice findByUserAndInvoiceId(User user, Invoice invoice) {
-        Invoice invoice1 = null;
-        Connection con = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            con = dataSource.getConnection();
-            preparedStatement = con.prepareStatement(FIND_INVOICE_BY_USER_ID_AND_INVOICE_ID);
-            preparedStatement.setLong(1, user.getId());
-            preparedStatement.setLong(1, invoice.getId());
-            resultSet = preparedStatement.executeQuery();
-            InvoiceMapper mapper = new InvoiceMapper();
-            while (resultSet.next()) {
-                invoice1 = mapper.extractFromResultSet(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException();
-        } finally {
-            close(resultSet);
-            close(preparedStatement);
-            close(con);
-        }
-        return invoice1;
-    }
-
-    @Override
     public boolean deleteProductFromInvoice(Integer productCode, Integer invoiceId) {
         Connection con = null;
         PreparedStatement preparedStatement = null;
@@ -243,7 +217,9 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             preparedStatement = con.prepareStatement(DELETE_PRODUCT_FROM_INVOICE);
             preparedStatement.setInt(1, invoiceId);
             preparedStatement.setInt(2, productCode);
-            preparedStatement.executeUpdate();
+            if (preparedStatement.executeUpdate() != 1) {
+                return false;
+            }
             return true;
         } catch (SQLException throwables) {
             LOGGER.error(throwables);

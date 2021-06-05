@@ -37,7 +37,5 @@ public interface InvoiceDAO extends GenericDAO<Invoice> {
      */
     Optional<Invoice> findById(Long id, Integer langId);
 
-    Invoice findByUserAndInvoiceId(User user, Invoice invoice);
-
     boolean deleteProductFromInvoice(Integer productCode, Integer invoiceId);
 }
