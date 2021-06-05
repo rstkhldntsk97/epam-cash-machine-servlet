@@ -35,7 +35,13 @@ public interface InvoiceDAO extends GenericDAO<Invoice> {
      * @param langId language
      * @return optional of invoice
      */
-    Optional<Invoice> findById(Long id, Integer langId);
+    Optional<Invoice> findById(Integer id, Integer langId);
 
+    /**
+     * deletes product from invoice
+     *
+     * @param productCode product code
+     * @param invoiceId invoice id
+     */
     boolean deleteProductFromInvoice(Integer productCode, Integer invoiceId);
 }

@@ -54,12 +54,12 @@ public class Validator {
         return password;
     }
 
-    public static Long invoiceIdValidate(String id) throws InvalidInput{
+    public static Integer invoiceIdValidate(String id) throws InvalidInput{
         String pattern = "[0-9]+";
         if (!id.matches(pattern)) {
             throw new InvalidInput();
         }
-        return Long.parseLong(id);
+        return Integer.parseInt(id);
     }
 
     public static Integer languageValidate(String lang) {

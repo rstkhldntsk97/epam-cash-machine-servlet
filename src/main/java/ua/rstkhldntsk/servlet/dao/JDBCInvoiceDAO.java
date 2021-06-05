@@ -26,7 +26,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
     }
 
     @Override
-    public Optional<Invoice> findById(Long id, Integer langId) {
+    public Optional<Invoice> findById(Integer id, Integer langId) {
         Optional<Invoice> invoice = Optional.empty();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -35,7 +35,7 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(FIND_INVOICE_BY_ID);
             preparedStatement.setInt(1, langId);
-            preparedStatement.setLong(2, id);
+            preparedStatement.setInt(2, id);
             resultSet = preparedStatement.executeQuery();
             InvoiceMapper invoiceMapper = new InvoiceMapper();
             invoice = Optional.of(invoiceMapper.extractFromResultSet(resultSet));

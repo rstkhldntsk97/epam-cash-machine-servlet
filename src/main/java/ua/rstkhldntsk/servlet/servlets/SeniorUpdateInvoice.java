@@ -37,7 +37,7 @@ public class SeniorUpdateInvoice extends HttpServlet {
         Integer langId = Validator.languageValidate(lang);
         String invoiceId = req.getParameter("id");
         try {
-            Long id = Validator.invoiceIdValidate(invoiceId);
+            Integer id = Validator.invoiceIdValidate(invoiceId);
             Invoice invoiceToEdit = invoiceService.findById(id, langId);
             session.setAttribute("invoice", invoiceToEdit);
             req.setAttribute("invoice", invoiceToEdit);

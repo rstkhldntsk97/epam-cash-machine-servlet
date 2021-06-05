@@ -30,8 +30,8 @@ public class JDBCInvoiceDAOTest {
 
     @Test
     public void findByIdNotEquals() {
-        Invoice invoice = invoiceDAO.findById(1L, 1).get();
-        Invoice invoice1 = invoiceDAO.findById(12L, 1).get();
+        Invoice invoice = invoiceDAO.findById(1, 1).get();
+        Invoice invoice1 = invoiceDAO.findById(12, 1).get();
         assertNotEquals(invoice, invoice1);
     }
 
@@ -88,7 +88,7 @@ public class JDBCInvoiceDAOTest {
 
     @Test
     public void deleteProductFromInvoice() {
-        assertTrue(invoiceDAO.deleteProductFromInvoice(2, 1));
+        assertTrue(invoiceDAO.deleteProductFromInvoice(2, 2));
     }
 
 }

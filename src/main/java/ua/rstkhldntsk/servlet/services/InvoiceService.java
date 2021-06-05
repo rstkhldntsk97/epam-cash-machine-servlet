@@ -54,7 +54,8 @@ public class InvoiceService {
     public void deleteProductFromInvoice(String productName, Integer invoiceId, Integer langId) {
         Product product = productDAO.findByName(productName, langId).get();
         invoiceDAO.deleteProductFromInvoice(product.getCode(), invoiceId);
-
+        Invoice invoice = invoiceDAO.findById(invoiceId, 1).get();
+        invoiceDAO.update(invoice);
     }
 
     public void updateInvoice(Invoice invoice) {
@@ -88,7 +89,7 @@ public class InvoiceService {
         return invoiceDAO.findAllByUser(user);
     }
 
-    public Invoice findById(Long id, Integer langId) throws IdNotExist {
+    public Invoice findById(Integer id, Integer langId) throws IdNotExist {
         Optional<Invoice> invoice = invoiceDAO.findById(id, langId);
         if (invoice.isPresent()) {
             if (invoice.get().getId() != null) {
