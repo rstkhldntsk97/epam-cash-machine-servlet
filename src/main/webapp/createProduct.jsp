@@ -32,7 +32,6 @@
         <article class="card-body mx-auto" style="max-width: 400px;">
             <h4 class="card-title mt-3 text-center"><fmt:message key="expert.button.create.product"/></h4>
             <form class="form-signin" action="${pageContext.request.contextPath}/commodityExpert" method="post">
-
                 <input type="name" name="nameEN" class="form-control" placeholder="<fmt:message key="product.name.EN"/>"
                        required>
                 <input type="name" name="nameUA" class="form-control" placeholder="<fmt:message key="product.name.UA"/>"

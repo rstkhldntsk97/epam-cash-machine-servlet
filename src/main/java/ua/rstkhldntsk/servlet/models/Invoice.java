@@ -1,11 +1,10 @@
 package ua.rstkhldntsk.servlet.models;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 public class Invoice {
 
-    private Long id;
+    private Integer id;
     private Float total;
     private User user;
     private String status;
@@ -16,11 +15,11 @@ public class Invoice {
         this.status = "NEW";
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

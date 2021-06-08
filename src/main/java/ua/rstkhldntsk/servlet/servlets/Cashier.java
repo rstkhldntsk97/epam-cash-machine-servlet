@@ -1,5 +1,6 @@
 package ua.rstkhldntsk.servlet.servlets;
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.services.InvoiceService;
@@ -27,7 +28,6 @@ public class Cashier extends HttpServlet {
         invoice.setUser(user);
         session.setAttribute("invoice", invoice);
         invoiceService.createNewInvoice(invoice);
-//        req.getRequestDispatcher("/createInvoice.jsp").forward(req, resp);
         resp.sendRedirect(req.getContextPath() + "/createInvoice.jsp");
     }
 }

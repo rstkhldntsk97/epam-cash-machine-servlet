@@ -1,6 +1,7 @@
 package ua.rstkhldntsk.servlet.dao;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -12,6 +13,8 @@ import static ua.rstkhldntsk.servlet.constants.DatabaseProps.*;
 public class ConnectionPoolHolder {
 
     private static volatile DataSource dataSource;
+
+    private static final Logger LOGGER = Logger.getLogger(ConnectionPoolHolder.class);
 
     public static DataSource getDataSource() {
         if (dataSource == null) {
@@ -30,7 +33,7 @@ public class ConnectionPoolHolder {
                         ds.setMaxOpenPreparedStatements(100);
                         dataSource = ds;
                     } catch (IOException ex) {
-                        ex.printStackTrace();
+                        LOGGER.warn(ex);
                     }
 
                 }

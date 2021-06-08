@@ -1,6 +1,7 @@
 package ua.rstkhldntsk.servlet.servlets;
 
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.models.Product;
@@ -22,18 +23,20 @@ import java.util.ResourceBundle;
 public class CommodityExpert extends HttpServlet {
 
     ProductService productService = ProductService.getInstance();
+    private static final Logger LOGGER = Logger.getLogger(CommodityExpert.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
         String lang = (String) session.getAttribute("lang");
+        Integer langId = Validator.languageValidate(lang);
         int page = 1;
         if(req.getParameter("page") != null) {
             page = Integer.parseInt(req.getParameter("page"));
         }
 
-        Page<Product> products = productService.findAllByPage(page, lang);
+        Page<Product> products = productService.findAllByPage(page, langId);
 
         req.setAttribute("productsFromServer", products.getContent());
         req.setAttribute("noOfPages", products.getTotalPages());
@@ -54,14 +57,17 @@ public class CommodityExpert extends HttpServlet {
         Integer quantity = null;
         try {
             nameEN = Validator.productNameValidate(nameEN);
+//            nameUA = Validator.productNameValidate(nameUA);
             price = Validator.productPriceValidate(priceStr);
             quantity = Validator.productQuantityValidate(quantityStr);
             productService.createProduct(new Product(nameEN, price, quantity), nameUA, nameEN);
             session.setAttribute("message", resourceBundle.getString("create.product.success"));
         } catch (InvalidInput invalidInput) {
             session.setAttribute("message", resourceBundle.getString("invalid.input"));
+            LOGGER.error("Validator exception");
         } catch (ProductAlreadyExistException e) {
             session.setAttribute("message", resourceBundle.getString("product.exist"));
+            LOGGER.error("product exist");
         }
         resp.sendRedirect(req.getContextPath() + "/home.jsp");
     }

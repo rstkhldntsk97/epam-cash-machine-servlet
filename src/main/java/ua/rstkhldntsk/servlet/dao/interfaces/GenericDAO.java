@@ -5,20 +5,39 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-import java.util.Optional;
 
 public interface GenericDAO<T> {
+    /**
+     * saves new entity to database
+     *
+     * @param entity entity
+     */
+    boolean create(T entity);
 
-    Optional<T> findById(Long id);
+    /**
+     * updates the entity
+     *
+     * @param entity entity
+     */
+    boolean update(T entity);
 
-    void create(T model) ;
+    /**
+     * deletes entity from database
+     *
+     * @param entity entity
+     */
+    boolean delete(T entity);
 
-    boolean update(T model);
-
-    boolean delete(T model);
-
+    /**
+     * finds all entities
+     *
+     * @return list of all entities
+     */
     List<T> findAll();
 
+    /**
+     * closes statement
+     */
     default void close(Statement st) {
         if (st != null) {
             try {
@@ -29,6 +48,9 @@ public interface GenericDAO<T> {
         }
     }
 
+    /**
+     * closes result set
+     */
     default void close(ResultSet rs) {
         if (rs != null) {
             try {
@@ -39,6 +61,9 @@ public interface GenericDAO<T> {
         }
     }
 
+    /**
+     * closes connection
+     */
     default void close(Connection con) {
         if (con != null) {
             try {

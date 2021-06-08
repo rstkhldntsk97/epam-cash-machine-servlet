@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.dao.mappers.ProductMapper;
 import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
+import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
 
 import javax.sql.DataSource;
@@ -11,6 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static ua.rstkhldntsk.servlet.constants.SQLQueries.*;
 
@@ -24,12 +26,33 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
-        throw new UnsupportedOperationException();
+    public Optional<Product> findById(Integer code, Integer langId) {
+        Optional<Product> result = Optional.empty();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CODE);
+            preparedStatement.setInt(1, langId);
+            preparedStatement.setInt(2, code);
+            resultSet = preparedStatement.executeQuery();
+            ProductMapper mapper = new ProductMapper();
+            if (resultSet.next()) {
+                result = Optional.of(mapper.extractFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            LOGGER.error(e);
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+            close(connection);
+        }
+        return result;
     }
 
     @Override
-    public void create(Product product) {
+    public boolean create(Product product) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet generatedKeys = null;
@@ -38,13 +61,17 @@ public class JDBCProductDAO implements ProductDAO {
             preparedStatement = connection.prepareStatement(INSERT_PRODUCT, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setBigDecimal(1, product.getPrice());
             preparedStatement.setInt(2, product.getQuantity());
-            preparedStatement.executeUpdate();
+            if (preparedStatement.executeUpdate() != 1) {
+                return false;
+            }
             generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
-                product.setCode(generatedKeys.getLong(1));
+                product.setCode(generatedKeys.getInt(1));
             }
+            return true;
         } catch (SQLException e) {
             LOGGER.error(e);
+            return false;
         } finally {
             close(generatedKeys);
             close(preparedStatement);
@@ -52,35 +79,17 @@ public class JDBCProductDAO implements ProductDAO {
         }
     }
 
-    public void createTranslateUA(Product product, String translate) throws ProductAlreadyExistException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(INSERT_PRODUCT_UA);
-            preparedStatement.setLong(1, product.getCode());
-            preparedStatement.setString(2, translate);
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            LOGGER.error(e);
-            throw new ProductAlreadyExistException();
-        } finally {
-            close(preparedStatement);
-            close(connection);
-        }
-    }
-
-    public void createTranslateEN(Product product, String translate) throws ProductAlreadyExistException {
+    public boolean createTranslate(Product product, String translateEN, String translateUA) throws ProductAlreadyExistException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(INSERT_PRODUCT_EN);
             preparedStatement.setLong(1, product.getCode());
-            preparedStatement.setString(2, translate);
-            preparedStatement.executeUpdate();
-
+            preparedStatement.setString(2, translateEN);
+            preparedStatement.setLong(3, product.getCode());
+            preparedStatement.setString(4, translateUA);
+            return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             LOGGER.error(e);
             throw new ProductAlreadyExistException();
@@ -100,9 +109,7 @@ public class JDBCProductDAO implements ProductDAO {
             preparedStatement = connection.prepareStatement(UPDATE_PRODUCT);
             preparedStatement.setInt(1, product.getQuantity());
             preparedStatement.setLong(2, product.getCode());
-            if (preparedStatement.executeUpdate() != 1) {
-                return false;
-            }
+            return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -110,7 +117,6 @@ public class JDBCProductDAO implements ProductDAO {
             close(preparedStatement);
             close(connection);
         }
-        return true;
     }
 
     @Override
@@ -143,9 +149,9 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
 
-    public List<Product> findAllByPage(Integer page, String lang) {
-        if (lang == null) {
-            lang = "EN";
+    public List<Product> findAllByPage(Integer page, Integer langId) {
+        if (langId == null) {
+            langId = 1;
         }
         List<Product> products = new ArrayList<>();
         Connection connection = null;
@@ -153,7 +159,8 @@ public class JDBCProductDAO implements ProductDAO {
         ResultSet resultSet = null;
         try {
             connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(FIND_ALL_PRODUCTS_BY_LANG_1ST + lang.toUpperCase() + LANG_2ND + lang + LANG_3RD + " order by code ASC LIMIT " + (page - 1) * 5 + "," + 5);
+            preparedStatement = connection.prepareStatement(FIND_ALL_PRODUCTS_BY_LANG + " order by code ASC LIMIT " + (page - 1) * 5 + "," + 5);
+            preparedStatement.setInt(1, langId);
             resultSet = preparedStatement.executeQuery();
             ProductMapper mapper = new ProductMapper();
             while (resultSet.next()) {
@@ -170,7 +177,7 @@ public class JDBCProductDAO implements ProductDAO {
     }
 
     @Override
-    public Optional<Product> findByName(String name) {
+    public Optional<Product> findByName(String name, Integer langId) {
         Optional<Product> result = Optional.empty();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -178,32 +185,8 @@ public class JDBCProductDAO implements ProductDAO {
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_NAME);
-            preparedStatement.setString(1, name);
-            resultSet = preparedStatement.executeQuery();
-            ProductMapper mapper = new ProductMapper();
-            if (resultSet.next()) {
-                result = Optional.of(mapper.extractFromResultSet(resultSet));
-            }
-        } catch (SQLException e) {
-            LOGGER.error(e);
-        } finally {
-            close(resultSet);
-            close(preparedStatement);
-            close(connection);
-        }
-        return result;
-    }
-
-    @Override
-    public Optional<Product> findByCode(Long code) {
-        Optional<Product> result = Optional.empty();
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CODE);
-            preparedStatement.setLong(1, code);
+            preparedStatement.setInt(1, langId);
+            preparedStatement.setString(2, name);
             resultSet = preparedStatement.executeQuery();
             ProductMapper mapper = new ProductMapper();
             if (resultSet.next()) {

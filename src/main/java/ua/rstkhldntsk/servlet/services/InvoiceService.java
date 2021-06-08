@@ -5,9 +5,9 @@ import ua.rstkhldntsk.servlet.dao.DaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
 import ua.rstkhldntsk.servlet.exceptions.IdNotExist;
-import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.exceptions.NotEnoughProduct;
+import ua.rstkhldntsk.servlet.exceptions.ProductNotExist;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.models.User;
@@ -39,8 +39,8 @@ public class InvoiceService {
         invoiceDAO.create(invoice);
     }
 
-    public void addProductToInvoice(Long code, Integer quantity, Invoice invoice, BigDecimal price) throws NotEnoughProduct, ProductAlreadyExistException {
-        Product product = productDAO.findByCode(code).get();
+    public void addProductToInvoice(Integer code, Integer quantity, Invoice invoice, BigDecimal price, Integer langId) throws NotEnoughProduct, ProductAlreadyExistException {
+        Product product = productDAO.findById(code, langId).get();
         if (product.getQuantity() >= quantity) {
             invoiceDAO.addProduct(code, quantity, invoice, price);
             product.setQuantity(product.getQuantity() - quantity);
@@ -48,6 +48,26 @@ public class InvoiceService {
         } else {
             LOGGER.debug("Product is not available in this quantity");
             throw new NotEnoughProduct();
+        }
+    }
+
+    public void deleteProductFromInvoice(String productName, Integer invoiceId, Integer langId) throws ProductNotExist {
+        Optional<Product> productOptional = productDAO.findByName(productName, langId);
+        Invoice invoice = invoiceDAO.findById(invoiceId, 1).get();
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            if ((long) invoice.getProducts().keySet().size() > 1) {
+                invoiceDAO.deleteProductFromInvoice(product.getCode(), invoiceId);
+                invoiceDAO.update(invoice);
+                LOGGER.debug(product.getName() + " deleted");
+                return;
+            }
+            invoiceDAO.deleteProductFromInvoice(product.getCode(), invoiceId);
+            invoiceDAO.delete(invoice);
+            LOGGER.debug("Product " + product.getCode() + " and invoice " + invoice.getId() + " were deleted");
+        } else {
+            LOGGER.error("This product isn't in this invoice");
+            throw new ProductNotExist();
         }
     }
 
@@ -64,9 +84,9 @@ public class InvoiceService {
         return invoiceDAO.findAll();
     }
 
-    public BigDecimal countPriceForProductByQuantity(Integer quantity, Long productCode) {
+    public BigDecimal countPriceForProductByQuantity(Integer quantity, Integer productCode, Integer langId) {
         try {
-            Product product = productDAO.findByCode(productCode).get();
+            Product product = productDAO.findById(productCode, langId).get();
             LOGGER.debug(product.getName() + " " + product.getPrice().multiply(BigDecimal.valueOf(quantity)));
             return product.getPrice().multiply(BigDecimal.valueOf(quantity));
         } catch (NullPointerException e) {
@@ -82,10 +102,14 @@ public class InvoiceService {
         return invoiceDAO.findAllByUser(user);
     }
 
-    public Invoice findById(Long id) throws IdNotExist {
-        Optional<Invoice> invoice = invoiceDAO.findById(id);
+    public Invoice findById(Integer id, Integer langId) throws IdNotExist {
+        Optional<Invoice> invoice = invoiceDAO.findById(id, langId);
         if (invoice.isPresent()) {
-            return invoice.get();
+            if (invoice.get().getId() != null) {
+                return invoice.get();
+            }
+            LOGGER.error("wrong id");
+            throw new IdNotExist();
         }
         LOGGER.error("wrong id");
         throw new IdNotExist();
