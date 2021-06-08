@@ -1,6 +1,7 @@
 package ua.rstkhldntsk.servlet.servlets;
 
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.models.Product;
@@ -22,6 +23,7 @@ import java.util.ResourceBundle;
 public class CommodityExpert extends HttpServlet {
 
     ProductService productService = ProductService.getInstance();
+    private static final Logger LOGGER = Logger.getLogger(CommodityExpert.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,8 +64,10 @@ public class CommodityExpert extends HttpServlet {
             session.setAttribute("message", resourceBundle.getString("create.product.success"));
         } catch (InvalidInput invalidInput) {
             session.setAttribute("message", resourceBundle.getString("invalid.input"));
+            LOGGER.error("Validator exception");
         } catch (ProductAlreadyExistException e) {
             session.setAttribute("message", resourceBundle.getString("product.exist"));
+            LOGGER.error("product exist");
         }
         resp.sendRedirect(req.getContextPath() + "/home.jsp");
     }

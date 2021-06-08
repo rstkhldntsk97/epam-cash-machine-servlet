@@ -79,18 +79,12 @@ public class JDBCProductDAOTest {
     }
 
     @Test
-    public void createTranslateEN() throws ProductAlreadyExistException {
+    public void createTranslate() throws ProductAlreadyExistException {
         Product product = getProduct();
         productDAO.create(product);
-        assertTrue(productDAO.createTranslateEN(product, "en"));
+        assertTrue(productDAO.createTranslate(product, "test", "тест"));
     }
 
-    @Test
-    public void createTranslateUA() throws ProductAlreadyExistException {
-        Product product = getProduct();
-        productDAO.create(product);
-        assertTrue(productDAO.createTranslateUA(product, "ua"));
-    }
 
     @Test(expected = UnsupportedOperationException.class)
     public void delete() {

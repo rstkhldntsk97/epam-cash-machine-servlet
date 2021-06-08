@@ -1,5 +1,6 @@
 package ua.rstkhldntsk.servlet.servlets;
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.utils.Encoder;
@@ -21,6 +22,7 @@ import java.util.ResourceBundle;
 public class AdminServlet extends HttpServlet {
 
     UserService userService = UserService.getInstance();
+    private static final Logger LOGGER = Logger.getLogger(AdminServlet.class);
 
 
     @Override
@@ -46,13 +48,14 @@ public class AdminServlet extends HttpServlet {
         try {
             username = Validator.usernameValidate(req.getParameter("username"));
             password = Encoder.encodePassword(req.getParameter("password"));
+            String role = req.getParameter("role");
+            userService.create(new User(username, password, role));
+            session.setAttribute("message", resourceBundle.getString("create.user.success"));
+            resp.sendRedirect(req.getContextPath() + "/createUser.jsp");
         } catch (InvalidInput invalidInput) {
+            LOGGER.error("Wrong password or username");
             session.setAttribute("message", resourceBundle.getString("invalid.input"));
             req.getRequestDispatcher("/createUser.jsp").forward(req, resp);
         }
-        String role = req.getParameter("role");
-        userService.create(new User(username, password, role));
-        session.setAttribute("message", resourceBundle.getString("create.user.success"));
-        resp.sendRedirect(req.getContextPath() + "/createUser.jsp");
     }
 }

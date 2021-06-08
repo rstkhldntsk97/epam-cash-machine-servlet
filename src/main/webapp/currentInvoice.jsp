@@ -50,5 +50,12 @@
             <fmt:message key="button.decline.invoice"/></button>
     </form>
 
+    <form class="form-signin" action="${pageContext.request.contextPath}/deleteProduct" method="post">
+
+    <input type="username" name="product" class="form-control" placeholder="<fmt:message key="product.name.EN"/>" required>
+    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit"><fmt:message
+            key="button.delete"/></button>
+
+</form>
 </div>
 </body>

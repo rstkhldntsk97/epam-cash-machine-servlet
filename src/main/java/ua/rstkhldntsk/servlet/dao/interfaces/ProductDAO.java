@@ -13,7 +13,7 @@ public interface ProductDAO extends GenericDAO<Product> {
     /**
      * finds product by code
      *
-     * @param id product code
+     * @param id     product code
      * @param langId language of product name
      * @return optional of product
      */
@@ -22,7 +22,7 @@ public interface ProductDAO extends GenericDAO<Product> {
     /**
      * finds product by name
      *
-     * @param name product name
+     * @param name   product name
      * @param langId language of product name
      * @return optional of product
      */
@@ -30,8 +30,7 @@ public interface ProductDAO extends GenericDAO<Product> {
 
     List<Product> findAllByPage(Integer page, Integer lang);
 
-    boolean createTranslateEN(Product product, String translate) throws ProductAlreadyExistException;
+    boolean createTranslate(Product product,String translateEN, String translateUA) throws ProductAlreadyExistException;
 
-    boolean createTranslateUA(Product product, String translate) throws ProductAlreadyExistException;
 
 }

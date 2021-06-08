@@ -79,39 +79,17 @@ public class JDBCProductDAO implements ProductDAO {
         }
     }
 
-    public boolean createTranslateUA(Product product, String translate) throws ProductAlreadyExistException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            connection = dataSource.getConnection();
-            preparedStatement = connection.prepareStatement(INSERT_PRODUCT_UA);
-            preparedStatement.setLong(1, product.getCode());
-            preparedStatement.setString(2, translate);
-            if (preparedStatement.executeUpdate() != 1) {
-                return false;
-            }
-            return true;
-        } catch (SQLException e) {
-            LOGGER.error(e);
-            throw new ProductAlreadyExistException();
-        } finally {
-            close(preparedStatement);
-            close(connection);
-        }
-    }
-
-    public boolean createTranslateEN(Product product, String translate) throws ProductAlreadyExistException {
+    public boolean createTranslate(Product product, String translateEN, String translateUA) throws ProductAlreadyExistException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(INSERT_PRODUCT_EN);
             preparedStatement.setLong(1, product.getCode());
-            preparedStatement.setString(2, translate);
-            if (preparedStatement.executeUpdate() != 1) {
-                return false;
-            }
-            return true;
+            preparedStatement.setString(2, translateEN);
+            preparedStatement.setLong(3, product.getCode());
+            preparedStatement.setString(4, translateUA);
+            return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             LOGGER.error(e);
             throw new ProductAlreadyExistException();
@@ -131,9 +109,7 @@ public class JDBCProductDAO implements ProductDAO {
             preparedStatement = connection.prepareStatement(UPDATE_PRODUCT);
             preparedStatement.setInt(1, product.getQuantity());
             preparedStatement.setLong(2, product.getCode());
-            if (preparedStatement.executeUpdate() != 1) {
-                return false;
-            }
+            return preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             LOGGER.error(e);
             return false;
@@ -141,7 +117,6 @@ public class JDBCProductDAO implements ProductDAO {
             close(preparedStatement);
             close(connection);
         }
-        return true;
     }
 
     @Override

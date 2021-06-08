@@ -1,5 +1,6 @@
 package ua.rstkhldntsk.servlet.servlets;
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.services.InvoiceService;
@@ -19,6 +20,7 @@ import java.util.List;
 public class LogOut extends HttpServlet {
 
     InvoiceService invoiceService = InvoiceService.getInstance();
+    private static final Logger LOGGER = Logger.getLogger(LogOut.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,9 +33,11 @@ public class LogOut extends HttpServlet {
                     invoiceService.deleteInvoice(invoice);
                 }
             });
+            LOGGER.info("all unclosed invoices were deleted");
         }
         session.invalidate();
         resp.sendRedirect(req.getContextPath() + "/index.jsp");
+        LOGGER.info(user + " is successfully logged out");
     }
 
 }

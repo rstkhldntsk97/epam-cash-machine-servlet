@@ -1,5 +1,6 @@
 package ua.rstkhldntsk.servlet.servlets;
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.services.InvoiceService;
 
@@ -17,6 +18,7 @@ import java.util.ResourceBundle;
 public class CashierUpdateInvoice extends HttpServlet {
 
     InvoiceService invoiceService = InvoiceService.getInstance();
+    private static final Logger LOGGER = Logger.getLogger(CashierUpdateInvoice.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,11 +32,13 @@ public class CashierUpdateInvoice extends HttpServlet {
             session.removeAttribute("invoice");
             session.setAttribute("message", resourceBundle.getString("invoice.is.declined"));
             resp.sendRedirect(req.getContextPath() + "/home.jsp");
+            LOGGER.debug("invoice " + invoice.getId() + " is declined");
         } else if (status.equals("CLOSED")) {
             invoiceService.updateInvoice(invoice);
             session.removeAttribute("invoice");
             session.setAttribute("message", resourceBundle.getString("invoice.is.closed"));
             resp.sendRedirect(req.getContextPath() + "/home.jsp");
+            LOGGER.debug("invoice " + invoice.getId() + " is closed");
         }
     }
 

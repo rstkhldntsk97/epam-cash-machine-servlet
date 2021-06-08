@@ -61,8 +61,7 @@ public class ProductService {
             throw new ProductAlreadyExistException();
         } catch (ProductNotExist productNotExist) {
             productDAO.create(product);
-            productDAO.createTranslateEN(product, translateEN);
-            productDAO.createTranslateUA(product, translateUA);
+            productDAO.createTranslate(product, translateEN, translateUA);
         }
     }
 

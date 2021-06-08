@@ -1,6 +1,7 @@
 package ua.rstkhldntsk.servlet.servlets;
 
 import com.mysql.cj.xdevapi.Schema;
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.exceptions.IdNotExist;
 import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.models.Invoice;
@@ -21,6 +22,7 @@ import java.util.ResourceBundle;
 public class SeniorUpdateInvoice extends HttpServlet {
 
     InvoiceService invoiceService = new InvoiceService();
+    private static final Logger LOGGER = Logger.getLogger(SeniorUpdateInvoice.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -42,6 +44,7 @@ public class SeniorUpdateInvoice extends HttpServlet {
             session.setAttribute("invoice", invoiceToEdit);
             req.setAttribute("invoice", invoiceToEdit);
             resp.sendRedirect(req.getContextPath() + "/currentInvoice.jsp");
+            LOGGER.info("invoice #" + invoiceToEdit.getId() + " was picked to edit");
         } catch (InvalidInput invalidInput) {
             session.setAttribute("message", resourceBundle.getString("invalid.input"));
             doGet(req, resp);

@@ -1,10 +1,12 @@
 package ua.rstkhldntsk.servlet.services;
 
 
+import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.JDBCDaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
+import ua.rstkhldntsk.servlet.servlets.DeleteProduct;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -13,7 +15,7 @@ import java.util.List;
 public class ReportService {
 
     private static volatile ReportService instance;
-    InvoiceDAO invoiceDAO = JDBCDaoFactory.getInstance().createInvoiceDao();
+    private static final Logger LOGGER = Logger.getLogger(ReportService.class);
 
     InvoiceService invoiceService = new InvoiceService();
     public static ReportService getInstance() {
@@ -33,6 +35,7 @@ public class ReportService {
         double total = invoices.stream().mapToDouble(s -> s.getTotal().doubleValue()).sum();
         request.setAttribute("COUNT", countOfInvoices);
         request.setAttribute("TOTAL_SUM", total);
+        LOGGER.info("Report X created");
     }
 
     public void makeZReport(HttpServletRequest request) {
@@ -44,6 +47,8 @@ public class ReportService {
         request.setAttribute("COUNT", countOfInvoices);
         request.setAttribute("TOTAL_SUM", total);
         invoices.forEach(invoiceService::deleteInvoice);
+        LOGGER.info("Report Z created");
+        LOGGER.info("All invoices deleted");
     }
 
 }
