@@ -217,12 +217,9 @@ public class JDBCInvoiceDAO implements InvoiceDAO {
             preparedStatement = con.prepareStatement(DELETE_PRODUCT_FROM_INVOICE);
             preparedStatement.setInt(1, invoiceId);
             preparedStatement.setInt(2, productCode);
-            if (preparedStatement.executeUpdate() != 1) {
-                return false;
-            }
-            return true;
-        } catch (SQLException throwables) {
-            LOGGER.error(throwables);
+            return preparedStatement.executeUpdate() == 1;
+        } catch (SQLException e) {
+            LOGGER.error("can't delete product");
             return false;
         } finally {
             close(preparedStatement);

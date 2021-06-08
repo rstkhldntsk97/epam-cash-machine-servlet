@@ -56,15 +56,17 @@ public class InvoiceService {
         Invoice invoice = invoiceDAO.findById(invoiceId, 1).get();
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
+//            Integer quan = invoice.getProducts().get(product);
+//            product.setQuantity(product.getQuantity() + quan);
+            invoiceDAO.deleteProductFromInvoice(product.getCode(), invoiceId);
+            productDAO.update(product);
             if ((long) invoice.getProducts().keySet().size() > 1) {
-                invoiceDAO.deleteProductFromInvoice(product.getCode(), invoiceId);
                 invoiceDAO.update(invoice);
                 LOGGER.debug(product.getName() + " deleted");
-                return;
+            } else {
+                invoiceDAO.delete(invoice);
+                LOGGER.debug("Product " + product.getCode() + " and invoice " + invoice.getId() + " were deleted");
             }
-            invoiceDAO.deleteProductFromInvoice(product.getCode(), invoiceId);
-            invoiceDAO.delete(invoice);
-            LOGGER.debug("Product " + product.getCode() + " and invoice " + invoice.getId() + " were deleted");
         } else {
             LOGGER.error("This product isn't in this invoice");
             throw new ProductNotExist();

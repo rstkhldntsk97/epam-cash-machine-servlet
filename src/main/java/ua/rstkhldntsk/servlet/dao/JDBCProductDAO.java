@@ -89,7 +89,7 @@ public class JDBCProductDAO implements ProductDAO {
             preparedStatement.setString(2, translateEN);
             preparedStatement.setLong(3, product.getCode());
             preparedStatement.setString(4, translateUA);
-            return preparedStatement.executeUpdate() == 1;
+            return preparedStatement.executeUpdate() == 2;
         } catch (SQLException e) {
             LOGGER.error(e);
             throw new ProductAlreadyExistException();

@@ -43,13 +43,6 @@ public class JDBCProductDAOTest {
         assertNotNull(products);
     }
 
-    @Test
-    public void findByName() {
-        Product product = productDAO.findByName("bed", 1).get();
-        Product product1 = new Product( "bed", BigDecimal.valueOf(100L), 100);
-        assertEquals(product1.getName(), product.getName());
-    }
-
     @Test(expected = NoSuchElementException.class)
     public void findByNameFailed() {
         productDAO.findByName("test111", 1).get();
