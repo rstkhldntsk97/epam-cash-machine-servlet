@@ -104,7 +104,9 @@ public class InvoiceService {
         return invoiceDAO.findAllByUser(user);
     }
 
-    public Invoice findById(Integer id, Integer langId) throws IdNotExist {
+    public Invoice findById(String invoiceId, String lang) throws IdNotExist, InvalidInput {
+        Integer id = Validator.invoiceIdValidate(invoiceId);
+        Integer langId = Validator.languageValidate(lang);
         Optional<Invoice> invoice = invoiceDAO.findById(id, langId);
         if (invoice.isPresent()) {
             if (invoice.get().getId() != null) {

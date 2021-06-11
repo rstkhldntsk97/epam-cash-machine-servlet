@@ -36,11 +36,9 @@ public class SeniorUpdateInvoice extends HttpServlet {
         HttpSession session = req.getSession();
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
         String lang = (String) session.getAttribute("lang");
-        Integer langId = Validator.languageValidate(lang);
         String invoiceId = req.getParameter("id");
         try {
-            Integer id = Validator.invoiceIdValidate(invoiceId);
-            Invoice invoiceToEdit = invoiceService.findById(id, langId);
+            Invoice invoiceToEdit = invoiceService.findById(invoiceId, lang);
             session.setAttribute("invoice", invoiceToEdit);
             req.setAttribute("invoice", invoiceToEdit);
             resp.sendRedirect(req.getContextPath() + "/currentInvoice.jsp");
