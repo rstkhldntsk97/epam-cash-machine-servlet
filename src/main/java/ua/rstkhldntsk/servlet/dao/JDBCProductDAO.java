@@ -79,14 +79,14 @@ public class JDBCProductDAO implements ProductDAO {
         }
     }
 
-    public boolean createTranslate(Product product, String translateEN, String translateUA) throws ProductAlreadyExistException {
+    public boolean createTranslate(Product product, String translateUA) throws ProductAlreadyExistException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(INSERT_PRODUCT_EN);
             preparedStatement.setLong(1, product.getCode());
-            preparedStatement.setString(2, translateEN);
+            preparedStatement.setString(2, product.getName());
             preparedStatement.setLong(3, product.getCode());
             preparedStatement.setString(4, translateUA);
             return preparedStatement.executeUpdate() == 2;

@@ -30,7 +30,7 @@ public interface ProductDAO extends GenericDAO<Product> {
 
     List<Product> findAllByPage(Integer page, Integer lang);
 
-    boolean createTranslate(Product product,String translateEN, String translateUA) throws ProductAlreadyExistException;
+    boolean createTranslate(Product product,String translateUA) throws ProductAlreadyExistException;
 
 
 }

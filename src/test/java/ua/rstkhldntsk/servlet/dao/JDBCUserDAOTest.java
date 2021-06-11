@@ -75,20 +75,15 @@ public class JDBCUserDAOTest {
         userDao.delete(getUser());
     }
 
-    @Test
-    public void findByNameEmpty() {
-        assertEquals(Optional.empty(), userDao.findByName("test12"));
-    }
-
-    @Test
-    public void findByName() {
-        userDao.findByName(getUser().getUsername());
-    }
-
-    @Test
-    public void checkUser() {
-        userDao.checkUser(getUser().getUsername(), getUser().getPassword());
-    }
+//    @Test
+//    public void findByNameEmpty() {
+//        assertEquals(Optional.empty(), userDao.findByName("test12"));
+//    }
+//
+//    @Test
+//    public void findByName() {
+//        userDao.findByName(getUser().getUsername());
+//    }
 
     private User getUser() {
         return new User("test", "test", "CASHIER");

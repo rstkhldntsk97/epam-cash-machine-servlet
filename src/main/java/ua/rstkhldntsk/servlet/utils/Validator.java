@@ -14,8 +14,16 @@ public class Validator {
         return Integer.parseInt(code);
     }
 
-    public static String productNameValidate(String name) throws InvalidInput {
-        String pattern = "[A-Za-zА-Яа-яЇЄїє0-9 ']+";
+    public static String productNameOnEngValidate(String name) throws InvalidInput {
+        String pattern = "[A-Za-z0-9 ']+";
+        if (!name.matches(pattern)) {
+            throw new InvalidInput();
+        }
+        return name.toLowerCase();
+    }
+
+    public static String productNameOnUaValidate(String name) throws InvalidInput {
+        String pattern = "[А-ЯЄЇа-яєї0-9 ']+";
         if (!name.matches(pattern)) {
             throw new InvalidInput();
         }

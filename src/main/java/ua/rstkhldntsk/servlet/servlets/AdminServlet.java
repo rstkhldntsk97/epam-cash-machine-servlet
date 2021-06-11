@@ -43,13 +43,11 @@ public class AdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
-        String username = null;
-        String password = null;
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        String role = req.getParameter("role");
         try {
-            username = Validator.usernameValidate(req.getParameter("username"));
-            password = Encoder.encodePassword(req.getParameter("password"));
-            String role = req.getParameter("role");
-            userService.create(new User(username, password, role));
+            userService.create(username, password, role);
             session.setAttribute("message", resourceBundle.getString("create.user.success"));
             resp.sendRedirect(req.getContextPath() + "/createUser.jsp");
         } catch (InvalidInput invalidInput) {

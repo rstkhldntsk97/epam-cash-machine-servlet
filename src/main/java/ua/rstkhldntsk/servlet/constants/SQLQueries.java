@@ -6,7 +6,7 @@ public interface SQLQueries {
     String INSERT_USER = "INSERT INTO user (username, password, role) VALUES (?,?,?)";
     String FIND_ALL_USERS = "SELECT * FROM user";
     String FIND_USER_BY_ID = "SELECT * FROM user WHERE user.id = ?";
-    String FIND_BY_USERNAME = "SELECT * FROM user WHERE username = ?";
+    String FIND_BY_USERNAME = "SELECT * FROM user WHERE username = ? AND password = ?";
     String CHECK_USER = "SELECT * FROM user WHERE username = ? AND password = ?";
 
 

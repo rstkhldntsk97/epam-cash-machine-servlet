@@ -75,7 +75,7 @@ public class JDBCProductDAOTest {
     public void createTranslate() throws ProductAlreadyExistException {
         Product product = getProduct();
         productDAO.create(product);
-        assertTrue(productDAO.createTranslate(product, "test", "тест"));
+        assertTrue(productDAO.createTranslate(product, "тест"));
     }
 
 

@@ -21,12 +21,12 @@ public class ValidatorTest {
 
     @Test
     public void productNameValidateTrue() throws InvalidInput {
-        assertEquals(Validator.productNameValidate("CAR123"), "car123");
+        assertEquals(Validator.productNameOnEngValidate("CAR123"), "car123");
     }
 
     @Test(expected = InvalidInput.class)
     public void productNameValidateThrowException() throws InvalidInput {
-        Validator.productNameValidate("CAR!@#");
+        Validator.productNameOnEngValidate("CAR!@#");
     }
 
     @Test

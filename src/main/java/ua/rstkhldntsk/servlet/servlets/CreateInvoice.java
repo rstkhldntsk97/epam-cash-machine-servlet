@@ -31,6 +31,7 @@ public class CreateInvoice extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //TODO: fix this mess
         HttpSession session = req.getSession();
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
         Integer langId = Validator.languageValidate((String) session.getAttribute("lang"));
@@ -70,7 +71,7 @@ public class CreateInvoice extends HttpServlet {
         } catch (NumberFormatException | InvalidInput e ) {
             //try to find product by name
             try {
-                String name = Validator.productNameValidate(parameter1);
+                String name = Validator.productNameOnEngValidate(parameter1);
                 Integer quantity = Validator.productQuantityValidate(parameter2);
                 product = productService.findProductByName(name, langId);
                 BigDecimal price = invoiceService.countPriceForProductByQuantity(quantity, product.getCode(), langId);

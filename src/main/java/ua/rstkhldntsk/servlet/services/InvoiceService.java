@@ -4,13 +4,11 @@ import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.DaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
-import ua.rstkhldntsk.servlet.exceptions.IdNotExist;
-import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
-import ua.rstkhldntsk.servlet.exceptions.NotEnoughProduct;
-import ua.rstkhldntsk.servlet.exceptions.ProductNotExist;
+import ua.rstkhldntsk.servlet.exceptions.*;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.models.User;
+import ua.rstkhldntsk.servlet.utils.Validator;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -51,7 +49,9 @@ public class InvoiceService {
         }
     }
 
-    public void deleteProductFromInvoice(String productName, Integer invoiceId, Integer langId) throws ProductNotExist {
+    public void deleteProductFromInvoice(String productName1, Integer invoiceId, String lang) throws ProductNotExist, InvalidInput {
+        Integer langId = Validator.languageValidate(lang);
+        String productName = Validator.productNameOnEngValidate(productName1);
         Optional<Product> productOptional = productDAO.findByName(productName, langId);
         Invoice invoice = invoiceDAO.findById(invoiceId, 1).get();
         if (productOptional.isPresent()) {
@@ -86,7 +86,7 @@ public class InvoiceService {
         return invoiceDAO.findAll();
     }
 
-    public BigDecimal countPriceForProductByQuantity(Integer quantity, Integer productCode, Integer langId) {
+    public BigDecimal countPriceForProductByQuantity(Integer quantity, Integer productCode, Integer langId) throws InvalidInput {
         try {
             Product product = productDAO.findById(productCode, langId).get();
             LOGGER.debug(product.getName() + " " + product.getPrice().multiply(BigDecimal.valueOf(quantity)));

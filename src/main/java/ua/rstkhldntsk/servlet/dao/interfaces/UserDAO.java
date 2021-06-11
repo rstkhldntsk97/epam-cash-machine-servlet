@@ -7,15 +7,14 @@ import java.util.Optional;
 
 public interface UserDAO extends GenericDAO<User> {
 
-    Optional<User> findByName(String name);
     /**
      * finds user by username and password in database
      *
-     * @param username user username
-     * @param password user password
-     * @return true if user exist false if not
+     * @param name user username
+     * @param pass user password
+     * @return optional of user
      */
-    boolean checkUser(String username, String password);
+    Optional<User> findByName(String name, String pass);
 
     List<User> findAllByPage(Integer pageInfo);
 

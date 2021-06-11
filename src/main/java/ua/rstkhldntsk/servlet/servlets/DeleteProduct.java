@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 @WebServlet("/deleteProduct")
 public class DeleteProduct extends HttpServlet {
 
-    private InvoiceService invoiceService = InvoiceService.getInstance();
+    private final InvoiceService invoiceService = InvoiceService.getInstance();
     private static final Logger LOGGER = Logger.getLogger(DeleteProduct.class);
 
     @Override
@@ -28,11 +28,9 @@ public class DeleteProduct extends HttpServlet {
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
         Invoice invoice = (Invoice) session.getAttribute("invoice");
         String lang = (String) session.getAttribute("lang");
-        Integer langId = Validator.languageValidate(lang);
-        String productName = null;
+        String productName = req.getParameter("product");
         try {
-            productName = Validator.productNameValidate(req.getParameter("product"));
-            invoiceService.deleteProductFromInvoice(productName, invoice.getId(), langId);
+            invoiceService.deleteProductFromInvoice(productName, invoice.getId(), lang);
             session.setAttribute("message",resourceBundle.getString("product.deleted"));
         } catch (InvalidInput | ProductNotExist invalidInput) {
             session.setAttribute("message",resourceBundle.getString("invalid.input"));

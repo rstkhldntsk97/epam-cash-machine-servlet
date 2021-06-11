@@ -3,11 +3,14 @@ package ua.rstkhldntsk.servlet.services;
 import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.dao.DaoFactory;
 import ua.rstkhldntsk.servlet.dao.interfaces.ProductDAO;
+import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.exceptions.ProductAlreadyExistException;
 import ua.rstkhldntsk.servlet.exceptions.ProductNotExist;
 import ua.rstkhldntsk.servlet.models.Product;
 import ua.rstkhldntsk.servlet.utils.Page;
+import ua.rstkhldntsk.servlet.utils.Validator;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,17 +55,26 @@ public class ProductService {
         return page;
     }
 
-
-    public void createProduct(Product product, String translateUA, String translateEN) throws ProductAlreadyExistException {
-        try {
-            Product product1 = findProductByName(product.getName(), 1);
-            if (!product1.getName().equals(product.getName())) {
-            }
+    /**
+     * creates new product
+     *
+     * @param priceS price as string
+     * @param quantityS quantity as string
+     * @param translateEN product name on english
+     * @param translateUA product name on ukrainian
+     */
+    public void createProduct(String priceS, String quantityS, String translateUA, String translateEN) throws ProductAlreadyExistException, InvalidInput {
+        BigDecimal price = Validator.productPriceValidate(priceS);
+        Integer quantity = Validator.productQuantityValidate(quantityS);
+        String nameOnEn = Validator.productNameOnEngValidate(translateEN);
+//        String nameOnUa = Validator.productNameOnUaValidate(translateUA);
+        Optional<Product> productFromDB = productDAO.findByName(nameOnEn, 1);
+        if (productFromDB.isPresent()) {
             throw new ProductAlreadyExistException();
-        } catch (ProductNotExist productNotExist) {
-            productDAO.create(product);
-            productDAO.createTranslate(product, translateEN, translateUA);
         }
+        Product product = new Product(nameOnEn, price, quantity);
+        productDAO.create(product);
+        productDAO.createTranslate(product, translateUA);
     }
 
     public void updateProduct(Product product) {

@@ -134,7 +134,7 @@ public class JDBCUserDAO implements UserDAO {
     }
 
     @Override
-    public Optional<User> findByName(String name) {
+    public Optional<User> findByName(String name, String password) {
         Connection con = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -142,6 +142,7 @@ public class JDBCUserDAO implements UserDAO {
             con = dataSource.getConnection();
             statement = con.prepareStatement(FIND_BY_USERNAME);
             statement.setString(1, name);
+            statement.setString(2, password);
             resultSet = statement.executeQuery();
             UserMapper mapper = new UserMapper();
             if (resultSet.next()) {

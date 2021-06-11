@@ -2,6 +2,7 @@ package ua.rstkhldntsk.servlet.servlets;
 
 import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
+import ua.rstkhldntsk.servlet.exceptions.UserNotExist;
 import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.utils.Encoder;
 import ua.rstkhldntsk.servlet.services.UserService;
@@ -33,24 +34,17 @@ public class Login extends HttpServlet {
         ResourceBundle resourceBundle = (ResourceBundle) session.getAttribute("resourceBundle");
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        User user = null;
         try {
-            username = Validator.usernameValidate(username);
-            password = Validator.passwordValidate(Encoder.encodePassword(password));
-        } catch (InvalidInput invalidInput) {
-            invalidInput.printStackTrace();
-        }
-
-        User user = userService.login(username, password);
-        String role = user.getRole();
-        if (role == null) {
+            user = userService.login(username, password);
+            LOGGER.info("User " + username + " logged in successfully");
+            session.setAttribute("user", user);
+            session.setAttribute("role", user.getRole());
+            resp.sendRedirect(req.getContextPath() + "/home.jsp");
+        } catch (UserNotExist userNotExist) {
             LOGGER.warn("There is no users with username: " + username + " and password: " + password);
             session.setAttribute("message", resourceBundle.getString("login.danger.alert"));
             resp.sendRedirect(req.getContextPath() + "/error404.jsp");
-        } else {
-            LOGGER.info("User " + username + " logged in successfully");
-            session.setAttribute("user", user);
-            session.setAttribute("role", role);
-            resp.sendRedirect(req.getContextPath() + "/home.jsp");
         }
     }
 }

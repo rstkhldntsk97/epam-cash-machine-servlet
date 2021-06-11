@@ -1,10 +1,8 @@
 package ua.rstkhldntsk.servlet.servlets;
 
-import org.apache.log4j.Logger;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
 import ua.rstkhldntsk.servlet.services.InvoiceService;
-import ua.rstkhldntsk.servlet.services.ProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

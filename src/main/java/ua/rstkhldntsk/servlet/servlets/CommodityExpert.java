@@ -53,14 +53,8 @@ public class CommodityExpert extends HttpServlet {
         String nameUA = req.getParameter("nameUA");
         String priceStr = req.getParameter("price");
         String  quantityStr = req.getParameter("quantity");
-        BigDecimal price = null;
-        Integer quantity = null;
         try {
-            nameEN = Validator.productNameValidate(nameEN);
-//            nameUA = Validator.productNameValidate(nameUA);
-            price = Validator.productPriceValidate(priceStr);
-            quantity = Validator.productQuantityValidate(quantityStr);
-            productService.createProduct(new Product(nameEN, price, quantity), nameUA, nameEN);
+            productService.createProduct(priceStr, quantityStr, nameUA, nameEN);
             session.setAttribute("message", resourceBundle.getString("create.product.success"));
         } catch (InvalidInput invalidInput) {
             session.setAttribute("message", resourceBundle.getString("invalid.input"));

@@ -35,13 +35,13 @@ public class JDBCInvoiceDAOTest {
         assertNotEquals(invoice, invoice1);
     }
 
-    @Test
-    public void create() {
-        User user = DaoFactory.getInstance().createUserDao().findByName("cashier1").get();
-        Invoice invoice = new Invoice();
-        invoice.setUser(user);
-        assertTrue(invoiceDAO.create(invoice));
-    }
+//    @Test
+//    public void create() {
+//        User user = DaoFactory.getInstance().createUserDao().findByName("cashier1").get();
+//        Invoice invoice = new Invoice();
+//        invoice.setUser(user);
+//        assertTrue(invoiceDAO.create(invoice));
+//    }
 
     @Test(expected = NullPointerException.class)
     public void createFailedWithException() {
