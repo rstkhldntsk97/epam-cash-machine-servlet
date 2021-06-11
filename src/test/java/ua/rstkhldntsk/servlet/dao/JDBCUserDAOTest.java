@@ -1,5 +1,6 @@
 package ua.rstkhldntsk.servlet.dao;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,6 +47,7 @@ public class JDBCUserDAOTest {
         User user = getUser();
         userDao.create(user);
         assertNotNull(user.getId());
+        userDao.delete(user);
     }
 
     @Test(expected = UserExistException.class)
@@ -75,15 +77,15 @@ public class JDBCUserDAOTest {
         userDao.delete(getUser());
     }
 
-//    @Test
-//    public void findByNameEmpty() {
-//        assertEquals(Optional.empty(), userDao.findByName("test12"));
-//    }
-//
-//    @Test
-//    public void findByName() {
-//        userDao.findByName(getUser().getUsername());
-//    }
+    @Test
+    public void findByNameEmpty() {
+        assertEquals(Optional.empty(), userDao.findByName("test12", "123"));
+    }
+
+    @Test
+    public void findByName() {
+        userDao.findByName(getUser().getUsername(), getUser().getPassword());
+    }
 
     private User getUser() {
         return new User("test", "test", "CASHIER");

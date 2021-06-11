@@ -16,8 +16,8 @@ import java.util.Optional;
 public class UserService {
 
     private static volatile UserService instance;
-    private DaoFactory daoFactory = DaoFactory.getInstance();
-    UserDAO userDAO = daoFactory.createUserDao();
+    private final DaoFactory daoFactory = DaoFactory.getInstance();
+    private final UserDAO userDAO = daoFactory.createUserDao();
 
     public static UserService getInstance() {
         if (instance == null) {

@@ -69,8 +69,6 @@ public class Invoice {
                 ", total " + total +
                 ", user " + user.getUsername() +
                 ", status " + status +
-                ", created date " + createdAt +
-                ", products " + (products.toString().replaceAll("=", " "));
+                ", created date " + createdAt;
     }
-
 }

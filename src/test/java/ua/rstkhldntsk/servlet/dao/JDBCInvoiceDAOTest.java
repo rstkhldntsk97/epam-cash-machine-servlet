@@ -5,8 +5,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import ua.rstkhldntsk.servlet.dao.interfaces.InvoiceDAO;
 import ua.rstkhldntsk.servlet.database.DBInitializer;
+import ua.rstkhldntsk.servlet.exceptions.InvalidInput;
 import ua.rstkhldntsk.servlet.models.Invoice;
 import ua.rstkhldntsk.servlet.models.User;
+import ua.rstkhldntsk.servlet.utils.Validator;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,21 +60,6 @@ public class JDBCInvoiceDAOTest {
     }
 
     @Test
-    public void update() {
-        Invoice invoice = new Invoice();
-        invoice.setId(10);
-        invoice.setTotal(101.0f);
-        assertTrue(invoiceDAO.update(invoice));
-    }
-
-    @Test
-    public void delete() {
-        Invoice invoice = new Invoice();
-        invoice.setId(3);
-        assertTrue(invoiceDAO.delete(invoice));
-    }
-
-    @Test
     public void findAll() {
         List<Invoice> invoiceDAOAll = invoiceDAO.findAll();
         assertNotNull(invoiceDAOAll);
@@ -84,11 +71,6 @@ public class JDBCInvoiceDAOTest {
         user.setId(1L);
         List<Invoice> userInvoices = invoiceDAO.findAllByUser(user);
         assertNotNull(userInvoices);
-    }
-
-    @Test
-    public void deleteProductFromInvoice() {
-        assertTrue(invoiceDAO.deleteProductFromInvoice(2, 2));
     }
 
 }

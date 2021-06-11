@@ -158,26 +158,4 @@ public class JDBCUserDAO implements UserDAO {
             close(con);
         }
     }
-
-    public boolean checkUser(String username, String password) {
-        boolean exist = false;
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet rs = null;
-        try {
-            connection = dataSource.getConnection();
-            statement = connection.prepareStatement(CHECK_USER);
-            statement.setString(1, username);
-            statement.setString(2, password);
-            rs = statement.executeQuery();
-            exist = rs.next();
-        } catch (Exception e) {
-            LOGGER.error(e);
-        } finally {
-            close(rs);
-            close(statement);
-            close(connection);
-        }
-        return exist;
-    }
 }
